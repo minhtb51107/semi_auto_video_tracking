@@ -1,0 +1,352 @@
+{
+  "scope": {
+    "01": {
+      "total_frames": 190,
+      "flags": 27,
+      "unique_events": 20,
+      "flagged_frames": 20,
+      "context_padding": 2,
+      "merged_contexts": [
+        [
+          11,
+          65
+        ],
+        [
+          74,
+          107
+        ],
+        [
+          116,
+          166
+        ],
+        [
+          169,
+          175
+        ]
+      ],
+      "context_segments": 4,
+      "review_span_frames": 147,
+      "candidate_ratio": 0.10526315789473684,
+      "review_span_ratio": 0.7736842105263158,
+      "sensitivity": {
+        "0": {
+          "segments": [
+            [
+              13,
+              63
+            ],
+            [
+              76,
+              85
+            ],
+            [
+              89,
+              105
+            ],
+            [
+              118,
+              120
+            ],
+            [
+              122,
+              157
+            ],
+            [
+              162,
+              164
+            ],
+            [
+              171,
+              173
+            ]
+          ],
+          "frames": 123
+        },
+        "2": {
+          "segments": [
+            [
+              11,
+              65
+            ],
+            [
+              74,
+              107
+            ],
+            [
+              116,
+              166
+            ],
+            [
+              169,
+              175
+            ]
+          ],
+          "frames": 147
+        },
+        "5": {
+          "segments": [
+            [
+              8,
+              68
+            ],
+            [
+              71,
+              110
+            ],
+            [
+              113,
+              178
+            ]
+          ],
+          "frames": 167
+        }
+      },
+      "clear_metrics": {
+        "FP": 102,
+        "FN": 53,
+        "IDSW": 1,
+        "MOTP": 0.8217924224981938
+      },
+      "missed_whole_tracks": [],
+      "fragmented_gt_tracks": [
+        {
+          "gt_track": 5,
+          "pred_tracks": [
+            33,
+            28
+          ],
+          "frames_each": {
+            "33": 45,
+            "28": 2
+          },
+          "gt_length": 60
+        }
+      ],
+      "ghost_pred_tracks": [
+        {
+          "pred_track": 12,
+          "reason": "không khớp track tham chiếu nào",
+          "frames": [
+            16,
+            116
+          ],
+          "length": 50
+        },
+        {
+          "pred_track": 44,
+          "reason": "không khớp track tham chiếu nào",
+          "frames": [
+            109,
+            175
+          ],
+          "length": 33
+        },
+        {
+          "pred_track": 66,
+          "reason": "không khớp track tham chiếu nào",
+          "frames": [
+            169,
+            170
+          ],
+          "length": 2
+        }
+      ],
+      "partially_covered_gt_tracks": [
+        {
+          "gt_track": 8,
+          "covered": 20,
+          "gt_length": 33,
+          "ratio": 0.61
+        },
+        {
+          "gt_track": 6,
+          "covered": 42,
+          "gt_length": 56,
+          "ratio": 0.75
+        },
+        {
+          "gt_track": 5,
+          "covered": 47,
+          "gt_length": 60,
+          "ratio": 0.78
+        }
+      ]
+    },
+    "02": {
+      "total_frames": 60,
+      "flags": 2,
+      "unique_events": 2,
+      "flagged_frames": 2,
+      "context_padding": 2,
+      "merged_contexts": [
+        [
+          28,
+          37
+        ]
+      ],
+      "context_segments": 1,
+      "review_span_frames": 10,
+      "candidate_ratio": 0.03333333333333333,
+      "review_span_ratio": 0.16666666666666666,
+      "sensitivity": {
+        "0": {
+          "segments": [
+            [
+              30,
+              35
+            ]
+          ],
+          "frames": 6
+        },
+        "2": {
+          "segments": [
+            [
+              28,
+              37
+            ]
+          ],
+          "frames": 10
+        },
+        "5": {
+          "segments": [
+            [
+              25,
+              40
+            ]
+          ],
+          "frames": 16
+        }
+      },
+      "clear_metrics": {
+        "FP": 17,
+        "FN": 18,
+        "IDSW": 0,
+        "MOTP": 0.8511797478303793
+      },
+      "missed_whole_tracks": [],
+      "fragmented_gt_tracks": [],
+      "ghost_pred_tracks": [
+        {
+          "pred_track": 4,
+          "reason": "không khớp track tham chiếu nào",
+          "frames": [
+            1,
+            2
+          ],
+          "length": 2
+        }
+      ],
+      "partially_covered_gt_tracks": [
+        {
+          "gt_track": 5,
+          "covered": 12,
+          "gt_length": 23,
+          "ratio": 0.52
+        }
+      ]
+    }
+  },
+  "rules": [
+    {
+      "reason": "track_gap",
+      "flags": 22,
+      "TRUE_ISSUE": 22,
+      "BENIGN_EVENT": 0,
+      "FALSE_ALERT": 0,
+      "UNCERTAIN": 0,
+      "preliminary_precision": 1.0
+    },
+    {
+      "reason": "track_reappeared",
+      "flags": 7,
+      "TRUE_ISSUE": 7,
+      "BENIGN_EVENT": 0,
+      "FALSE_ALERT": 0,
+      "UNCERTAIN": 0,
+      "preliminary_precision": 1.0
+    },
+    {
+      "reason": "large_motion_jump",
+      "flags": 0,
+      "TRUE_ISSUE": 0,
+      "BENIGN_EVENT": 0,
+      "FALSE_ALERT": 0,
+      "UNCERTAIN": 0,
+      "preliminary_precision": null
+    },
+    {
+      "reason": "abnormal_size_change",
+      "flags": 0,
+      "TRUE_ISSUE": 0,
+      "BENIGN_EVENT": 0,
+      "FALSE_ALERT": 0,
+      "UNCERTAIN": 0,
+      "preliminary_precision": null
+    },
+    {
+      "reason": "low_consecutive_iou",
+      "flags": 0,
+      "TRUE_ISSUE": 0,
+      "BENIGN_EVENT": 0,
+      "FALSE_ALERT": 0,
+      "UNCERTAIN": 0,
+      "preliminary_precision": null
+    },
+    {
+      "reason": "possible_fragmentation",
+      "flags": 0,
+      "TRUE_ISSUE": 0,
+      "BENIGN_EVENT": 0,
+      "FALSE_ALERT": 0,
+      "UNCERTAIN": 0,
+      "preliminary_precision": null
+    }
+  ],
+  "reference_issue_atoms": {
+    "missed_detection": 71,
+    "ghost_false_positive": 87,
+    "unmatched_prediction": 30,
+    "loose_box": 57,
+    "id_switch": 1,
+    "fragmentation": 1,
+    "false_continuation_candidate": 2
+  },
+  "missed_exact_atoms": {
+    "missed_detection": 71,
+    "ghost_false_positive": 69,
+    "unmatched_prediction": 30,
+    "loose_box": 55,
+    "id_switch": 1,
+    "fragmentation": 1,
+    "false_continuation_candidate": 2
+  },
+  "not_in_same_track_context": {
+    "missed_detection": 63,
+    "ghost_false_positive": 34,
+    "unmatched_prediction": 30,
+    "loose_box": 53,
+    "id_switch": 1,
+    "fragmentation": 1,
+    "false_continuation_candidate": 2
+  },
+  "not_in_any_context": {
+    "ghost_false_positive": 27,
+    "missed_detection": 18,
+    "unmatched_prediction": 10,
+    "loose_box": 26,
+    "false_continuation_candidate": 2
+  },
+  "input_hashes": {
+    "gold\\clip_01\\gt.txt": "94a2bd34aa00348b49cd3ec48e85dbfeaf00504b97349e343363d40e4d1f9d79",
+    "outputs\\runs\\renamed_verified\\clip_01\\tracks.txt": "29354e2b3d906ab88018bcfb1aa6dce94902da285b0e14412cbe33426cd8abb2",
+    "outputs\\runs\\renamed_verified\\clip_01\\review\\review_flags.json": "e33ac729cb6a80dd332ffbd36b17519f6df58f0586b7d3d2c97278e63aec5461",
+    "configs\\review_thresholds.json": "1e5fc143bcc7213fc45067059cd323a38b5e14ab7e9158013196c5a800a1155e",
+    "tools\\review_tracks.py": "cc035e26bfb111f6b0fd3c0acd1c24b57d5a431796df2731df0a305a8a6cccfd",
+    "data\\clips\\clip_02\\gt\\gt.txt": "892f036f1acc0a590218b092384748dac18c199f0d19903eb7ad812ab7a51976",
+    "outputs\\runs\\renamed_verified\\clip_02\\tracks.txt": "07c4066df77620bec6a53068f29ff636f33935fa15c12178ff462deea898e535",
+    "outputs\\runs\\renamed_verified\\clip_02\\review\\review_flags.json": "4919922cedd5cf9eea7e0159f5c4b3936770f75a772eb4ba5597064742920630"
+  },
+  "matching": "CLEAR audit trace matches FP/FN/MOTP; loose boxes match untruncated diagnose criterion",
+  "issue_unit": "frame-box diagnostic atoms, overlapping types, NOT independent errors or standard recall",
+  "context_policy": "Union of [previous_frame_id-2, frame_id+2], inclusive/clipped; report also 0/5-frame sensitivity"
+}

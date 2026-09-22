@@ -1,0 +1,118 @@
+{
+  "01-01": {
+    "label": "TRUE_ISSUE",
+    "note": "P2 maps to G3. Reference and inspected sequence show visible G3 at frames 14-16 while P2 is absent; same P2 returns at 17. Recoverable detection gap, not an ID switch; gap requires annotation repair even though short."
+  },
+  "01-02": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-03": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-04": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-05": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-06": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-07": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled. Duplicate reason on the same event already reported by track_gap; no additional issue discovery."
+  },
+  "01-08": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-09": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-10": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled. Duplicate reason on the same event already reported by track_gap; no additional issue discovery."
+  },
+  "01-11": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-12": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-13": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-14": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-15": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled. Duplicate reason on the same event already reported by track_gap; no additional issue discovery."
+  },
+  "01-16": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-17": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled. Duplicate reason on the same event already reported by track_gap; no additional issue discovery."
+  },
+  "01-18": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled."
+  },
+  "01-19": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P12 has zero CLEAR matches (track-wide best IoU 0.080715). Inspected anchor atlas and context: box covers a static roadside stall/sign area, not a four-wheel vehicle. TRUE_ISSUE means a spurious track needs review, not that its absent gap should be filled. Duplicate reason on the same event already reported by track_gap; no additional issue discovery."
+  },
+  "01-20": {
+    "label": "TRUE_ISSUE",
+    "note": "P47 maps to G6. G6 remains partly visible above/behind bus at frame 119 and has a reference box, but P47 has no row. P47 returns at 120. Partial occlusion does not justify missing the visible box under this schema."
+  },
+  "01-21": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P44 has zero CLEAR matches (track-wide best IoU 0.020032). Inspected enlarged raw/annotated ROI at every flagged anchor: fixed red-white road marker at left edge, not a vehicle. Gap itself is not a missing vehicle; continuing boxes are the issue."
+  },
+  "01-22": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P44 has zero CLEAR matches (track-wide best IoU 0.020032). Inspected enlarged raw/annotated ROI at every flagged anchor: fixed red-white road marker at left edge, not a vehicle. Gap itself is not a missing vehicle; continuing boxes are the issue. Duplicate reason on the same event already reported by track_gap; no additional issue discovery."
+  },
+  "01-23": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P44 has zero CLEAR matches (track-wide best IoU 0.020032). Inspected enlarged raw/annotated ROI at every flagged anchor: fixed red-white road marker at left edge, not a vehicle. Gap itself is not a missing vehicle; continuing boxes are the issue."
+  },
+  "01-24": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P44 has zero CLEAR matches (track-wide best IoU 0.020032). Inspected enlarged raw/annotated ROI at every flagged anchor: fixed red-white road marker at left edge, not a vehicle. Gap itself is not a missing vehicle; continuing boxes are the issue. Duplicate reason on the same event already reported by track_gap; no additional issue discovery."
+  },
+  "01-25": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P44 has zero CLEAR matches (track-wide best IoU 0.020032). Inspected enlarged raw/annotated ROI at every flagged anchor: fixed red-white road marker at left edge, not a vehicle. Gap itself is not a missing vehicle; continuing boxes are the issue."
+  },
+  "01-26": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P44 has zero CLEAR matches (track-wide best IoU 0.020032). Inspected enlarged raw/annotated ROI at every flagged anchor: fixed red-white road marker at left edge, not a vehicle. Gap itself is not a missing vehicle; continuing boxes are the issue."
+  },
+  "01-27": {
+    "label": "TRUE_ISSUE",
+    "note": "Reference: P44 has zero CLEAR matches (track-wide best IoU 0.020032). Inspected enlarged raw/annotated ROI at every flagged anchor: fixed red-white road marker at left edge, not a vehicle. Gap itself is not a missing vehicle; continuing boxes are the issue."
+  },
+  "02-01": {
+    "label": "TRUE_ISSUE",
+    "note": "P9 maps to G5. Inspected sequence shows a visible black car and reference boxes in absent frames 31,32. No valid full occlusion or exit in this gap. Bounding coverage also differs at return; keep same identity."
+  },
+  "02-02": {
+    "label": "TRUE_ISSUE",
+    "note": "P9 maps to G5. Inspected sequence shows a visible black car and reference boxes in absent frames 34. No valid full occlusion or exit in this gap. Bounding coverage also differs at return; keep same identity."
+  }
+}

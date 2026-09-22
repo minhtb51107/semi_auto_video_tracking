@@ -1,0 +1,12 @@
+{
+  "01": {
+    "flags_identical": true,
+    "csv_byte_identical": true,
+    "metrics_identical": true
+  },
+  "02": {
+    "flags_identical": true,
+    "csv_byte_identical": true,
+    "metrics_identical": true
+  }
+}

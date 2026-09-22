@@ -1,0 +1,20 @@
+{
+  "validation_checks_passed": true,
+  "flags_classified": 29,
+  "reference_issue_atoms": 249,
+  "missed_exact_atoms": 229,
+  "visual_event_sheets": 22,
+  "source_lab_files_unchanged": 645,
+  "production_modules_and_thresholds_unchanged": [
+    "configs/review_thresholds.json",
+    "tools/check_mot_labels.py",
+    "tools/evaluate_tracking.py",
+    "tools/motlib.py",
+    "tools/review_tracks.py",
+    "tools/run_tracker.py",
+    "tools/video_to_clip.py",
+    "tools/visualize_tracks.py"
+  ],
+  "historical_inventory_missing_files": 0,
+  "rename_pipeline_gate": "outputs/runs/renamed_verified/acceptance.json"
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "interpretation": "heuristic_review_candidates_not_ground_truth",
+  "input_file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\K4-DAY03-TRANBINHMINH-2A202602174\\outputs\\mvp_mutations\\clip_02\\change_id\\tracks.txt",
+  "input_sha256": "c0e22a8eb1ed5051bb2c7d3860c1cf0b99fab68ee6c988d13634b492c0f13c07",
+  "frame_index_base": 1,
+  "config": {
+    "status": "experimental_uncalibrated",
+    "track_gap_min_missing_frames": 1,
+    "track_reappeared_min_missing_frames": 5,
+    "large_motion_jump_max_diagonals": 1.5,
+    "abnormal_size_change_max_ratio": 2.0,
+    "low_consecutive_iou_min": 0.1,
+    "fragmentation_max_frame_distance": 5,
+    "fragmentation_min_endpoint_iou": 0.3
+  },
+  "summary": {
+    "rows": 242,
+    "tracks": 8,
+    "observed_frames": 60,
+    "flags": 4,
+    "flagged_frames": 4,
+    "empty_input": false
+  },
+  "flags": [
+    {
+      "frame_id": 3,
+      "track_id": 4,
+      "reason": "abnormal_size_change",
+      "observed_value": 3.4285714285714284,
+      "threshold": 2.0,
+      "previous_frame_id": 2,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 30,
+      "track_id": 7,
+      "reason": "abnormal_size_change",
+      "observed_value": 2.0691823899371067,
+      "threshold": 2.0,
+      "previous_frame_id": 29,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 31,
+      "track_id": 107,
+      "reason": "possible_fragmentation",
+      "observed_value": 0.9987707437000614,
+      "threshold": 0.3,
+      "previous_frame_id": 30,
+      "related_track_id": 2
+    },
+    {
+      "frame_id": 39,
+      "track_id": 6,
+      "reason": "abnormal_size_change",
+      "observed_value": 2.013328106624853,
+      "threshold": 2.0,
+      "previous_frame_id": 38,
+      "related_track_id": null
+    }
+  ]
+}

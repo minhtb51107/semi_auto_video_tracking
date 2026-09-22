@@ -1,0 +1,69 @@
+{
+  "project_root": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+  "python": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.6",
+  "started_utc": "2026-09-22T13:53:28.656596+00:00",
+  "status": "failed",
+  "commands": [
+    {
+      "label": "pip_check",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 2.887090000000171
+    },
+    {
+      "label": "tests",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 1,
+      "seconds": 1.5588527999998405
+    }
+  ],
+  "dependencies": {
+    "torch": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\torch\\__init__.py",
+      "version": "2.14.0+cpu"
+    },
+    "ultralytics": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\ultralytics\\__init__.py",
+      "version": "8.4.145"
+    },
+    "cv2": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\cv2\\__init__.py",
+      "version": "5.0.0"
+    },
+    "numpy": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\numpy\\__init__.py",
+      "version": "2.5.3"
+    },
+    "lap": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\lap\\__init__.py",
+      "version": "0.5.13"
+    },
+    "PIL": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\PIL\\__init__.py",
+      "version": "12.3.0"
+    }
+  },
+  "clips": {},
+  "weights_sha256": "9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef",
+  "error": "tests failed; see D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\outputs\\runs\\standalone_20260922\\tests.log"
+}

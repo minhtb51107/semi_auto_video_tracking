@@ -1,0 +1,25 @@
+{
+  "01": {
+    "frames": 190,
+    "nearest_same_index_within_plus_minus_one": 189,
+    "mean_absolute_rgb_difference_0_255": 1.9627887161154496,
+    "max_frame_difference": 2.3233745098114014,
+    "exceptions": [
+      {
+        "frame": 48,
+        "neighbor_mae": {
+          "47": 2.466224193572998,
+          "48": 2.060401201248169,
+          "49": 2.027139902114868
+        }
+      }
+    ]
+  },
+  "02": {
+    "frames": 60,
+    "nearest_same_index_within_plus_minus_one": 60,
+    "mean_absolute_rgb_difference_0_255": 1.5665574421485264,
+    "max_frame_difference": 1.8066152334213257,
+    "exceptions": []
+  }
+}

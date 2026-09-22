@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "interpretation": "heuristic_review_candidates_not_ground_truth",
+  "input_file": "annotations\\clip_01\\gt.txt",
+  "input_sha256": "ab0240b264729513159d883d2eb3405f63f923a37db660c7777f55b601f62dd6",
+  "frame_index_base": 1,
+  "config": {
+    "status": "experimental_uncalibrated",
+    "track_gap_min_missing_frames": 1,
+    "track_reappeared_min_missing_frames": 5,
+    "large_motion_jump_max_diagonals": 1.5,
+    "abnormal_size_change_max_ratio": 2.0,
+    "low_consecutive_iou_min": 0.1,
+    "fragmentation_max_frame_distance": 5,
+    "fragmentation_min_endpoint_iou": 0.3
+  },
+  "summary": {
+    "rows": 638,
+    "tracks": 8,
+    "observed_frames": 190,
+    "flags": 3,
+    "flagged_frames": 3,
+    "empty_input": false
+  },
+  "flags": [
+    {
+      "frame_id": 85,
+      "track_id": 6,
+      "reason": "abnormal_size_change",
+      "observed_value": 2.9327091866588595,
+      "threshold": 2.0,
+      "previous_frame_id": 84,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 140,
+      "track_id": 5,
+      "reason": "abnormal_size_change",
+      "observed_value": 2.1336288790373654,
+      "threshold": 2.0,
+      "previous_frame_id": 139,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 151,
+      "track_id": 4,
+      "reason": "abnormal_size_change",
+      "observed_value": 2.156797583081571,
+      "threshold": 2.0,
+      "previous_frame_id": 150,
+      "related_track_id": null
+    }
+  ]
+}

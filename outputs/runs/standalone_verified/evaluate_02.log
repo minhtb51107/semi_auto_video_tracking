@@ -1,0 +1,32 @@
+==========================================================================
+  PRED outputs\runs\standalone_verified\clip_02\tracks.txt  vs  GT   data\clips\clip_02\gt\gt.txt
+  clip: clip_02 · 60 frame · IoU ngưỡng 0.5
+==========================================================================
+  HOTA 0.797   = sqrt(DetA x AssA)   -- điểm tổng của tracking
+    DetA 0.749  tìm đúng vật thể chưa (giống bài toán Ngày 2)
+    AssA 0.858  giữ đúng ID chưa      (phần riêng của tracking)
+    LocA 0.869  bbox khít đến đâu
+--------------------------------------------------------------------------
+  IDF1 0.923   MOTA 0.846   MOTP 0.851
+  FP 17  FN 18  ID switch 0   |  bbox gold 227  bbox của model 226  |  track gold 6  track của model 7
+==========================================================================
+
+  3. BBOX THỪA của model — ID không ứng với xe nào trong gold  (1)
+    - ID 4: không khớp track tham chiếu nào (frame 1-2, 2 frame)
+
+  4. BBOX LỆCH — detector khoanh chưa khít  (19)
+    - frame 36: track gold 6 chỉ còn IoU 0.50
+    - frame 36: track gold 5 chỉ còn IoU 0.52
+    - frame 35: track gold 5 chỉ còn IoU 0.53
+    - frame 25: track gold 5 chỉ còn IoU 0.53
+    - frame 37: track gold 6 chỉ còn IoU 0.53
+    - frame 17: track gold 4 chỉ còn IoU 0.54
+    - frame 8: track gold 3 chỉ còn IoU 0.55
+    - frame 18: track gold 5 chỉ còn IoU 0.55
+    ... còn 11 mục nữa, xem file JSON
+
+  6. MODEL BẮT THIẾU ĐOẠN — bắt được xe nhưng mất dấu một phần quãng đời  (1)
+    - track gold 5: mới phủ 12/23 frame (52%)
+
+  Đã ghi outputs\runs\standalone_verified\clip_02\evaluation.json
+

@@ -1,0 +1,42 @@
+==========================================================================
+  PRED outputs\runs\renamed_verified\clip_01\tracks.txt  vs  GT   gold\clip_01\gt.txt
+  clip: clip_01 · 190 frame · IoU ngưỡng 0.5
+==========================================================================
+  HOTA 0.702   = sqrt(DetA x AssA)   -- điểm tổng của tracking
+    DetA 0.635  tìm đúng vật thể chưa (giống bài toán Ngày 2)
+    AssA 0.778  giữ đúng ID chưa      (phần riêng của tracking)
+    LocA 0.846  bbox khít đến đâu
+--------------------------------------------------------------------------
+  IDF1 0.867   MOTA 0.728   MOTP 0.822
+  FP 102  FN 53  ID switch 1   |  bbox gold 573  bbox của model 622  |  track gold 8  track của model 12
+==========================================================================
+
+  1. ID SWITCH của model — tracker đổi ID giữa chừng  (1)
+    - frame 94: track gold 5 đang là ID 28 -> nhảy sang ID 33
+
+  2. TÁCH TRACK — tracker cắt một xe thành nhiều ID (thường sau lúc bị che)  (1)
+    - track gold 5 (60 frame) bị chia cho ID [33, 28]
+
+  3. BBOX THỪA của model — ID không ứng với xe nào trong gold  (3)
+    - ID 12: không khớp track tham chiếu nào (frame 16-116, 50 frame)
+    - ID 44: không khớp track tham chiếu nào (frame 109-175, 33 frame)
+    - ID 66: không khớp track tham chiếu nào (frame 169-170, 2 frame)
+
+  4. BBOX LỆCH — detector khoanh chưa khít  (30)
+    - frame 10: track gold 2 chỉ còn IoU 0.52
+    - frame 118: track gold 6 chỉ còn IoU 0.52
+    - frame 61: track gold 4 chỉ còn IoU 0.53
+    - frame 164: track gold 8 chỉ còn IoU 0.53
+    - frame 152: track gold 8 chỉ còn IoU 0.53
+    - frame 166: track gold 8 chỉ còn IoU 0.53
+    - frame 155: track gold 6 chỉ còn IoU 0.54
+    - frame 165: track gold 8 chỉ còn IoU 0.54
+    ... còn 22 mục nữa, xem file JSON
+
+  6. MODEL BẮT THIẾU ĐOẠN — bắt được xe nhưng mất dấu một phần quãng đời  (3)
+    - track gold 8: mới phủ 20/33 frame (61%)
+    - track gold 6: mới phủ 42/56 frame (75%)
+    - track gold 5: mới phủ 47/60 frame (78%)
+
+  Đã ghi outputs\runs\renamed_verified\clip_01\evaluation.json
+

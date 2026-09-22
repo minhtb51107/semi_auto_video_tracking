@@ -1,0 +1,320 @@
+{
+  "project_root": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+  "python": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.6",
+  "started_utc": "2026-09-22T16:46:45.142990+00:00",
+  "status": "passed",
+  "commands": [
+    {
+      "label": "pip_check",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 2.654326299998502
+    },
+    {
+      "label": "tests",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 2.54875439999887
+    },
+    {
+      "label": "decode_01",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/video_to_clip.py",
+        "--video",
+        "assets/guide/clip-01-preview.mp4",
+        "--out",
+        "outputs\\runs\\renamed_verified\\clip_01"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 1.5489691000002495
+    },
+    {
+      "label": "tracker_01",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/run_tracker.py",
+        "--clip",
+        "outputs\\runs\\renamed_verified\\clip_01",
+        "--model",
+        "yolo26n.pt",
+        "--tracker",
+        "bytetrack.yaml",
+        "--device",
+        "cpu",
+        "--out",
+        "outputs\\runs\\renamed_verified\\clip_01\\tracks.txt"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 31.430143899999166
+    },
+    {
+      "label": "review_01",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/review_tracks.py",
+        "--tracks",
+        "outputs\\runs\\renamed_verified\\clip_01\\tracks.txt",
+        "--out-dir",
+        "outputs\\runs\\renamed_verified\\clip_01\\review"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 0.23874979999891366
+    },
+    {
+      "label": "validate_01",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/check_mot_labels.py",
+        "--clip",
+        "outputs\\runs\\renamed_verified\\clip_01",
+        "--tracks",
+        "outputs\\runs\\renamed_verified\\clip_01\\tracks.txt"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 0.20430889999988722
+    },
+    {
+      "label": "evaluate_01",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/evaluate_tracking.py",
+        "--pred",
+        "outputs\\runs\\renamed_verified\\clip_01\\tracks.txt",
+        "--gt",
+        "gold/clip_01/gt.txt",
+        "--seqinfo",
+        "outputs\\runs\\renamed_verified\\clip_01\\seqinfo.ini",
+        "--mode",
+        "model",
+        "--output",
+        "outputs\\runs\\renamed_verified\\clip_01\\evaluation.json"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 0.27133950000097684
+    },
+    {
+      "label": "visualize_01",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/visualize_tracks.py",
+        "--clip",
+        "outputs\\runs\\renamed_verified\\clip_01",
+        "--tracks",
+        "outputs\\runs\\renamed_verified\\clip_01\\tracks.txt",
+        "--only-frames",
+        "1,17,39",
+        "--out",
+        "outputs\\runs\\renamed_verified\\clip_01\\vis_review"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 0.4998279999999795
+    },
+    {
+      "label": "decode_02",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/video_to_clip.py",
+        "--video",
+        "assets/guide/clip-02-preview.mp4",
+        "--out",
+        "outputs\\runs\\renamed_verified\\clip_02"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 0.9435272000009718
+    },
+    {
+      "label": "tracker_02",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/run_tracker.py",
+        "--clip",
+        "outputs\\runs\\renamed_verified\\clip_02",
+        "--model",
+        "yolo26n.pt",
+        "--tracker",
+        "bytetrack.yaml",
+        "--device",
+        "cpu",
+        "--out",
+        "outputs\\runs\\renamed_verified\\clip_02\\tracks.txt"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 15.844776699999784
+    },
+    {
+      "label": "review_02",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/review_tracks.py",
+        "--tracks",
+        "outputs\\runs\\renamed_verified\\clip_02\\tracks.txt",
+        "--out-dir",
+        "outputs\\runs\\renamed_verified\\clip_02\\review"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 0.2353555999998207
+    },
+    {
+      "label": "validate_02",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/check_mot_labels.py",
+        "--clip",
+        "outputs\\runs\\renamed_verified\\clip_02",
+        "--tracks",
+        "outputs\\runs\\renamed_verified\\clip_02\\tracks.txt"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 0.18358450000050652
+    },
+    {
+      "label": "evaluate_02",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/evaluate_tracking.py",
+        "--pred",
+        "outputs\\runs\\renamed_verified\\clip_02\\tracks.txt",
+        "--gt",
+        "data/clips/clip_02/gt/gt.txt",
+        "--seqinfo",
+        "outputs\\runs\\renamed_verified\\clip_02\\seqinfo.ini",
+        "--mode",
+        "model",
+        "--output",
+        "outputs\\runs\\renamed_verified\\clip_02\\evaluation.json"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 0.2188205000002199
+    },
+    {
+      "label": "visualize_02",
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/visualize_tracks.py",
+        "--clip",
+        "outputs\\runs\\renamed_verified\\clip_02",
+        "--tracks",
+        "outputs\\runs\\renamed_verified\\clip_02\\tracks.txt",
+        "--only-frames",
+        "1,17,39",
+        "--out",
+        "outputs\\runs\\renamed_verified\\clip_02\\vis_review"
+      ],
+      "cwd": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking",
+      "returncode": 0,
+      "seconds": 0.3645922000014252
+    }
+  ],
+  "dependencies": {
+    "torch": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\torch\\__init__.py",
+      "version": "2.14.0+cpu"
+    },
+    "ultralytics": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\ultralytics\\__init__.py",
+      "version": "8.4.145"
+    },
+    "cv2": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\cv2\\__init__.py",
+      "version": "5.0.0"
+    },
+    "numpy": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\numpy\\__init__.py",
+      "version": "2.5.3"
+    },
+    "lap": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\lap\\__init__.py",
+      "version": "0.5.13"
+    },
+    "PIL": {
+      "file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Lib\\site-packages\\PIL\\__init__.py",
+      "version": "12.3.0"
+    }
+  },
+  "clips": {
+    "01": {
+      "rows": 622,
+      "tracks": 12,
+      "observed_frames": 190,
+      "flags": 27,
+      "flagged_frames": 20,
+      "empty_input": false,
+      "tracks_sha256": "29354e2b3d906ab88018bcfb1aa6dce94902da285b0e14412cbe33426cd8abb2",
+      "matches_original_mvp_tracks": true
+    },
+    "02": {
+      "rows": 226,
+      "tracks": 7,
+      "observed_frames": 60,
+      "flags": 2,
+      "flagged_frames": 2,
+      "empty_input": false,
+      "tracks_sha256": "07c4066df77620bec6a53068f29ff636f33935fa15c12178ff462deea898e535",
+      "matches_original_mvp_tracks": true
+    }
+  },
+  "weights_sha256": "9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef",
+  "input_hashes_unchanged": {
+    "annotations/clip_01/gt.txt": "ab0240b264729513159d883d2eb3405f63f923a37db660c7777f55b601f62dd6",
+    "annotations/clip_02/gt.txt": "be693ef16ee2d638f6af3a837b466bd4403fc42df83be8d6d6b29db0a5548b11",
+    "gold/clip_01/gt.txt": "94a2bd34aa00348b49cd3ec48e85dbfeaf00504b97349e343363d40e4d1f9d79",
+    "data/clips/clip_02/gt/gt.txt": "892f036f1acc0a590218b092384748dac18c199f0d19903eb7ad812ab7a51976",
+    "evidence/pre-gold/clip_01/gt.txt": "ab0240b264729513159d883d2eb3405f63f923a37db660c7777f55b601f62dd6"
+  }
+}

@@ -1,0 +1,7 @@
+﻿reason,flags,TRUE_ISSUE,BENIGN_EVENT,FALSE_ALERT,UNCERTAIN,preliminary_precision
+track_gap,22,22,0,0,0,1.0
+track_reappeared,7,7,0,0,0,1.0
+large_motion_jump,0,0,0,0,0,
+abnormal_size_change,0,0,0,0,0,
+low_consecutive_iou,0,0,0,0,0,
+possible_fragmentation,0,0,0,0,0,

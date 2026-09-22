@@ -1,0 +1,12 @@
+{
+  "source": "D:\\LCOM108_NMLT\\code\\100_bai_code\\K4-DAY03-TRANBINHMINH-2A202602174\\assets\\guide\\clip-02-preview.mp4",
+  "source_sha256": "999b6617acef142e1a6b680056fa1301f9cc542e3368b4d79116e4ee8598be79",
+  "decoded_frames": 60,
+  "fps": 12.5,
+  "width": 960,
+  "height": 540,
+  "frame_index_base": 1,
+  "opencv": "5.0.0",
+  "jpeg_quality": 95,
+  "note": "Decode order, no sampling. JPEG re-encoding; not pixel-identical to original lab JPEGs."
+}

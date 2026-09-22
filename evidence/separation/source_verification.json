@@ -1,0 +1,18 @@
+{
+  "original_project_unchanged": true,
+  "source_files_hashed": 645,
+  "scope": "All source project files including outputs and caches; excludes .git internals and .venv dependencies",
+  "changed": [],
+  "added": [],
+  "operational_files_with_legacy_repo_name": [],
+  "copied_runtime_modules_unchanged": [
+    "tools/motlib.py",
+    "tools/run_tracker.py",
+    "tools/evaluate_tracking.py",
+    "tools/check_mot_labels.py",
+    "tools/visualize_tracks.py",
+    "tools/review_tracks.py",
+    "tools/video_to_clip.py"
+  ],
+  "has_git_directory": false
+}

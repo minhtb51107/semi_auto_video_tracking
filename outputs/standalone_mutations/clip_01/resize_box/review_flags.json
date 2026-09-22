@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "interpretation": "heuristic_review_candidates_not_ground_truth",
+  "input_file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\outputs\\standalone_mutations\\clip_01\\resize_box\\tracks.txt",
+  "input_sha256": "02c7d39c461d8ea0218469e9f2a7cec128157e419565781cf50f6d80e3d486e1",
+  "frame_index_base": 1,
+  "config": {
+    "status": "experimental_uncalibrated",
+    "track_gap_min_missing_frames": 1,
+    "track_reappeared_min_missing_frames": 5,
+    "large_motion_jump_max_diagonals": 1.5,
+    "abnormal_size_change_max_ratio": 2.0,
+    "low_consecutive_iou_min": 0.1,
+    "fragmentation_max_frame_distance": 5,
+    "fragmentation_min_endpoint_iou": 0.3
+  },
+  "summary": {
+    "rows": 638,
+    "tracks": 8,
+    "observed_frames": 190,
+    "flags": 8,
+    "flagged_frames": 5,
+    "empty_input": false
+  },
+  "flags": [
+    {
+      "frame_id": 85,
+      "track_id": 6,
+      "reason": "abnormal_size_change",
+      "observed_value": 2.932709186658865,
+      "threshold": 2.0,
+      "previous_frame_id": 84,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 96,
+      "track_id": 2,
+      "reason": "abnormal_size_change",
+      "observed_value": 4.0,
+      "threshold": 2.0,
+      "previous_frame_id": 95,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 96,
+      "track_id": 2,
+      "reason": "large_motion_jump",
+      "observed_value": 1.5001162852277148,
+      "threshold": 1.5,
+      "previous_frame_id": 95,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 96,
+      "track_id": 2,
+      "reason": "low_consecutive_iou",
+      "observed_value": 0.06248115064661107,
+      "threshold": 0.1,
+      "previous_frame_id": 95,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 97,
+      "track_id": 2,
+      "reason": "abnormal_size_change",
+      "observed_value": 4.0,
+      "threshold": 2.0,
+      "previous_frame_id": 96,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 97,
+      "track_id": 2,
+      "reason": "low_consecutive_iou",
+      "observed_value": 0.06250607503888031,
+      "threshold": 0.1,
+      "previous_frame_id": 96,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 140,
+      "track_id": 5,
+      "reason": "abnormal_size_change",
+      "observed_value": 2.1336288790373654,
+      "threshold": 2.0,
+      "previous_frame_id": 139,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 151,
+      "track_id": 4,
+      "reason": "abnormal_size_change",
+      "observed_value": 2.156797583081571,
+      "threshold": 2.0,
+      "previous_frame_id": 150,
+      "related_track_id": null
+    }
+  ]
+}

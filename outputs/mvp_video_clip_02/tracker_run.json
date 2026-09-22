@@ -1,0 +1,22 @@
+{
+  "command": [
+    "D:\\LCOM108_NMLT\\code\\100_bai_code\\K4-DAY03-TRANBINHMINH-2A202602174\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "tools/run_tracker.py",
+    "--clip",
+    "outputs/mvp_video_clip_02",
+    "--model",
+    "yolo26n.pt",
+    "--tracker",
+    "bytetrack.yaml",
+    "--device",
+    "cpu",
+    "--out",
+    "outputs/mvp_video_clip_02/tracks.txt"
+  ],
+  "seconds": 15.114850399999796,
+  "returncode": 0,
+  "stdout": "Model yolo26n.pt \u00b7 tracker bytetrack.yaml \u00b7 conf 0.25 \u00b7 imgsz 960\nL\u1edbp COCO d\u00f9ng: ['car', 'bus', 'truck']\n  frame 25/60 \u00b7 84 bbox t\u00edch lu\u1ef9\n  frame 50/60 \u00b7 188 bbox t\u00edch lu\u1ef9\n\u0110\u00e3 ghi outputs\\mvp_video_clip_02\\tracks.txt: 226 bbox \u00b7 7 track\n",
+  "stderr": ""
+}

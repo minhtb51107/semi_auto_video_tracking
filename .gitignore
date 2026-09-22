@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.py[cod]
+.runtime/
+*.pt
+gold/
+# Generated frames can be reproduced from the bundled MP4s.
+outputs/runs/*/clip_*/img1/
+outputs/runs/*/clip_*/vis_review/
+# Keep small logs, MOT results, review flags and provenance available.

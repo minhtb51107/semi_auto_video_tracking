@@ -1,0 +1,135 @@
+{
+  "versions": {
+    "python": "3.14.6",
+    "ultralytics": "8.4.145",
+    "torch": "2.14.0",
+    "lap": "0.5.13",
+    "opencv-python": "5.0.0.93"
+  },
+  "weights_sha256": "9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef",
+  "original_hashes_unchanged": {
+    "annotations/clip_01/gt.txt": "ab0240b264729513159d883d2eb3405f63f923a37db660c7777f55b601f62dd6",
+    "annotations/clip_02/gt.txt": "be693ef16ee2d638f6af3a837b466bd4403fc42df83be8d6d6b29db0a5548b11",
+    "gold/clip_01/gt.txt": "94a2bd34aa00348b49cd3ec48e85dbfeaf00504b97349e343363d40e4d1f9d79",
+    "data/clips/clip_02/gt/gt.txt": "892f036f1acc0a590218b092384748dac18c199f0d19903eb7ad812ab7a51976",
+    "evidence/pre-gold/clip_01/gt.txt": "ab0240b264729513159d883d2eb3405f63f923a37db660c7777f55b601f62dd6"
+  },
+  "tracker_config": {
+    "tracker": "bytetrack.yaml",
+    "model": "yolo26n.pt",
+    "conf": 0.25,
+    "iou": 0.7,
+    "imgsz": 960,
+    "classes": [
+      2,
+      5,
+      7
+    ],
+    "device": "cpu",
+    "persist": true
+  },
+  "clips": {
+    "01": {
+      "summary": {
+        "rows": 622,
+        "tracks": 12,
+        "observed_frames": 190,
+        "flags": 27,
+        "flagged_frames": 20,
+        "empty_input": false
+      },
+      "reason_counts": {
+        "track_gap": 20,
+        "track_reappeared": 7
+      },
+      "tracker_seconds": 29.909789700000147,
+      "analyzer_seconds": 0.014798199999859207,
+      "metrics": {
+        "HOTA": 0.7023,
+        "DetA": 0.6354,
+        "AssA": 0.7783,
+        "LocA": 0.8463,
+        "IDF1": 0.8669,
+        "IDTP": 518,
+        "IDFP": 104,
+        "IDFN": 55,
+        "MOTA": 0.7277,
+        "MOTP": 0.8218,
+        "IDSW": 1,
+        "FP": 102,
+        "FN": 53,
+        "GT_boxes": 573,
+        "PRED_boxes": 622
+      },
+      "reference_switches": [
+        {
+          "frame": 94,
+          "gt_track": 5,
+          "from_track": 28,
+          "to_track": 33
+        }
+      ],
+      "flagged_frames": [
+        17,
+        19,
+        22,
+        28,
+        31,
+        39,
+        42,
+        50,
+        56,
+        59,
+        63,
+        85,
+        98,
+        105,
+        120,
+        149,
+        155,
+        157,
+        164,
+        173
+      ],
+      "input_sha256": "29354e2b3d906ab88018bcfb1aa6dce94902da285b0e14412cbe33426cd8abb2"
+    },
+    "02": {
+      "summary": {
+        "rows": 226,
+        "tracks": 7,
+        "observed_frames": 60,
+        "flags": 2,
+        "flagged_frames": 2,
+        "empty_input": false
+      },
+      "reason_counts": {
+        "track_gap": 2
+      },
+      "tracker_seconds": 15.114850399999796,
+      "analyzer_seconds": 0.004525899999862304,
+      "metrics": {
+        "HOTA": 0.7972,
+        "DetA": 0.7494,
+        "AssA": 0.8582,
+        "LocA": 0.8685,
+        "IDF1": 0.9227,
+        "IDTP": 209,
+        "IDFP": 17,
+        "IDFN": 18,
+        "MOTA": 0.8458,
+        "MOTP": 0.8512,
+        "IDSW": 0,
+        "FP": 17,
+        "FN": 18,
+        "GT_boxes": 227,
+        "PRED_boxes": 226
+      },
+      "reference_switches": [],
+      "flagged_frames": [
+        33,
+        35
+      ],
+      "input_sha256": "07c4066df77620bec6a53068f29ff636f33935fa15c12178ff462deea898e535"
+    }
+  }
+}

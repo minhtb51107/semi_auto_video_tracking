@@ -1,0 +1,24 @@
+{
+  "python": "3.14.6",
+  "ultralytics": "8.4.145",
+  "torch": "2.14.0+cpu",
+  "lap": "0.5.13",
+  "weights": "yolo26n.pt",
+  "runs": {
+    "bytetrack": {
+      "label": "ByteTrack control",
+      "tracker": "bytetrack.yaml"
+    },
+    "reid": {
+      "label": "BoT-SORT + ReID treatment",
+      "tracker": "configs/trackers/botsort-reid.yaml"
+    }
+  },
+  "conf": 0.25,
+  "iou": 0.7,
+  "imgsz": 960,
+  "classes": [2, 5, 7],
+  "device": "cpu",
+  "persist": true,
+  "clip_frames": 190
+}

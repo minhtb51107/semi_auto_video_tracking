@@ -1,0 +1,9 @@
+frame_id,track_id,reason,observed_value,threshold,previous_frame_id,related_track_id
+85,6,abnormal_size_change,2.932709186658865,2.0,84,
+96,2,abnormal_size_change,4.0,2.0,95,
+96,2,large_motion_jump,1.5001162852277148,1.5,95,
+96,2,low_consecutive_iou,0.06248115064661107,0.1,95,
+97,2,abnormal_size_change,4.0,2.0,96,
+97,2,low_consecutive_iou,0.06250607503888031,0.1,96,
+140,5,abnormal_size_change,2.1336288790373654,2.0,139,
+151,4,abnormal_size_change,2.156797583081571,2.0,150,

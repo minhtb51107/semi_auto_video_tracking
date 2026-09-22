@@ -1,0 +1,4 @@
+frame_id,track_id,reason,observed_value,threshold,previous_frame_id,related_track_id
+3,4,abnormal_size_change,3.4285714285714284,2.0,2,
+30,7,abnormal_size_change,2.0691823899371085,2.0,29,
+39,6,abnormal_size_change,2.0133281066248534,2.0,38,

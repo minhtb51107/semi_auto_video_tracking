@@ -1,0 +1,172 @@
+[
+  {
+    "clip": "clip_01",
+    "mutation": "delete_frame",
+    "source": "annotations\\clip_01\\gt.txt",
+    "source_sha256": "ab0240b264729513159d883d2eb3405f63f923a37db660c7777f55b601f62dd6",
+    "copy": "outputs\\mvp_mutations\\clip_01\\delete_frame\\tracks.txt",
+    "expected_event": {
+      "frame_id": 97,
+      "track_id": 2,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 95,
+      "related_track_id": null
+    },
+    "passed": true
+  },
+  {
+    "clip": "clip_01",
+    "mutation": "change_id",
+    "source": "annotations\\clip_01\\gt.txt",
+    "source_sha256": "ab0240b264729513159d883d2eb3405f63f923a37db660c7777f55b601f62dd6",
+    "copy": "outputs\\mvp_mutations\\clip_01\\change_id\\tracks.txt",
+    "expected_event": {
+      "frame_id": 96,
+      "track_id": 108,
+      "reason": "possible_fragmentation",
+      "observed_value": 0.9994324528564746,
+      "threshold": 0.3,
+      "previous_frame_id": 95,
+      "related_track_id": 2
+    },
+    "passed": true
+  },
+  {
+    "clip": "clip_01",
+    "mutation": "shift_box",
+    "source": "annotations\\clip_01\\gt.txt",
+    "source_sha256": "ab0240b264729513159d883d2eb3405f63f923a37db660c7777f55b601f62dd6",
+    "copy": "outputs\\mvp_mutations\\clip_01\\shift_box\\tracks.txt",
+    "expected_event": {
+      "frame_id": 96,
+      "track_id": 2,
+      "reason": "large_motion_jump",
+      "observed_value": 86.21326413890952,
+      "threshold": 1.5,
+      "previous_frame_id": 95,
+      "related_track_id": null
+    },
+    "passed": true
+  },
+  {
+    "clip": "clip_01",
+    "mutation": "resize_box",
+    "source": "annotations\\clip_01\\gt.txt",
+    "source_sha256": "ab0240b264729513159d883d2eb3405f63f923a37db660c7777f55b601f62dd6",
+    "copy": "outputs\\mvp_mutations\\clip_01\\resize_box\\tracks.txt",
+    "expected_event": {
+      "frame_id": 96,
+      "track_id": 2,
+      "reason": "abnormal_size_change",
+      "observed_value": 4.0,
+      "threshold": 2.0,
+      "previous_frame_id": 95,
+      "related_track_id": null
+    },
+    "passed": true
+  },
+  {
+    "clip": "clip_01",
+    "mutation": "create_gap",
+    "source": "annotations\\clip_01\\gt.txt",
+    "source_sha256": "ab0240b264729513159d883d2eb3405f63f923a37db660c7777f55b601f62dd6",
+    "copy": "outputs\\mvp_mutations\\clip_01\\create_gap\\tracks.txt",
+    "expected_event": {
+      "frame_id": 102,
+      "track_id": 2,
+      "reason": "track_reappeared",
+      "observed_value": 6,
+      "threshold": 5,
+      "previous_frame_id": 95,
+      "related_track_id": null
+    },
+    "passed": true
+  },
+  {
+    "clip": "clip_02",
+    "mutation": "delete_frame",
+    "source": "annotations\\clip_02\\gt.txt",
+    "source_sha256": "be693ef16ee2d638f6af3a837b466bd4403fc42df83be8d6d6b29db0a5548b11",
+    "copy": "outputs\\mvp_mutations\\clip_02\\delete_frame\\tracks.txt",
+    "expected_event": {
+      "frame_id": 32,
+      "track_id": 2,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 30,
+      "related_track_id": null
+    },
+    "passed": true
+  },
+  {
+    "clip": "clip_02",
+    "mutation": "change_id",
+    "source": "annotations\\clip_02\\gt.txt",
+    "source_sha256": "be693ef16ee2d638f6af3a837b466bd4403fc42df83be8d6d6b29db0a5548b11",
+    "copy": "outputs\\mvp_mutations\\clip_02\\change_id\\tracks.txt",
+    "expected_event": {
+      "frame_id": 31,
+      "track_id": 107,
+      "reason": "possible_fragmentation",
+      "observed_value": 0.9987707437000614,
+      "threshold": 0.3,
+      "previous_frame_id": 30,
+      "related_track_id": 2
+    },
+    "passed": true
+  },
+  {
+    "clip": "clip_02",
+    "mutation": "shift_box",
+    "source": "annotations\\clip_02\\gt.txt",
+    "source_sha256": "be693ef16ee2d638f6af3a837b466bd4403fc42df83be8d6d6b29db0a5548b11",
+    "copy": "outputs\\mvp_mutations\\clip_02\\shift_box\\tracks.txt",
+    "expected_event": {
+      "frame_id": 31,
+      "track_id": 2,
+      "reason": "large_motion_jump",
+      "observed_value": 41.76678967442182,
+      "threshold": 1.5,
+      "previous_frame_id": 30,
+      "related_track_id": null
+    },
+    "passed": true
+  },
+  {
+    "clip": "clip_02",
+    "mutation": "resize_box",
+    "source": "annotations\\clip_02\\gt.txt",
+    "source_sha256": "be693ef16ee2d638f6af3a837b466bd4403fc42df83be8d6d6b29db0a5548b11",
+    "copy": "outputs\\mvp_mutations\\clip_02\\resize_box\\tracks.txt",
+    "expected_event": {
+      "frame_id": 31,
+      "track_id": 2,
+      "reason": "abnormal_size_change",
+      "observed_value": 4.0,
+      "threshold": 2.0,
+      "previous_frame_id": 30,
+      "related_track_id": null
+    },
+    "passed": true
+  },
+  {
+    "clip": "clip_02",
+    "mutation": "create_gap",
+    "source": "annotations\\clip_02\\gt.txt",
+    "source_sha256": "be693ef16ee2d638f6af3a837b466bd4403fc42df83be8d6d6b29db0a5548b11",
+    "copy": "outputs\\mvp_mutations\\clip_02\\create_gap\\tracks.txt",
+    "expected_event": {
+      "frame_id": 37,
+      "track_id": 2,
+      "reason": "track_reappeared",
+      "observed_value": 6,
+      "threshold": 5,
+      "previous_frame_id": 30,
+      "related_track_id": null
+    },
+    "passed": true
+  }
+]

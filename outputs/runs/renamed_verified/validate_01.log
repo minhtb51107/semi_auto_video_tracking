@@ -1,0 +1,25 @@
+======================================================================
+  outputs\runs\renamed_verified\clip_01\tracks.txt
+  clip clip_01 · 190 frame · 960x540
+----------------------------------------------------------------------
+  622 bbox · 12 track · frame có nhãn: 1..190
+  bbox/frame: min 1 · max 7 · trung bình 3.27
+  ID đã dùng: [1, 2, 3, 12, 17, 28, 33, 44, 47, 51, 56, 66]
+======================================================================
+  CẢNH BÁO  track 2 đứt quãng frame 13 -> 17: nếu vật thể bị che rồi hiện lại thì giữ ID là ĐÚNG; nếu nó rời khung rồi quay lại thì xem lại luật trong GUIDELINE_MINI.md
+  CẢNH BÁO  track 3: bbox gần như đứng im từ frame 55 đến 69 — vật thể thật đứng yên, hay bạn quên bấm outside?
+  CẢNH BÁO  track 3: bbox gần như đứng im từ frame 71 đến 85 — vật thể thật đứng yên, hay bạn quên bấm outside?
+  CẢNH BÁO  track 3: bbox gần như đứng im từ frame 101 đến 115 — vật thể thật đứng yên, hay bạn quên bấm outside?
+  CẢNH BÁO  track 3: bbox gần như đứng im từ frame 159 đến 173 — vật thể thật đứng yên, hay bạn quên bấm outside?
+  CẢNH BÁO  track 12 đứt quãng frame 17 -> 19: nếu vật thể bị che rồi hiện lại thì giữ ID là ĐÚNG; nếu nó rời khung rồi quay lại thì xem lại luật trong GUIDELINE_MINI.md
+  CẢNH BÁO  track 12 đứt quãng frame 20 -> 22: nếu vật thể bị che rồi hiện lại thì giữ ID là ĐÚNG; nếu nó rời khung rồi quay lại thì xem lại luật trong GUIDELINE_MINI.md
+  CẢNH BÁO  track 12 đứt quãng frame 23 -> 28: nếu vật thể bị che rồi hiện lại thì giữ ID là ĐÚNG; nếu nó rời khung rồi quay lại thì xem lại luật trong GUIDELINE_MINI.md
+  CẢNH BÁO  track 28 chỉ có 2 frame (89-90) — vẽ nhầm hay vật thể thật?
+  CẢNH BÁO  track 44 đứt quãng frame 122 -> 149: nếu vật thể bị che rồi hiện lại thì giữ ID là ĐÚNG; nếu nó rời khung rồi quay lại thì xem lại luật trong GUIDELINE_MINI.md
+  CẢNH BÁO  track 44 đứt quãng frame 149 -> 155: nếu vật thể bị che rồi hiện lại thì giữ ID là ĐÚNG; nếu nó rời khung rồi quay lại thì xem lại luật trong GUIDELINE_MINI.md
+  CẢNH BÁO  track 44 đứt quãng frame 155 -> 157: nếu vật thể bị che rồi hiện lại thì giữ ID là ĐÚNG; nếu nó rời khung rồi quay lại thì xem lại luật trong GUIDELINE_MINI.md
+  CẢNH BÁO  track 47 đứt quãng frame 118 -> 120: nếu vật thể bị che rồi hiện lại thì giữ ID là ĐÚNG; nếu nó rời khung rồi quay lại thì xem lại luật trong GUIDELINE_MINI.md
+  CẢNH BÁO  track 66 chỉ có 2 frame (169-170) — vẽ nhầm hay vật thể thật?
+----------------------------------------------------------------------
+  ĐẠT phần định dạng: 0 lỗi, 14 cảnh báo.
+  Bước tiếp theo: xem lại bằng mắt (tools/visualize_tracks.py) theo ba lượt tua trong GUIDE.md.

@@ -1,0 +1,10 @@
+Model yolo26n.pt · tracker bytetrack.yaml · conf 0.25 · imgsz 960
+Lớp COCO dùng: ['car', 'bus', 'truck']
+  frame 25/190 · 63 bbox tích luỹ
+  frame 50/190 · 113 bbox tích luỹ
+  frame 75/190 · 176 bbox tích luỹ
+  frame 100/190 · 242 bbox tích luỹ
+  frame 125/190 · 373 bbox tích luỹ
+  frame 150/190 · 500 bbox tích luỹ
+  frame 175/190 · 592 bbox tích luỹ
+Đã ghi outputs\runs\renamed_verified\clip_01\tracks.txt: 622 bbox · 12 track

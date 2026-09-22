@@ -1,0 +1,10 @@
+{
+  "status": "experimental_uncalibrated",
+  "track_gap_min_missing_frames": 1,
+  "track_reappeared_min_missing_frames": 5,
+  "large_motion_jump_max_diagonals": 1.5,
+  "abnormal_size_change_max_ratio": 2.0,
+  "low_consecutive_iou_min": 0.1,
+  "fragmentation_max_frame_distance": 5,
+  "fragmentation_min_endpoint_iou": 0.3
+}

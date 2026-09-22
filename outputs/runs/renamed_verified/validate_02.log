@@ -1,0 +1,15 @@
+======================================================================
+  outputs\runs\renamed_verified\clip_02\tracks.txt
+  clip clip_02 · 60 frame · 960x540
+----------------------------------------------------------------------
+  226 bbox · 7 track · frame có nhãn: 1..60
+  bbox/frame: min 2 · max 5 · trung bình 3.77
+  ID đã dùng: [1, 2, 3, 4, 7, 9, 10]
+======================================================================
+  CẢNH BÁO  track 1: bbox gần như đứng im từ frame 2 đến 16 — vật thể thật đứng yên, hay bạn quên bấm outside?
+  CẢNH BÁO  track 4 chỉ có 2 frame (1-2) — vẽ nhầm hay vật thể thật?
+  CẢNH BÁO  track 9 đứt quãng frame 30 -> 33: nếu vật thể bị che rồi hiện lại thì giữ ID là ĐÚNG; nếu nó rời khung rồi quay lại thì xem lại luật trong GUIDELINE_MINI.md
+  CẢNH BÁO  track 9 đứt quãng frame 33 -> 35: nếu vật thể bị che rồi hiện lại thì giữ ID là ĐÚNG; nếu nó rời khung rồi quay lại thì xem lại luật trong GUIDELINE_MINI.md
+----------------------------------------------------------------------
+  ĐẠT phần định dạng: 0 lỗi, 4 cảnh báo.
+  Bước tiếp theo: xem lại bằng mắt (tools/visualize_tracks.py) theo ba lượt tua trong GUIDE.md.

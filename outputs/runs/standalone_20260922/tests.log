@@ -1,0 +1,242 @@
+test_cli_csv_json_contract_and_failure (test_review_tracks.ReviewTests.test_cli_csv_json_contract_and_failure) ... ERROR
+test_fragmentation_window_and_overlap_exclusion (test_review_tracks.ReviewTests.test_fragmentation_window_and_overlap_exclusion) ... ok
+test_gap_does_not_apply_adjacent_geometry (test_review_tracks.ReviewTests.test_gap_does_not_apply_adjacent_geometry) ... ok
+test_parser_variants_empty_ignored_and_invalid (test_review_tracks.ReviewTests.test_parser_variants_empty_ignored_and_invalid) ... ERROR
+test_reference_files_parse_when_present (test_review_tracks.ReviewTests.test_reference_files_parse_when_present) ... ok
+test_smooth_motion_entry_exit_global_renumber (test_review_tracks.ReviewTests.test_smooth_motion_entry_exit_global_renumber) ... ok
+test_threshold_boundaries_config_and_sorted_input (test_review_tracks.ReviewTests.test_threshold_boundaries_config_and_sorted_input) ... ok
+test_two_real_annotations_and_mutations (test_review_tracks.ReviewTests.test_two_real_annotations_and_mutations) ... ok
+test_decode_order_metadata_and_no_overwrite (test_video_to_clip.VideoTests.test_decode_order_metadata_and_no_overwrite) ... [ WARN:0@0.925] global cap.cpp:778 cv::VideoWriter::open VIDEOIO(CV_IMAGES): raised OpenCV exception:
+
+OpenCV(5.0.0) D:\a\opencv-python\opencv-python\opencv\modules\videoio\src\cap_images.cpp:423: error: (-215:Assertion failed) !filename_pattern.empty() in function 'cv::CvVideoWriter_Images::CvVideoWriter_Images'
+
+
+ERROR
+test_missing_and_invalid_video (test_video_to_clip.VideoTests.test_missing_and_invalid_video) ... ERROR
+
+======================================================================
+ERROR: test_cli_csv_json_contract_and_failure (test_review_tracks.ReviewTests.test_cli_csv_json_contract_and_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\LCOM108_NMLT\code\100_bai_code\tep_chua_python\semi_auto_video_tracking\tests\test_review_tracks.py", line 147, in test_cli_csv_json_contract_and_failure
+    path.write_text('1,1,0,0,10,10\n3,1,0,0,10,10\n', encoding='utf-8')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\pathlib\__init__.py", line 809, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\pathlib\__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmpsppzo3m_\\tracks.txt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 377, in walk
+PermissionError: [WinError 5] Access is denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmpsppzo3m_'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\LCOM108_NMLT\code\100_bai_code\tep_chua_python\semi_auto_video_tracking\tests\test_review_tracks.py", line 145, in test_cli_csv_json_contract_and_failure
+    with tempfile.TemporaryDirectory() as folder:
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 971, in __exit__
+    self.cleanup()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 975, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 955, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 852, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 689, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 413, in walk
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 687, in onerror
+    onexc(os.scandir, err.filename, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 927, in onexc
+    _resetperms(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 283, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 272, in _dont_follow_symlinks
+    func(path, *args, follow_symlinks=False)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] Access is denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmpsppzo3m_'
+
+======================================================================
+ERROR: test_parser_variants_empty_ignored_and_invalid (test_review_tracks.ReviewTests.test_parser_variants_empty_ignored_and_invalid)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\LCOM108_NMLT\code\100_bai_code\tep_chua_python\semi_auto_video_tracking\tests\test_review_tracks.py", line 127, in test_parser_variants_empty_ignored_and_invalid
+    path.write_text('\ufeff# comment\n1,2,0,0,10,20' + suffix + '\n', encoding='utf-8')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\pathlib\__init__.py", line 809, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\pathlib\__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmpn2yawinl\\tracks.txt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 377, in walk
+PermissionError: [WinError 5] Access is denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmpn2yawinl'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\LCOM108_NMLT\code\100_bai_code\tep_chua_python\semi_auto_video_tracking\tests\test_review_tracks.py", line 124, in test_parser_variants_empty_ignored_and_invalid
+    with tempfile.TemporaryDirectory() as folder:
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 971, in __exit__
+    self.cleanup()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 975, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 955, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 852, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 689, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 413, in walk
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 687, in onerror
+    onexc(os.scandir, err.filename, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 927, in onexc
+    _resetperms(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 283, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 272, in _dont_follow_symlinks
+    func(path, *args, follow_symlinks=False)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] Access is denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmpn2yawinl'
+
+======================================================================
+ERROR: test_decode_order_metadata_and_no_overwrite (test_video_to_clip.VideoTests.test_decode_order_metadata_and_no_overwrite)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\LCOM108_NMLT\code\100_bai_code\tep_chua_python\semi_auto_video_tracking\tests\test_video_to_clip.py", line 21, in test_decode_order_metadata_and_no_overwrite
+    self.assertTrue(writer.isOpened())
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 377, in walk
+PermissionError: [WinError 5] Access is denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmp_xwvv3am'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\LCOM108_NMLT\code\100_bai_code\tep_chua_python\semi_auto_video_tracking\tests\test_video_to_clip.py", line 17, in test_decode_order_metadata_and_no_overwrite
+    with tempfile.TemporaryDirectory() as folder:
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 971, in __exit__
+    self.cleanup()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 975, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 955, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 852, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 689, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 413, in walk
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 687, in onerror
+    onexc(os.scandir, err.filename, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 927, in onexc
+    _resetperms(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 283, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 272, in _dont_follow_symlinks
+    func(path, *args, follow_symlinks=False)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] Access is denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmp_xwvv3am'
+
+======================================================================
+ERROR: test_missing_and_invalid_video (test_video_to_clip.VideoTests.test_missing_and_invalid_video)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\LCOM108_NMLT\code\100_bai_code\tep_chua_python\semi_auto_video_tracking\tests\test_video_to_clip.py", line 42, in test_missing_and_invalid_video
+    bad.write_bytes(b'not a video')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\pathlib\__init__.py", line 796, in write_bytes
+    with self.open(mode='wb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\pathlib\__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmpnrtg28xg\\bad.mp4'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 377, in walk
+PermissionError: [WinError 5] Access is denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmpnrtg28xg'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\LCOM108_NMLT\code\100_bai_code\tep_chua_python\semi_auto_video_tracking\tests\test_video_to_clip.py", line 37, in test_missing_and_invalid_video
+    with tempfile.TemporaryDirectory() as folder:
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 971, in __exit__
+    self.cleanup()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 975, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 955, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 852, in rmtree
+    _rmtree_impl(path, dir_fd, onexc)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 689, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 413, in walk
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\shutil.py", line 687, in onerror
+    onexc(os.scandir, err.filename, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 927, in onexc
+    _resetperms(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 283, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py", line 272, in _dont_follow_symlinks
+    func(path, *args, follow_symlinks=False)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] Access is denied: 'D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.runtime\\tmp\\tmpnrtg28xg'
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.919s
+
+FAILED (errors=4)
