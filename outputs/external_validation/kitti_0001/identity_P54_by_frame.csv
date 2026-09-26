@@ -1,0 +1,12 @@
+﻿frame_id,kitti_frame,pred_track_id,best_gt_track_id,best_iou,clear_gt_track_id,dontcare_intersection_over_pred_area,category,interpretation
+16,15,54,96,0.6035522395368172,96,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"
+17,16,54,96,0.6507731766854695,96,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"
+18,17,54,96,0.6106737223635927,96,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"
+19,18,54,96,0.6244300751487041,96,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"
+20,19,54,96,0.6434230802996556,96,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"
+21,20,54,96,0.753056361088905,96,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"
+22,21,54,96,0.5579182059510771,96,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"
+23,22,54,95,0.7145491797106894,95,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"
+24,23,54,95,0.7245531968648821,95,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"
+25,24,54,96,0.7816755826220276,95,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"
+26,25,54,96,0.6357297824094045,96,0.0,MATCHED_TARGET,"Audit category only; REGULAR_FP is unmatched outside DontCare, not automatically a semantic hallucination"

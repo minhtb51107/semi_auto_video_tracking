@@ -1,0 +1,8 @@
+frame_id,track_id,reason,observed_value,threshold,previous_frame_id,related_track_id
+4,8,track_gap,2,1,1,
+7,8,track_gap,2,1,4,
+19,8,track_gap,1,1,17,
+29,92,track_gap,2,1,26,
+30,64,track_gap,12,1,17,
+30,64,track_reappeared,12,5,17,
+31,92,track_gap,1,1,29,

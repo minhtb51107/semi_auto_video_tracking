@@ -1,0 +1,410 @@
+{
+  "schema_version": 2,
+  "interpretation": "experimental_heuristic_candidates_not_ground_truth",
+  "v1_config": {
+    "status": "experimental_uncalibrated",
+    "track_gap_min_missing_frames": 1,
+    "track_reappeared_min_missing_frames": 5,
+    "large_motion_jump_max_diagonals": 1.5,
+    "abnormal_size_change_max_ratio": 2.0,
+    "low_consecutive_iou_min": 0.1,
+    "fragmentation_max_frame_distance": 5,
+    "fragmentation_min_endpoint_iou": 0.3
+  },
+  "v2_config": {
+    "status": "experimental_uncalibrated",
+    "duplicate_min_iou": 0.75,
+    "duplicate_max_center_distance": 0.1,
+    "duplicate_max_size_ratio": 1.35,
+    "duplicate_min_consecutive_frames": 2,
+    "context_padding": 2
+  },
+  "total_frames": 154,
+  "context_limit": "provided_total_frames",
+  "flags": [
+    {
+      "frame_id": 26,
+      "track_id": 26,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 24,
+      "related_track_id": null,
+      "start_frame": 24,
+      "end_frame": 26,
+      "raw_flag_id": "F000001"
+    },
+    {
+      "frame_id": 28,
+      "track_id": 26,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 26,
+      "related_track_id": null,
+      "start_frame": 26,
+      "end_frame": 28,
+      "raw_flag_id": "F000002"
+    },
+    {
+      "frame_id": 31,
+      "track_id": 26,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 29,
+      "related_track_id": null,
+      "start_frame": 29,
+      "end_frame": 31,
+      "raw_flag_id": "F000003"
+    },
+    {
+      "frame_id": 33,
+      "track_id": 26,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 31,
+      "related_track_id": null,
+      "start_frame": 31,
+      "end_frame": 33,
+      "raw_flag_id": "F000004"
+    },
+    {
+      "frame_id": 38,
+      "track_id": 26,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 35,
+      "related_track_id": null,
+      "start_frame": 35,
+      "end_frame": 38,
+      "raw_flag_id": "F000005"
+    },
+    {
+      "frame_id": 105,
+      "track_id": 112,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 103,
+      "related_track_id": null,
+      "start_frame": 103,
+      "end_frame": 105,
+      "raw_flag_id": "F000006"
+    },
+    {
+      "frame_id": 122,
+      "track_id": 152,
+      "reason": "track_gap",
+      "observed_value": 9,
+      "threshold": 1,
+      "previous_frame_id": 112,
+      "related_track_id": null,
+      "start_frame": 112,
+      "end_frame": 122,
+      "raw_flag_id": "F000007"
+    },
+    {
+      "frame_id": 122,
+      "track_id": 152,
+      "reason": "track_reappeared",
+      "observed_value": 9,
+      "threshold": 5,
+      "previous_frame_id": 112,
+      "related_track_id": null,
+      "start_frame": 112,
+      "end_frame": 122,
+      "raw_flag_id": "F000008"
+    },
+    {
+      "frame_id": 137,
+      "track_id": 322,
+      "reason": "possible_fragmentation",
+      "observed_value": 0.3787800002165332,
+      "threshold": 0.3,
+      "previous_frame_id": 135,
+      "related_track_id": 112,
+      "start_frame": 135,
+      "end_frame": 137,
+      "raw_flag_id": "F000009"
+    },
+    {
+      "frame_id": 145,
+      "track_id": 187,
+      "reason": "track_gap",
+      "observed_value": 15,
+      "threshold": 1,
+      "previous_frame_id": 129,
+      "related_track_id": null,
+      "start_frame": 129,
+      "end_frame": 145,
+      "raw_flag_id": "F000010"
+    },
+    {
+      "frame_id": 145,
+      "track_id": 187,
+      "reason": "track_reappeared",
+      "observed_value": 15,
+      "threshold": 5,
+      "previous_frame_id": 129,
+      "related_track_id": null,
+      "start_frame": 129,
+      "end_frame": 145,
+      "raw_flag_id": "F000011"
+    },
+    {
+      "frame_id": 146,
+      "track_id": 319,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 144,
+      "related_track_id": null,
+      "start_frame": 144,
+      "end_frame": 146,
+      "raw_flag_id": "F000012"
+    },
+    {
+      "frame_id": 148,
+      "track_id": 229,
+      "reason": "track_gap",
+      "observed_value": 14,
+      "threshold": 1,
+      "previous_frame_id": 133,
+      "related_track_id": null,
+      "start_frame": 133,
+      "end_frame": 148,
+      "raw_flag_id": "F000013"
+    },
+    {
+      "frame_id": 148,
+      "track_id": 229,
+      "reason": "track_reappeared",
+      "observed_value": 14,
+      "threshold": 5,
+      "previous_frame_id": 133,
+      "related_track_id": null,
+      "start_frame": 133,
+      "end_frame": 148,
+      "raw_flag_id": "F000014"
+    },
+    {
+      "frame_id": 152,
+      "track_id": 363,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 150,
+      "related_track_id": null,
+      "start_frame": 150,
+      "end_frame": 152,
+      "raw_flag_id": "F000015"
+    }
+  ],
+  "events": [
+    {
+      "track_id": 26,
+      "related_track_ids": [],
+      "start_frame": 24,
+      "end_frame": 26,
+      "anchor_frame": 26,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000001"
+      ],
+      "context_start": 22,
+      "context_end": 28,
+      "event_id": "E000001"
+    },
+    {
+      "track_id": 26,
+      "related_track_ids": [],
+      "start_frame": 26,
+      "end_frame": 28,
+      "anchor_frame": 28,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000002"
+      ],
+      "context_start": 24,
+      "context_end": 30,
+      "event_id": "E000002"
+    },
+    {
+      "track_id": 26,
+      "related_track_ids": [],
+      "start_frame": 29,
+      "end_frame": 31,
+      "anchor_frame": 31,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000003"
+      ],
+      "context_start": 27,
+      "context_end": 33,
+      "event_id": "E000003"
+    },
+    {
+      "track_id": 26,
+      "related_track_ids": [],
+      "start_frame": 31,
+      "end_frame": 33,
+      "anchor_frame": 33,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000004"
+      ],
+      "context_start": 29,
+      "context_end": 35,
+      "event_id": "E000004"
+    },
+    {
+      "track_id": 26,
+      "related_track_ids": [],
+      "start_frame": 35,
+      "end_frame": 38,
+      "anchor_frame": 38,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000005"
+      ],
+      "context_start": 33,
+      "context_end": 40,
+      "event_id": "E000005"
+    },
+    {
+      "track_id": 112,
+      "related_track_ids": [],
+      "start_frame": 103,
+      "end_frame": 105,
+      "anchor_frame": 105,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000006"
+      ],
+      "context_start": 101,
+      "context_end": 107,
+      "event_id": "E000006"
+    },
+    {
+      "track_id": 152,
+      "related_track_ids": [],
+      "start_frame": 112,
+      "end_frame": 122,
+      "anchor_frame": 122,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000007",
+        "F000008"
+      ],
+      "context_start": 110,
+      "context_end": 124,
+      "event_id": "E000007"
+    },
+    {
+      "track_id": 187,
+      "related_track_ids": [],
+      "start_frame": 129,
+      "end_frame": 145,
+      "anchor_frame": 145,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000010",
+        "F000011"
+      ],
+      "context_start": 127,
+      "context_end": 147,
+      "event_id": "E000008"
+    },
+    {
+      "track_id": 229,
+      "related_track_ids": [],
+      "start_frame": 133,
+      "end_frame": 148,
+      "anchor_frame": 148,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000013",
+        "F000014"
+      ],
+      "context_start": 131,
+      "context_end": 150,
+      "event_id": "E000009"
+    },
+    {
+      "track_id": 322,
+      "related_track_ids": [
+        112
+      ],
+      "start_frame": 135,
+      "end_frame": 137,
+      "anchor_frame": 137,
+      "reasons": [
+        "possible_fragmentation"
+      ],
+      "raw_flag_ids": [
+        "F000009"
+      ],
+      "context_start": 133,
+      "context_end": 139,
+      "event_id": "E000010"
+    },
+    {
+      "track_id": 319,
+      "related_track_ids": [],
+      "start_frame": 144,
+      "end_frame": 146,
+      "anchor_frame": 146,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000012"
+      ],
+      "context_start": 142,
+      "context_end": 148,
+      "event_id": "E000011"
+    },
+    {
+      "track_id": 363,
+      "related_track_ids": [],
+      "start_frame": 150,
+      "end_frame": 152,
+      "anchor_frame": 152,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000015"
+      ],
+      "context_start": 148,
+      "context_end": 154,
+      "event_id": "E000012"
+    }
+  ],
+  "input_file": "outputs\\external_validation\\kitti_0000\\tracks.txt",
+  "input_sha256": "419dae1474f9903c08cafbf8274e7673c700f80c5320348b87e3c4ae0d0fdac9"
+}

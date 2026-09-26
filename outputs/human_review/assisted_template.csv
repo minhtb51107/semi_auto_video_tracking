@@ -1,0 +1,1 @@
+session_id,reviewer,sequence,mode,started_at,ended_at,active_seconds,wall_seconds,reviewed_frames,findings_reported,correction_actions_self_reported,event_id,track_id,related_track_ids,context_start,context_end,verdict,fix_type,note

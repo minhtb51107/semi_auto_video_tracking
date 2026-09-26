@@ -1,0 +1,8 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pilot adjudication</title><link rel="stylesheet" href="assets/style.css">
+<body><h1>Post-review adjudication và comparison</h1><p>Chỉ mở sau khi hoàn thành các phiên timed review. Đây là reference set lịch sử chưa đầy đủ; không phải toàn bộ lỗi thật. Không nhập practice/QA.</p>
+<section><label>Adjudicator ID <input id="adjudicator"></label><label>Độc lập với reviewer? <select id="independence"><option value="same_reviewer">Cùng reviewer</option><option value="independent">Người khác, độc lập</option></select></label>
+<label>Chọn session JSON đã hoàn tất <input id="files" type="file" multiple accept=".json"></label><button id="clear">Xóa danh sách đang chọn (không xóa file)</button><p id="error" role="alert"></p></section>
+<section><h2>Findings để adjudicate</h2><p>TRUE_ISSUE cần canonical/reference ID và evidence note. Chọn cùng ID nếu nhiều finding là cùng một lỗi. Với lỗi mới dùng NEW-... và giữ cùng ID giữa các phiên nếu cùng vấn đề. Không gán chỉ vì trùng frame.</p><div id="decisions"></div></section>
+<section><h2>Human workflow metrics</h2><p id="empty">Chưa có dữ liệu human. Không có kết quả hoặc thời gian giả lập.</p><div id="summary"></div><pre id="pairs"></pre><button id="exportSummary">Export comparison JSON</button><button id="exportAdjudication">Export adjudication CSV</button></section>
+<details><summary>Reference set lịch sử (partial) — chỉ dùng sau review</summary><pre id="references"></pre></details>
+<script id="referenceData" type="application/json">__REFERENCES__</script><script src="assets/metrics.js"></script><script src="assets/adjudication.js"></script></body></html>

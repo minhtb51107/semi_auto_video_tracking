@@ -1,0 +1,8 @@
+event_id,track_id,related_track_ids,start_frame,end_frame,anchor_frame,reasons,raw_flag_ids,context_start,context_end
+E000001,8,[],1,4,4,"[""track_gap""]","[""F000001""]",1,6
+E000002,8,[],4,7,7,"[""track_gap""]","[""F000002""]",2,9
+E000003,8,[],17,19,19,"[""track_gap""]","[""F000003""]",15,21
+E000004,64,[],17,30,30,"[""track_gap"", ""track_reappeared""]","[""F000006"", ""F000007""]",15,31
+E000005,77,[85],23,24,24,"[""possible_duplicate""]","[""F000004""]",21,26
+E000006,92,[],26,29,29,"[""track_gap""]","[""F000005""]",24,31
+E000007,92,[],29,31,31,"[""track_gap""]","[""F000008""]",27,31

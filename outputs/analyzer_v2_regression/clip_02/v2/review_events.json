@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "events": [
+    {
+      "track_id": 9,
+      "related_track_ids": [],
+      "start_frame": 30,
+      "end_frame": 33,
+      "anchor_frame": 33,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000001"
+      ],
+      "context_start": 28,
+      "context_end": 35,
+      "event_id": "E000001"
+    },
+    {
+      "track_id": 9,
+      "related_track_ids": [],
+      "start_frame": 33,
+      "end_frame": 35,
+      "anchor_frame": 35,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000002"
+      ],
+      "context_start": 31,
+      "context_end": 37,
+      "event_id": "E000002"
+    }
+  ]
+}

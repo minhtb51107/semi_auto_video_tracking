@@ -1,0 +1,153 @@
+﻿frame_id,gt_track_id,pred_track_id,error_type,analyzer_flagged,same_track_context,validation_status,note
+1,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+1,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+1,,7,unmatched_prediction,False,False,REFERENCE_DIAGNOSTIC,Raw FP; max intersection/pred area with excluded region=0.000000; not automatically a hallucination
+2,6,,missed_detection,False,True,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+2,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+2,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.987119; not automatically a hallucination
+3,6,,missed_detection,False,True,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+3,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+3,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.979296; not automatically a hallucination
+4,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+4,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.922179; not automatically a hallucination
+5,6,,missed_detection,False,True,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+5,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+5,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.811995; not automatically a hallucination
+6,1,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+6,6,,missed_detection,False,True,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+6,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+6,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+7,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+7,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+8,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+8,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+8,98,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+8,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+9,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+9,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+9,98,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+9,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.960713; not automatically a hallucination
+10,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+10,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+10,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+10,98,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+10,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+10,,29,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+10,,30,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+10,,32,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.928703; not automatically a hallucination
+11,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+11,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+11,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+11,98,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+11,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.991076; not automatically a hallucination
+11,,30,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.334273; not automatically a hallucination
+11,,32,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.898437; not automatically a hallucination
+12,2,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+12,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+12,94,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+12,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+12,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+12,98,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+12,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.865395; not automatically a hallucination
+12,,30,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.615168; not automatically a hallucination
+12,,32,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.726734; not automatically a hallucination
+13,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+13,94,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+13,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+13,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+13,98,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+13,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.882197; not automatically a hallucination
+13,,30,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.528977; not automatically a hallucination
+13,,32,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.814526; not automatically a hallucination
+14,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+14,94,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+14,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+14,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+14,98,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+14,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.874139; not automatically a hallucination
+14,,30,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.440977; not automatically a hallucination
+14,,32,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.879470; not automatically a hallucination
+15,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+15,94,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+15,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+15,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+15,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.862069; not automatically a hallucination
+15,,32,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+16,7,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+16,94,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+16,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+16,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.837554; not automatically a hallucination
+17,94,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+17,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+17,,6,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.709240; not automatically a hallucination
+17,,59,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+17,,64,unmatched_prediction,False,True,REFERENCE_DIAGNOSTIC,Raw FP; max intersection/pred area with excluded region=0.000000; not automatically a hallucination
+18,4,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+18,6,,missed_detection,False,True,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+18,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+19,93,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+19,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+19,,46,unmatched_prediction,False,False,REFERENCE_DIAGNOSTIC,Raw FP; max intersection/pred area with excluded region=0.000000; not automatically a hallucination
+20,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+20,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+20,,46,unmatched_prediction,False,False,REFERENCE_DIAGNOSTIC,Raw FP; max intersection/pred area with excluded region=0.000000; not automatically a hallucination
+21,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+21,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+21,,46,unmatched_prediction,False,False,REFERENCE_DIAGNOSTIC,Raw FP; max intersection/pred area with excluded region=0.000000; not automatically a hallucination
+21,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+22,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+22,94,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+22,95,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+22,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+23,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+23,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+23,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+23,,85,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.138254; not automatically a hallucination
+24,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+24,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+24,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+24,,85,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.253136; not automatically a hallucination
+24,,92,unmatched_prediction,False,True,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.605244; not automatically a hallucination
+25,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+25,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+25,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+25,,92,unmatched_prediction,False,True,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+26,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+26,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+26,,92,unmatched_prediction,False,True,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+26,,98,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.996787; not automatically a hallucination
+27,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+27,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+27,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+27,,98,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.834528; not automatically a hallucination
+28,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+28,96,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+28,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+28,,98,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.919589; not automatically a hallucination
+29,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+29,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+29,,92,unmatched_prediction,True,True,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.883083; not automatically a hallucination
+29,,98,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+30,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+30,,64,unmatched_prediction,True,True,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.984237; not automatically a hallucination
+30,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+30,,98,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+31,10,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+31,93,,missed_detection,False,False,REFERENCE_DIAGNOSTIC,CLEAR unmatched GT at IoU>=0.5
+31,,80,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=1.000000; not automatically a hallucination
+31,,98,unmatched_prediction,False,False,UNCERTAIN,Raw FP; max intersection/pred area with excluded region=0.938732; not automatically a hallucination
+11,2,2,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.509
+13,3,4,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.516
+3,7,5,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.517
+5,1,1,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.523
+22,95,54,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.527
+22,96,54,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.558
+2,7,5,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.56
+4,6,8,loose_box,True,True,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.569
+12,3,4,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.572
+14,3,4,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.574
+21,7,60,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.589
+25,95,54,loose_box,False,False,REFERENCE_DIAGNOSTIC,Existing best-IoU criterion: 0.597
+20,10,,missed_track,False,False,TRUE_ISSUE,No best-IoU match across 12 reference boxes; G10_context.jpg shows car with no prediction. Analyst-confirmed on this sample.
+1,7,,fragmentation_candidate,False,False,UNCERTAIN,"Best-IoU owners [60, 5]; verify overlapping tracks/duplicate boxes before asserting switch"
+23,,54,reference_identity_merge_candidate,False,False,UNCERTAIN,"One pred matched multiple GT identities {96: 8, 95: 3}; CLEAR IDSW can remain zero. Overlapping/occluded reference boxes require independent adjudication."

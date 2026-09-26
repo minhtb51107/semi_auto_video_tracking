@@ -1,0 +1,23 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Offline review pilot</title><link rel="stylesheet" href="../../assets/style.css">
+<body><h1 id="title"></h1><p id="intro"></p><p id="warning" role="alert"></p>
+<section id="setup"><label>Reviewer ID <input id="reviewer" placeholder="R01"></label>
+<label>Nhóm thứ tự <select id="group"><option>X</option><option>Y</option></select></label>
+<label>Phiên thứ <input id="sessionNumber" type="number" min="1" max="4" value="1"></label>
+<label>Đã biết sequence/lỗi? <select id="familiarity"><option value="unknown">Chưa chọn</option><option value="new_to_me">Chưa từng xem</option><option value="seen_sequence">Đã xem sequence</option><option value="seen_findings">Đã biết một số lỗi/báo cáo</option></select></label>
+<button id="start">Start</button></section>
+<section><strong id="status">Chưa bắt đầu</strong> <span id="timing"></span>
+<button id="resume">Resume</button><button id="pause">Pause</button><button id="export">Export JSON checkpoint</button><button id="csv">Export CSV</button><button id="finish">Finish + Export</button><button id="fresh">Phiên mới</button><label>Khôi phục JSON checkpoint <input id="importCheckpoint" type="file" accept=".json"></label></section>
+<section id="eventPanel" hidden><label>Review event <select id="event"></select></label><pre id="eventInfo"></pre>
+<button id="expand">Mở rộng context ±5</button><span id="range"></span>
+<label>Verdict <select id="verdict"><option value="">Chưa chọn</option><option>TRUE_ISSUE</option><option>BENIGN_EVENT</option><option>FALSE_ALERT</option><option>UNCERTAIN</option></select></label>
+<label>Fix type <input id="eventFix" placeholder="ID change / box / delete / none"></label><label>Note / friction <input id="eventNote"></label><button id="saveVerdict">Lưu verdict</button></section>
+<section id="viewer" hidden><div><button id="previous">◀ Previous</button><input id="frame" type="number" min="1"><button id="go">Go</button><button id="next">Next ▶</button> <span id="frameInfo"></span></div>
+<canvas id="canvas"></canvas><p id="framePath"></p><p>Đỏ: predicted boxes; cam/cyan: track của event. Không có GT. Go cho phép mở rộng ngoài context; frame thực xem được ghi lại.</p></section>
+<section id="findingsPanel"><h2>Lỗi nghi ngờ tìm thấy</h2><p>Ghi một finding cho mỗi vấn đề cần sửa; verdict event không tự tạo finding. Không có sửa box tự động.</p>
+<button id="useFrame">Dùng frame đang xem</button><label>Frame đầu <input id="findingStart" type="number" min="1" value="1"></label><label>Frame cuối <input id="findingEnd" type="number" min="1" value="1"></label>
+<label>Track(s) <input id="findingTracks" placeholder="77,85"></label><label>Error / fix type <input id="findingType" placeholder="duplicate / gap / identity / box / other"></label>
+<label>Note <input id="findingNote"></label><button id="addFinding">Thêm finding</button><div id="findings"></div></section>
+<section><label>Thao tác sửa thực sự đã làm (không phải số click) <input id="corrections" type="number" min="0" value="0"></label>
+<label>Ghi chú phiên / tool sửa bên ngoài / interruption <textarea id="sessionNote"></textarea></label><p>UI này chỉ review. Để 0 nếu chưa thực sự sửa annotation. Timing và finding chưa là kết quả đã adjudicate.</p></section>
+<script id="payload" type="application/json">__PAYLOAD__</script><script src="../../assets/review.js"></script></body></html>

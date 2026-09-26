@@ -1,0 +1,284 @@
+{
+  "clip": "kitti_0001_sample",
+  "frames": 31,
+  "iou_threshold": 0.5,
+  "pred_file": "outputs\\external_validation\\kitti_0001\\tracks.txt",
+  "gt_file": "data\\external_validation\\kitti_0001\\gt\\gt.txt",
+  "pred_label": "PRED outputs\\external_validation\\kitti_0001\\tracks.txt",
+  "gt_label": "GT   data\\external_validation\\kitti_0001\\gt\\gt.txt",
+  "metrics": {
+    "HOTA": 0.5193,
+    "DetA": 0.4145,
+    "AssA": 0.6589,
+    "LocA": 0.7988,
+    "IDF1": 0.7074,
+    "IDTP": 168,
+    "IDFP": 60,
+    "IDFN": 79,
+    "MOTA": 0.4453,
+    "MOTP": 0.7586,
+    "IDSW": 0,
+    "FP": 59,
+    "FN": 78,
+    "GT_boxes": 247,
+    "PRED_boxes": 228
+  },
+  "gate": {
+    "checks": {
+      "IDF1": {
+        "value": 0.7073684210526315,
+        "required": 0.8,
+        "passed": false
+      },
+      "MOTA": {
+        "value": 0.44534412955465585,
+        "required": 0.75,
+        "passed": false
+      },
+      "MOTP": {
+        "value": 0.7585605637380415,
+        "required": 0.7,
+        "passed": true
+      }
+    },
+    "passed": false
+  },
+  "diagnostics": {
+    "missed_gt_tracks": [
+      10
+    ],
+    "fragmented_gt_tracks": [
+      {
+        "gt_track": 7,
+        "pred_tracks": [
+          60,
+          5
+        ],
+        "frames_each": {
+          "60": 15,
+          "5": 2
+        },
+        "gt_length": 31
+      }
+    ],
+    "partially_covered_gt_tracks": [
+      {
+        "gt_track": 95,
+        "covered": 4,
+        "gt_length": 16,
+        "ratio": 0.25
+      },
+      {
+        "gt_track": 98,
+        "covered": 4,
+        "gt_length": 11,
+        "ratio": 0.36
+      },
+      {
+        "gt_track": 94,
+        "covered": 4,
+        "gt_length": 11,
+        "ratio": 0.36
+      },
+      {
+        "gt_track": 96,
+        "covered": 10,
+        "gt_length": 21,
+        "ratio": 0.48
+      },
+      {
+        "gt_track": 7,
+        "covered": 17,
+        "gt_length": 31,
+        "ratio": 0.55
+      }
+    ],
+    "ghost_pred_tracks": [
+      {
+        "pred_track": 6,
+        "reason": "không khớp track tham chiếu nào",
+        "frames": [
+          1,
+          17
+        ],
+        "length": 17
+      },
+      {
+        "pred_track": 80,
+        "reason": "không khớp track tham chiếu nào",
+        "frames": [
+          21,
+          31
+        ],
+        "length": 11
+      },
+      {
+        "pred_track": 32,
+        "reason": "không khớp track tham chiếu nào",
+        "frames": [
+          10,
+          15
+        ],
+        "length": 6
+      },
+      {
+        "pred_track": 98,
+        "reason": "không khớp track tham chiếu nào",
+        "frames": [
+          26,
+          31
+        ],
+        "length": 6
+      },
+      {
+        "pred_track": 30,
+        "reason": "đã có bbox trước khi track tham chiếu 8 xuất hiện",
+        "frames": [
+          10,
+          14
+        ],
+        "length": 5
+      },
+      {
+        "pred_track": 92,
+        "reason": "đã có bbox trước khi track tham chiếu 12 xuất hiện",
+        "frames": [
+          24,
+          29
+        ],
+        "length": 4
+      },
+      {
+        "pred_track": 46,
+        "reason": "còn bbox sau khi track tham chiếu 98 đã rời khung",
+        "frames": [
+          19,
+          21
+        ],
+        "length": 3
+      },
+      {
+        "pred_track": 64,
+        "reason": "không khớp track tham chiếu nào",
+        "frames": [
+          17,
+          30
+        ],
+        "length": 2
+      },
+      {
+        "pred_track": 85,
+        "reason": "không khớp track tham chiếu nào",
+        "frames": [
+          23,
+          24
+        ],
+        "length": 2
+      },
+      {
+        "pred_track": 7,
+        "reason": "không khớp track tham chiếu nào",
+        "frames": [
+          1,
+          1
+        ],
+        "length": 1
+      },
+      {
+        "pred_track": 29,
+        "reason": "không khớp track tham chiếu nào",
+        "frames": [
+          10,
+          10
+        ],
+        "length": 1
+      },
+      {
+        "pred_track": 59,
+        "reason": "không khớp track tham chiếu nào",
+        "frames": [
+          17,
+          17
+        ],
+        "length": 1
+      }
+    ],
+    "id_switches": [],
+    "loose_boxes": [
+      {
+        "frame": 11,
+        "gt_track": 2,
+        "pred_track": 2,
+        "iou": 0.509
+      },
+      {
+        "frame": 13,
+        "gt_track": 3,
+        "pred_track": 4,
+        "iou": 0.516
+      },
+      {
+        "frame": 3,
+        "gt_track": 7,
+        "pred_track": 5,
+        "iou": 0.517
+      },
+      {
+        "frame": 5,
+        "gt_track": 1,
+        "pred_track": 1,
+        "iou": 0.523
+      },
+      {
+        "frame": 22,
+        "gt_track": 95,
+        "pred_track": 54,
+        "iou": 0.527
+      },
+      {
+        "frame": 22,
+        "gt_track": 96,
+        "pred_track": 54,
+        "iou": 0.558
+      },
+      {
+        "frame": 2,
+        "gt_track": 7,
+        "pred_track": 5,
+        "iou": 0.56
+      },
+      {
+        "frame": 4,
+        "gt_track": 6,
+        "pred_track": 8,
+        "iou": 0.569
+      },
+      {
+        "frame": 12,
+        "gt_track": 3,
+        "pred_track": 4,
+        "iou": 0.572
+      },
+      {
+        "frame": 14,
+        "gt_track": 3,
+        "pred_track": 4,
+        "iou": 0.574
+      },
+      {
+        "frame": 21,
+        "gt_track": 7,
+        "pred_track": 60,
+        "iou": 0.589
+      },
+      {
+        "frame": 25,
+        "gt_track": 95,
+        "pred_track": 54,
+        "iou": 0.597
+      }
+    ],
+    "n_gt_tracks": 15,
+    "n_pred_tracks": 22
+  }
+}

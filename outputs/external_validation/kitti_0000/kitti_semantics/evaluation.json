@@ -1,0 +1,250 @@
+{
+  "interpretation": "KITTI-aware adjusted audit; not an official KITTI score",
+  "prediction_class_assumption": "All classless MOT predictions are treated as KITTI Car",
+  "semantics": {
+    "target": "Car",
+    "distractor": "Van",
+    "excluded": [
+      "Truck",
+      "Pedestrian",
+      "Person_sitting",
+      "Cyclist",
+      "Tram",
+      "Misc"
+    ],
+    "max_occlusion": 2,
+    "max_truncation": 0,
+    "unmatched_min_height_inclusive": 25,
+    "unmatched_dontcare_ioa_strictly_greater_than": 0.5,
+    "matching": "Hungarian IoU>=0.5 during preprocessing; project metrics re-match after filtering"
+  },
+  "inputs": {
+    "labels": "data\\external_validation\\kitti_0000\\source\\training\\label_02\\0000.txt",
+    "labels_sha256": "97f772a27181dfc7ef51b3e64b86bd42e682753b6855fdc58d259ecbed501fd4",
+    "prediction": "outputs\\external_validation\\kitti_0000\\tracks.txt",
+    "prediction_sha256": "419dae1474f9903c08cafbf8274e7673c700f80c5320348b87e3c4ae0d0fdac9",
+    "raw_evaluation": "outputs\\external_validation\\kitti_0000\\evaluation.json",
+    "raw_evaluation_sha256": "23b2971857f9841060867d01fcefd5e18678c92752c0d35df627fb9fa5f9bb50"
+  },
+  "raw_project_metrics": {
+    "HOTA": 0.44,
+    "DetA": 0.4933,
+    "AssA": 0.3952,
+    "LocA": 0.7708,
+    "IDF1": 0.565,
+    "IDTP": 302,
+    "IDFP": 232,
+    "IDFN": 233,
+    "MOTA": 0.514,
+    "MOTP": 0.7318,
+    "IDSW": 11,
+    "FP": 124,
+    "FN": 125,
+    "GT_boxes": 535,
+    "PRED_boxes": 534
+  },
+  "adjusted_project_metrics": {
+    "HOTA": 0.47941538237962183,
+    "DetA": 0.46836159504939046,
+    "AssA": 0.5100585476263795,
+    "LocA": 0.7327932039673675,
+    "IDF1": 0.6172248803827751,
+    "IDTP": 129,
+    "IDFP": 74,
+    "IDFN": 86,
+    "MOTA": 0.4046511627906977,
+    "MOTP": 0.6884618553451395,
+    "IDSW": 10,
+    "FP": 53,
+    "FN": 65,
+    "GT_boxes": 215,
+    "PRED_boxes": 203
+  },
+  "sensitivity": {
+    "without_dontcare_ignore": {
+      "HOTA": 0.3909582398077653,
+      "DetA": 0.3727447353587139,
+      "AssA": 0.42101239759390585,
+      "LocA": 0.7317801594717691,
+      "IDF1": 0.5360824742268041,
+      "IDTP": 130,
+      "IDFP": 140,
+      "IDFN": 85,
+      "MOTA": 0.10232558139534886,
+      "MOTP": 0.6884164784941781,
+      "IDSW": 8,
+      "FP": 120,
+      "FN": 65,
+      "GT_boxes": 215,
+      "PRED_boxes": 270
+    },
+    "without_small_box_ignore": {
+      "HOTA": 0.4784792181218284,
+      "DetA": 0.4664978234292963,
+      "AssA": 0.5100585476263795,
+      "LocA": 0.7327932039673675,
+      "IDF1": 0.6157517899761337,
+      "IDTP": 129,
+      "IDFP": 75,
+      "IDFN": 86,
+      "MOTA": 0.4,
+      "MOTP": 0.6884618553451395,
+      "IDSW": 10,
+      "FP": 54,
+      "FN": 65,
+      "GT_boxes": 215,
+      "PRED_boxes": 204
+    },
+    "without_either_unmatched_ignore": {
+      "HOTA": 0.38855103864877594,
+      "DetA": 0.3681056758410904,
+      "AssA": 0.42101239759390585,
+      "LocA": 0.7317801594717691,
+      "IDF1": 0.5316973415132924,
+      "IDTP": 130,
+      "IDFP": 144,
+      "IDFN": 85,
+      "MOTA": 0.08372093023255811,
+      "MOTP": 0.6884164784941781,
+      "IDSW": 8,
+      "FP": 124,
+      "FN": 65,
+      "GT_boxes": 215,
+      "PRED_boxes": 274
+    }
+  },
+  "counts": {
+    "raw_gt_boxes": 535,
+    "raw_pred_boxes": 534,
+    "adjusted_gt_boxes": 215,
+    "adjusted_gt_tracks": 9,
+    "adjusted_pred_boxes": 203,
+    "adjusted_pred_tracks": 17,
+    "removed_predictions": 331,
+    "prediction_statuses": {
+      "IGNORED_MATCHED_IGNORED_CAR": 16,
+      "IGNORED_MATCHED_VAN_DISTRACTOR": 244,
+      "IGNORED_UNMATCHED_DONTCARE_IOA_GT_0_5": 67,
+      "IGNORED_UNMATCHED_HEIGHT_LE_25": 1,
+      "IGNORED_UNMATCHED_HEIGHT_LE_25+UNMATCHED_DONTCARE_IOA_GT_0_5": 3,
+      "KEPT": 203
+    },
+    "gt_statuses": {
+      "DISTRACTOR_VAN": 292,
+      "DONTCARE_REGION": 378,
+      "EXCLUDED_CLASS": 176,
+      "IGNORED_CAR_TRUNCATED_OR_OCCLUDED": 28,
+      "TARGET_CAR": 215
+    }
+  },
+  "association": {
+    "clear_matches": 150,
+    "id_switches": [
+      {
+        "frame_id": 133,
+        "kitti_frame": 132,
+        "gt_track_id": 10,
+        "pred_track_id": 299,
+        "iou": 0.5917199697265219,
+        "previous_pred_track_id": 187,
+        "id_switch": true
+      },
+      {
+        "frame_id": 133,
+        "kitti_frame": 132,
+        "gt_track_id": 15,
+        "pred_track_id": 229,
+        "iou": 0.6936632099678669,
+        "previous_pred_track_id": 260,
+        "id_switch": true
+      },
+      {
+        "frame_id": 142,
+        "kitti_frame": 141,
+        "gt_track_id": 15,
+        "pred_track_id": 331,
+        "iou": 0.5316902291314887,
+        "previous_pred_track_id": 229,
+        "id_switch": true
+      },
+      {
+        "frame_id": 145,
+        "kitti_frame": 144,
+        "gt_track_id": 14,
+        "pred_track_id": 187,
+        "iou": 0.7603111467680056,
+        "previous_pred_track_id": 319,
+        "id_switch": true
+      },
+      {
+        "frame_id": 147,
+        "kitti_frame": 146,
+        "gt_track_id": 14,
+        "pred_track_id": 319,
+        "iou": 0.5274261756004912,
+        "previous_pred_track_id": 187,
+        "id_switch": true
+      },
+      {
+        "frame_id": 148,
+        "kitti_frame": 147,
+        "gt_track_id": 14,
+        "pred_track_id": 229,
+        "iou": 0.5589792686606417,
+        "previous_pred_track_id": 319,
+        "id_switch": true
+      },
+      {
+        "frame_id": 149,
+        "kitti_frame": 148,
+        "gt_track_id": 14,
+        "pred_track_id": 319,
+        "iou": 0.5537149950781597,
+        "previous_pred_track_id": 229,
+        "id_switch": true
+      },
+      {
+        "frame_id": 149,
+        "kitti_frame": 148,
+        "gt_track_id": 15,
+        "pred_track_id": 363,
+        "iou": 0.6444796737990776,
+        "previous_pred_track_id": 331,
+        "id_switch": true
+      },
+      {
+        "frame_id": 150,
+        "kitti_frame": 149,
+        "gt_track_id": 11,
+        "pred_track_id": 331,
+        "iou": 0.5069927816121542,
+        "previous_pred_track_id": 229,
+        "id_switch": true
+      },
+      {
+        "frame_id": 152,
+        "kitti_frame": 151,
+        "gt_track_id": 15,
+        "pred_track_id": 373,
+        "iou": 0.6383002257323087,
+        "previous_pred_track_id": 363,
+        "id_switch": true
+      }
+    ],
+    "predicted_ids_matching_multiple_gt": {
+      "187": [
+        10,
+        14
+      ],
+      "229": [
+        11,
+        14,
+        15
+      ],
+      "331": [
+        11,
+        15
+      ]
+    }
+  }
+}

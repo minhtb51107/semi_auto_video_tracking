@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "interpretation": "heuristic_review_candidates_not_ground_truth",
+  "input_file": "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\outputs\\external_validation\\kitti_0001\\tracks.txt",
+  "input_sha256": "cb76d020a6ad1e2c851f772c872b83d0ccf17e1867af699a0fb93b4e47d4b422",
+  "frame_index_base": 1,
+  "config": {
+    "status": "experimental_uncalibrated",
+    "track_gap_min_missing_frames": 1,
+    "track_reappeared_min_missing_frames": 5,
+    "large_motion_jump_max_diagonals": 1.5,
+    "abnormal_size_change_max_ratio": 2.0,
+    "low_consecutive_iou_min": 0.1,
+    "fragmentation_max_frame_distance": 5,
+    "fragmentation_min_endpoint_iou": 0.3
+  },
+  "summary": {
+    "rows": 228,
+    "tracks": 22,
+    "observed_frames": 31,
+    "flags": 7,
+    "flagged_frames": 6,
+    "empty_input": false
+  },
+  "flags": [
+    {
+      "frame_id": 4,
+      "track_id": 8,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 1,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 7,
+      "track_id": 8,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 4,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 19,
+      "track_id": 8,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 17,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 29,
+      "track_id": 92,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 26,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 30,
+      "track_id": 64,
+      "reason": "track_gap",
+      "observed_value": 12,
+      "threshold": 1,
+      "previous_frame_id": 17,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 30,
+      "track_id": 64,
+      "reason": "track_reappeared",
+      "observed_value": 12,
+      "threshold": 5,
+      "previous_frame_id": 17,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 31,
+      "track_id": 92,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 29,
+      "related_track_id": null
+    }
+  ]
+}

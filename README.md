@@ -2,6 +2,10 @@
 
 Validation sơ bộ: [VALIDATION_RESULTS.md](docs/VALIDATION_RESULTS.md), [nhãn từng flag](outputs/validation/flag_labels.csv), [lỗi bỏ sót và ứng viên](outputs/validation/missed_issues.csv). Evidence đổi tên và chạy lại độc lập: [RENAME_VERIFICATION.md](docs/RENAME_VERIFICATION.md). Helper `tools/validate_review_flags.py` chỉ xuất evidence offline; không thay đổi analyzer hoặc threshold.
 
+External KITTI 0001: [held-out results](docs/EXTERNAL_VALIDATION_RESULTS.md), [KITTI evaluation adapter](docs/KITTI_EVALUATION_ADAPTER.md) và [adjusted audit results](docs/KITTI_EVALUATION_RESULTS.md). Raw project metrics và KITTI-aware adjusted metrics được giữ song song; adjusted metrics không phải official KITTI score.
+
+CVAT live integration đã kiểm chứng trên task6/job4: tạo20 issues, retry0 duplicate, Resolve thủ công issue1 và read-back thành công; annotation hash giữ nguyên. Xem [live verification](docs/CVAT_LIVE_VERIFICATION.md), [robustness tests](docs/ROBUSTNESS_RESULTS.md), [integration guide](docs/CVAT_INTEGRATION_GUIDE.md). Task6 chỉ là integration/regression sandbox. `HUMAN_REVIEW_STATUS=PREPARED_NOT_EXECUTED`; [Human Pilot V2](docs/HUMAN_PILOT_V2_PLAN.md) mới là specification cho dữ liệu reviewer chưa xem.
+
 Project này phát triển từ **Day03 VideoTracking lab**, repo nguồn:
 https://github.com/minhtb51107/K4-L2-DAY03-TRANBINHMINH-2A202602174-VideoTracking
 

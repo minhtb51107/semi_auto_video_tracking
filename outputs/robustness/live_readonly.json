@@ -1,0 +1,398 @@
+{
+  "mode": "verify",
+  "actions": [
+    {
+      "event_id": "E000001",
+      "action": "SKIP_EXISTING",
+      "issue_id": 1,
+      "resolved": true
+    },
+    {
+      "event_id": "E000002",
+      "action": "SKIP_EXISTING",
+      "issue_id": 2,
+      "resolved": false
+    },
+    {
+      "event_id": "E000003",
+      "action": "SKIP_EXISTING",
+      "issue_id": 3,
+      "resolved": false
+    },
+    {
+      "event_id": "E000004",
+      "action": "SKIP_EXISTING",
+      "issue_id": 4,
+      "resolved": false
+    },
+    {
+      "event_id": "E000005",
+      "action": "SKIP_EXISTING",
+      "issue_id": 5,
+      "resolved": false
+    },
+    {
+      "event_id": "E000006",
+      "action": "SKIP_EXISTING",
+      "issue_id": 6,
+      "resolved": false
+    },
+    {
+      "event_id": "E000007",
+      "action": "SKIP_EXISTING",
+      "issue_id": 7,
+      "resolved": false
+    },
+    {
+      "event_id": "E000008",
+      "action": "SKIP_EXISTING",
+      "issue_id": 8,
+      "resolved": false
+    },
+    {
+      "event_id": "E000009",
+      "action": "SKIP_EXISTING",
+      "issue_id": 9,
+      "resolved": false
+    },
+    {
+      "event_id": "E000010",
+      "action": "SKIP_EXISTING",
+      "issue_id": 10,
+      "resolved": false
+    },
+    {
+      "event_id": "E000011",
+      "action": "SKIP_EXISTING",
+      "issue_id": 11,
+      "resolved": false
+    },
+    {
+      "event_id": "E000012",
+      "action": "SKIP_EXISTING",
+      "issue_id": 12,
+      "resolved": false
+    },
+    {
+      "event_id": "E000013",
+      "action": "SKIP_EXISTING",
+      "issue_id": 13,
+      "resolved": false
+    },
+    {
+      "event_id": "E000014",
+      "action": "SKIP_EXISTING",
+      "issue_id": 14,
+      "resolved": false
+    },
+    {
+      "event_id": "E000015",
+      "action": "SKIP_EXISTING",
+      "issue_id": 15,
+      "resolved": false
+    },
+    {
+      "event_id": "E000016",
+      "action": "SKIP_EXISTING",
+      "issue_id": 16,
+      "resolved": false
+    },
+    {
+      "event_id": "E000017",
+      "action": "SKIP_EXISTING",
+      "issue_id": 17,
+      "resolved": false
+    },
+    {
+      "event_id": "E000018",
+      "action": "SKIP_EXISTING",
+      "issue_id": 18,
+      "resolved": false
+    },
+    {
+      "event_id": "E000019",
+      "action": "SKIP_EXISTING",
+      "issue_id": 19,
+      "resolved": false
+    },
+    {
+      "event_id": "E000020",
+      "action": "SKIP_EXISTING",
+      "issue_id": 20,
+      "resolved": false
+    }
+  ],
+  "annotations_unchanged": true,
+  "verified": true,
+  "readback": [
+    {
+      "event_id": "E000001",
+      "action": "SKIP_EXISTING",
+      "issue_id": 1,
+      "resolved": true
+    },
+    {
+      "event_id": "E000002",
+      "action": "SKIP_EXISTING",
+      "issue_id": 2,
+      "resolved": false
+    },
+    {
+      "event_id": "E000003",
+      "action": "SKIP_EXISTING",
+      "issue_id": 3,
+      "resolved": false
+    },
+    {
+      "event_id": "E000004",
+      "action": "SKIP_EXISTING",
+      "issue_id": 4,
+      "resolved": false
+    },
+    {
+      "event_id": "E000005",
+      "action": "SKIP_EXISTING",
+      "issue_id": 5,
+      "resolved": false
+    },
+    {
+      "event_id": "E000006",
+      "action": "SKIP_EXISTING",
+      "issue_id": 6,
+      "resolved": false
+    },
+    {
+      "event_id": "E000007",
+      "action": "SKIP_EXISTING",
+      "issue_id": 7,
+      "resolved": false
+    },
+    {
+      "event_id": "E000008",
+      "action": "SKIP_EXISTING",
+      "issue_id": 8,
+      "resolved": false
+    },
+    {
+      "event_id": "E000009",
+      "action": "SKIP_EXISTING",
+      "issue_id": 9,
+      "resolved": false
+    },
+    {
+      "event_id": "E000010",
+      "action": "SKIP_EXISTING",
+      "issue_id": 10,
+      "resolved": false
+    },
+    {
+      "event_id": "E000011",
+      "action": "SKIP_EXISTING",
+      "issue_id": 11,
+      "resolved": false
+    },
+    {
+      "event_id": "E000012",
+      "action": "SKIP_EXISTING",
+      "issue_id": 12,
+      "resolved": false
+    },
+    {
+      "event_id": "E000013",
+      "action": "SKIP_EXISTING",
+      "issue_id": 13,
+      "resolved": false
+    },
+    {
+      "event_id": "E000014",
+      "action": "SKIP_EXISTING",
+      "issue_id": 14,
+      "resolved": false
+    },
+    {
+      "event_id": "E000015",
+      "action": "SKIP_EXISTING",
+      "issue_id": 15,
+      "resolved": false
+    },
+    {
+      "event_id": "E000016",
+      "action": "SKIP_EXISTING",
+      "issue_id": 16,
+      "resolved": false
+    },
+    {
+      "event_id": "E000017",
+      "action": "SKIP_EXISTING",
+      "issue_id": 17,
+      "resolved": false
+    },
+    {
+      "event_id": "E000018",
+      "action": "SKIP_EXISTING",
+      "issue_id": 18,
+      "resolved": false
+    },
+    {
+      "event_id": "E000019",
+      "action": "SKIP_EXISTING",
+      "issue_id": 19,
+      "resolved": false
+    },
+    {
+      "event_id": "E000020",
+      "action": "SKIP_EXISTING",
+      "issue_id": 20,
+      "resolved": false
+    }
+  ],
+  "event_issue_map": {
+    "E000001": 1,
+    "E000002": 2,
+    "E000003": 3,
+    "E000004": 4,
+    "E000005": 5,
+    "E000006": 6,
+    "E000007": 7,
+    "E000008": 8,
+    "E000009": 9,
+    "E000010": 10,
+    "E000011": 11,
+    "E000012": 12,
+    "E000013": 13,
+    "E000014": 14,
+    "E000015": 15,
+    "E000016": 16,
+    "E000017": 17,
+    "E000018": 18,
+    "E000019": 19,
+    "E000020": 20
+  },
+  "annotations_before_sha256": "df736d83c7561a8a5f42960bf0fb6ce9077fbdbc9b422d22ee0454d5374e6424",
+  "annotations_after_sha256": "df736d83c7561a8a5f42960bf0fb6ce9077fbdbc9b422d22ee0454d5374e6424",
+  "evidence_type": "LIVE_TESTED_GET_ONLY",
+  "remote_reconciliation_without_local_mapping": [
+    {
+      "event_id": "E000001",
+      "action": "SKIP_EXISTING",
+      "issue_id": 1,
+      "resolved": true
+    },
+    {
+      "event_id": "E000002",
+      "action": "SKIP_EXISTING",
+      "issue_id": 2,
+      "resolved": false
+    },
+    {
+      "event_id": "E000003",
+      "action": "SKIP_EXISTING",
+      "issue_id": 3,
+      "resolved": false
+    },
+    {
+      "event_id": "E000004",
+      "action": "SKIP_EXISTING",
+      "issue_id": 4,
+      "resolved": false
+    },
+    {
+      "event_id": "E000005",
+      "action": "SKIP_EXISTING",
+      "issue_id": 5,
+      "resolved": false
+    },
+    {
+      "event_id": "E000006",
+      "action": "SKIP_EXISTING",
+      "issue_id": 6,
+      "resolved": false
+    },
+    {
+      "event_id": "E000007",
+      "action": "SKIP_EXISTING",
+      "issue_id": 7,
+      "resolved": false
+    },
+    {
+      "event_id": "E000008",
+      "action": "SKIP_EXISTING",
+      "issue_id": 8,
+      "resolved": false
+    },
+    {
+      "event_id": "E000009",
+      "action": "SKIP_EXISTING",
+      "issue_id": 9,
+      "resolved": false
+    },
+    {
+      "event_id": "E000010",
+      "action": "SKIP_EXISTING",
+      "issue_id": 10,
+      "resolved": false
+    },
+    {
+      "event_id": "E000011",
+      "action": "SKIP_EXISTING",
+      "issue_id": 11,
+      "resolved": false
+    },
+    {
+      "event_id": "E000012",
+      "action": "SKIP_EXISTING",
+      "issue_id": 12,
+      "resolved": false
+    },
+    {
+      "event_id": "E000013",
+      "action": "SKIP_EXISTING",
+      "issue_id": 13,
+      "resolved": false
+    },
+    {
+      "event_id": "E000014",
+      "action": "SKIP_EXISTING",
+      "issue_id": 14,
+      "resolved": false
+    },
+    {
+      "event_id": "E000015",
+      "action": "SKIP_EXISTING",
+      "issue_id": 15,
+      "resolved": false
+    },
+    {
+      "event_id": "E000016",
+      "action": "SKIP_EXISTING",
+      "issue_id": 16,
+      "resolved": false
+    },
+    {
+      "event_id": "E000017",
+      "action": "SKIP_EXISTING",
+      "issue_id": 17,
+      "resolved": false
+    },
+    {
+      "event_id": "E000018",
+      "action": "SKIP_EXISTING",
+      "issue_id": 18,
+      "resolved": false
+    },
+    {
+      "event_id": "E000019",
+      "action": "SKIP_EXISTING",
+      "issue_id": 19,
+      "resolved": false
+    },
+    {
+      "event_id": "E000020",
+      "action": "SKIP_EXISTING",
+      "issue_id": 20,
+      "resolved": false
+    }
+  ],
+  "source_plan_matched": true,
+  "human_review_status": "PREPARED_NOT_EXECUTED"
+}

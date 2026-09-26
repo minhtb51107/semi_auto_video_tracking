@@ -1,0 +1,63 @@
+{
+  "started_utc": "2026-09-22T17:25:44.115454+00:00",
+  "protected_hashes": {
+    "tools\\check_mot_labels.py": "5eff23b86b54c593c15db52972ada8cf22324629e88da19494a1444c04e3199e",
+    "tools\\evaluate_tracking.py": "00527cd430295901a92be038f633bc3ec30f48ecbe46aea6676f68c6e7f784b6",
+    "tools\\motlib.py": "bdba763e94753bc45c1e6312a4460a184382433a6f9485f1d75cda46d8f9dbe0",
+    "tools\\reproduce_mvp.py": "37f865b4e9c5857f5fa966d87fa57265e3a77b452ece3c20f18210177eb8eb85",
+    "tools\\review_tracks.py": "cc035e26bfb111f6b0fd3c0acd1c24b57d5a431796df2731df0a305a8a6cccfd",
+    "tools\\run_tracker.py": "00e6095a67ae227aacf7e063bd83385f4cf98fd067b3fab4224b6c738cb2ada1",
+    "tools\\validate_review_flags.py": "f0ada24d64c0332bfd88eefa5d261c71eadf56962f549589edc998593a1142bc",
+    "tools\\video_to_clip.py": "c3fa2034887a0c392508da3e0e58e7fb86e508b55f7eadb1e62ff1d9086c9365",
+    "tools\\visualize_tracks.py": "829884e59091d99280d81af2552d73fcbd4301b067410586b6b850038ff02294",
+    "configs\\review_thresholds.json": "1e5fc143bcc7213fc45067059cd323a38b5e14ab7e9158013196c5a800a1155e",
+    "yolo26n.pt": "9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef",
+    "docs\\EXTERNAL_DATASET.md": "ba9720e6c69970505771df23e05b0f71286a1da3530cf4624d8e710ea18c6ea4",
+    ".venv\\Lib\\site-packages\\ultralytics\\cfg\\trackers\\bytetrack.yaml": "395701d947a749179dee3e327b1181b730c4ca98e7cac5a2ab05280aae573b8b"
+  },
+  "gt_semantically_read": false,
+  "commands": [
+    {
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/run_tracker.py",
+        "--clip",
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\data\\external_validation\\kitti_0001\\clip",
+        "--model",
+        "yolo26n.pt",
+        "--tracker",
+        "bytetrack.yaml",
+        "--device",
+        "cpu",
+        "--out",
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\outputs\\external_validation\\kitti_0001\\tracks.txt"
+      ],
+      "start_utc": "2026-09-22T17:25:45.948764+00:00",
+      "end_utc": "2026-09-22T17:25:58.146213+00:00",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/review_tracks.py",
+        "--tracks",
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\outputs\\external_validation\\kitti_0001\\tracks.txt",
+        "--out-dir",
+        "D:\\LCOM108_NMLT\\code\\100_bai_code\\tep_chua_python\\semi_auto_video_tracking\\outputs\\external_validation\\kitti_0001\\review"
+      ],
+      "start_utc": "2026-09-22T17:25:58.146315+00:00",
+      "end_utc": "2026-09-22T17:25:58.415816+00:00",
+      "exit_code": 0
+    }
+  ],
+  "locked_utc": "2026-09-22T17:25:58.433353+00:00",
+  "outputs": {
+    "outputs\\external_validation\\kitti_0001\\tracks.txt": "cb76d020a6ad1e2c851f772c872b83d0ccf17e1867af699a0fb93b4e47d4b422",
+    "outputs\\external_validation\\kitti_0001\\review\\review_flags.csv": "b8f3a6ef1afafc23d8e097fcc60c9c9117d7e06a8c78a408c449e40160189223",
+    "outputs\\external_validation\\kitti_0001\\review\\review_flags.json": "39d8170911d32c0b74ba91d38ad53350e030daacbaca1fbd5701001fefe84943"
+  }
+}

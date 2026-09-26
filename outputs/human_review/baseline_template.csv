@@ -1,0 +1,1 @@
+session_id,reviewer,sequence,mode,started_at,ended_at,active_seconds,wall_seconds,reviewed_frames,findings_reported,correction_actions_self_reported,finding_id,start_frame,end_frame,tracks,fix_type,note

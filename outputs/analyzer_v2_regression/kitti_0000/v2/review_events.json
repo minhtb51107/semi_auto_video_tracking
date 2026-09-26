@@ -1,0 +1,205 @@
+{
+  "schema_version": 2,
+  "events": [
+    {
+      "track_id": 26,
+      "related_track_ids": [],
+      "start_frame": 24,
+      "end_frame": 26,
+      "anchor_frame": 26,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000001"
+      ],
+      "context_start": 22,
+      "context_end": 28,
+      "event_id": "E000001"
+    },
+    {
+      "track_id": 26,
+      "related_track_ids": [],
+      "start_frame": 26,
+      "end_frame": 28,
+      "anchor_frame": 28,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000002"
+      ],
+      "context_start": 24,
+      "context_end": 30,
+      "event_id": "E000002"
+    },
+    {
+      "track_id": 26,
+      "related_track_ids": [],
+      "start_frame": 29,
+      "end_frame": 31,
+      "anchor_frame": 31,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000003"
+      ],
+      "context_start": 27,
+      "context_end": 33,
+      "event_id": "E000003"
+    },
+    {
+      "track_id": 26,
+      "related_track_ids": [],
+      "start_frame": 31,
+      "end_frame": 33,
+      "anchor_frame": 33,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000004"
+      ],
+      "context_start": 29,
+      "context_end": 35,
+      "event_id": "E000004"
+    },
+    {
+      "track_id": 26,
+      "related_track_ids": [],
+      "start_frame": 35,
+      "end_frame": 38,
+      "anchor_frame": 38,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000005"
+      ],
+      "context_start": 33,
+      "context_end": 40,
+      "event_id": "E000005"
+    },
+    {
+      "track_id": 112,
+      "related_track_ids": [],
+      "start_frame": 103,
+      "end_frame": 105,
+      "anchor_frame": 105,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000006"
+      ],
+      "context_start": 101,
+      "context_end": 107,
+      "event_id": "E000006"
+    },
+    {
+      "track_id": 152,
+      "related_track_ids": [],
+      "start_frame": 112,
+      "end_frame": 122,
+      "anchor_frame": 122,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000007",
+        "F000008"
+      ],
+      "context_start": 110,
+      "context_end": 124,
+      "event_id": "E000007"
+    },
+    {
+      "track_id": 187,
+      "related_track_ids": [],
+      "start_frame": 129,
+      "end_frame": 145,
+      "anchor_frame": 145,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000010",
+        "F000011"
+      ],
+      "context_start": 127,
+      "context_end": 147,
+      "event_id": "E000008"
+    },
+    {
+      "track_id": 229,
+      "related_track_ids": [],
+      "start_frame": 133,
+      "end_frame": 148,
+      "anchor_frame": 148,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000013",
+        "F000014"
+      ],
+      "context_start": 131,
+      "context_end": 150,
+      "event_id": "E000009"
+    },
+    {
+      "track_id": 322,
+      "related_track_ids": [
+        112
+      ],
+      "start_frame": 135,
+      "end_frame": 137,
+      "anchor_frame": 137,
+      "reasons": [
+        "possible_fragmentation"
+      ],
+      "raw_flag_ids": [
+        "F000009"
+      ],
+      "context_start": 133,
+      "context_end": 139,
+      "event_id": "E000010"
+    },
+    {
+      "track_id": 319,
+      "related_track_ids": [],
+      "start_frame": 144,
+      "end_frame": 146,
+      "anchor_frame": 146,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000012"
+      ],
+      "context_start": 142,
+      "context_end": 148,
+      "event_id": "E000011"
+    },
+    {
+      "track_id": 363,
+      "related_track_ids": [],
+      "start_frame": 150,
+      "end_frame": 152,
+      "anchor_frame": 152,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000015"
+      ],
+      "context_start": 148,
+      "context_end": 154,
+      "event_id": "E000012"
+    }
+  ]
+}

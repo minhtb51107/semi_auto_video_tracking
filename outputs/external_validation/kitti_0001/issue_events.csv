@@ -1,0 +1,7 @@
+﻿event_id,frame_id,end_frame,gt_track_id,pred_track_id,error_type,analyzer_flagged,validation_status,note
+E1,20,31,10,,missed_gt_track,False,TRUE_ISSUE,G10/KITTI9: visible car has no matched prediction in all12 frames; images/G10_context.jpg
+E2,23,24,93,85,duplicate_prediction,False,TRUE_ISSUE,P85 duplicates P77 on G93/KITTI92 in both frames; P77 gets CLEAR match. images/frames/000024.jpg
+E3,23,26,95;96,54,possible_identity_merge,False,UNCERTAIN,"Best IoU G96->G95 at23, returnsG96 at25; CLEAR return26. Overlapping boxes/occlusion; reference association conflict confirmed, physical identity error not independently resolved. images/P54_identity_context.jpg"
+E4,1,31,7,5;60,fragmentation_candidate,False,UNCERTAIN,"Best-IoU diagnostic uses P5 thenP60, but P5 matches G5 throughout and overlaps P60 lifetime17-31. Not confirmed temporal split. images/G7_context.jpg"
+E5,1,1,,7,large_localization_error_candidate,False,UNCERTAIN,"Partial boundary box with no target match; ambiguous target extent, not automatically hallucination. images/fp_candidates.jpg"
+E6,17,30,,64,ghost_or_identity_reuse_candidate,True,UNCERTAIN,"Partial boundary vehicles, frame30 strongDontCare. No confirmed ghost; already targeted by gap/reappeared. images/P64_context.jpg"

@@ -1,0 +1,156 @@
+{
+  "sequence": "0000",
+  "frames": 154,
+  "gt_boxes": 535,
+  "gt_tracks": 12,
+  "pred_boxes": 534,
+  "pred_tracks": 27,
+  "flags": 15,
+  "raw_groups": 12,
+  "events": 11,
+  "flag_verdicts": {
+    "TRUE_ISSUE": 11,
+    "UNCERTAIN": 4
+  },
+  "event_verdicts": {
+    "TRUE_ISSUE": 8,
+    "UNCERTAIN": 3
+  },
+  "candidate_types": {
+    "severe_track_undercoverage": 1,
+    "duplicate_prediction": 2,
+    "gt_to_pred_id_switch": 11,
+    "possible_identity_merge": 3,
+    "fragmentation_candidate": 5,
+    "ghost_candidate": 9,
+    "large_localization_error_candidate": 16
+  },
+  "raw_metrics": {
+    "HOTA": 0.44,
+    "DetA": 0.4933,
+    "AssA": 0.3952,
+    "LocA": 0.7708,
+    "IDF1": 0.565,
+    "IDTP": 302,
+    "IDFP": 232,
+    "IDFN": 233,
+    "MOTA": 0.514,
+    "MOTP": 0.7318,
+    "IDSW": 11,
+    "FP": 124,
+    "FN": 125,
+    "GT_boxes": 535,
+    "PRED_boxes": 534
+  },
+  "kitti_metrics": {
+    "HOTA": 0.47941538237962183,
+    "DetA": 0.46836159504939046,
+    "AssA": 0.5100585476263795,
+    "LocA": 0.7327932039673675,
+    "IDF1": 0.6172248803827751,
+    "IDTP": 129,
+    "IDFP": 74,
+    "IDFN": 86,
+    "MOTA": 0.4046511627906977,
+    "MOTP": 0.6884618553451395,
+    "IDSW": 10,
+    "FP": 53,
+    "FN": 65,
+    "GT_boxes": 215,
+    "PRED_boxes": 203
+  },
+  "scope": [
+    [
+      22,
+      40
+    ],
+    [
+      101,
+      107
+    ],
+    [
+      110,
+      124
+    ],
+    [
+      127,
+      154
+    ]
+  ],
+  "flagged_frames": 12,
+  "confirmed_missed": [
+    {
+      "event_id": "M001",
+      "error_type": "severe_track_undercoverage",
+      "start_frame": 131,
+      "end_frame": 154,
+      "gt_track_id": 12,
+      "pred_track_id": null,
+      "related_track_id": null,
+      "analyzer_targeted": false,
+      "note": "No CLEAR match across 24 GT boxes",
+      "evidence_image": "images/M001.jpg",
+      "verdict": "TRUE_ISSUE",
+      "evidence_note": "G12 Car persists f131-154, 0/24 raw CLEAR matches; only 2/24 frames have any IoU>=0.5. First six GT rows f131-136 are truncated/ignored; f137-154 are 18 TARGET_CAR rows. Images M001/M043-M046 show the dark car between foreground Van G9 and white G14 without stable coverage. Confirm severe undercoverage on eligible segment f137-154, NOT zero detections ever.",
+      "review_event_id": "M001",
+      "confirmed_event_id": "U001",
+      "gt_association": "12",
+      "dontcare_status": "Counter()"
+    },
+    {
+      "event_id": "M002",
+      "error_type": "duplicate_prediction",
+      "start_frame": 99,
+      "end_frame": 99,
+      "gt_track_id": 4,
+      "pred_track_id": 26,
+      "related_track_id": 140,
+      "analyzer_targeted": false,
+      "note": "Candidate overlap in frames [99]; verify physical duplication visually",
+      "evidence_image": "images/M002.jpg",
+      "verdict": "TRUE_ISSUE",
+      "evidence_note": "At f99 P26 and P140 are almost identical boxes on the same orange Van G4 (mutual IoU >0.99; both reference IoU >0.71; DontCare IoA=0). Adapter removes P26 as Van but leaves unmatched duplicate P140. Real duplicate in vehicle annotation; not evidence of a second Car.",
+      "review_event_id": "M002",
+      "confirmed_event_id": "U002",
+      "gt_association": "{4: 86}",
+      "dontcare_status": "Counter({'none': 1})"
+    },
+    {
+      "event_id": "M004",
+      "error_type": "gt_to_pred_id_switch",
+      "start_frame": 55,
+      "end_frame": 55,
+      "gt_track_id": 1,
+      "pred_track_id": 73,
+      "related_track_id": 1,
+      "analyzer_targeted": false,
+      "note": "CLEAR switch; inspect context",
+      "evidence_image": "images/M004.jpg",
+      "verdict": "TRUE_ISSUE",
+      "evidence_note": "White Van G1 tracked P1 through f47 then P73 f55 after missing f48-54. Same physical Van remains in view; no analyzer flag for the split. Review images/M004_extended.jpg. Van annotation scope, not Car IDSW.",
+      "review_event_id": "M004",
+      "confirmed_event_id": "U003",
+      "gt_association": "{1: 30}",
+      "dontcare_status": "Counter({'none': 1})"
+    },
+    {
+      "event_id": "M005",
+      "error_type": "gt_to_pred_id_switch",
+      "start_frame": 95,
+      "end_frame": 95,
+      "gt_track_id": 1,
+      "pred_track_id": 112,
+      "related_track_id": 73,
+      "analyzer_targeted": false,
+      "note": "CLEAR switch; inspect context",
+      "evidence_image": "images/M005.jpg",
+      "verdict": "TRUE_ISSUE",
+      "evidence_note": "G1 white Van P73 ends f84; P112 starts f88 and CLEAR rematches only f95 after occlusion by orange Van. Same physical vehicle has a new ID. Missing/visible-only boxes during occlusion are not each counted as errors. Review images/M005_extended.jpg. Van annotation scope.",
+      "review_event_id": "M005",
+      "confirmed_event_id": "U004",
+      "gt_association": "{1: 40}",
+      "dontcare_status": "Counter({'none': 1})"
+    }
+  ],
+  "hashes_unchanged": true
+}

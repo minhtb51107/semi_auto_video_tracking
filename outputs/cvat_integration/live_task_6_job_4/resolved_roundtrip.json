@@ -1,0 +1,139 @@
+{
+  "evidence_type": "LIVE_TESTED",
+  "checked_at": "2026-09-26T20:31:26.179747+00:00",
+  "task_id": 6,
+  "job_id": 4,
+  "user_reported_manual_resolution": true,
+  "resolved_ids": [
+    1
+  ],
+  "other_19_resolved_unchanged": true,
+  "payloads_matched": 20,
+  "annotations_sha256": "df736d83c7561a8a5f42960bf0fb6ce9077fbdbc9b422d22ee0454d5374e6424",
+  "annotations_unchanged": true,
+  "issue_states": [
+    {
+      "event_id": "E000001",
+      "action": "SKIP_EXISTING",
+      "issue_id": 1,
+      "resolved": true
+    },
+    {
+      "event_id": "E000002",
+      "action": "SKIP_EXISTING",
+      "issue_id": 2,
+      "resolved": false
+    },
+    {
+      "event_id": "E000003",
+      "action": "SKIP_EXISTING",
+      "issue_id": 3,
+      "resolved": false
+    },
+    {
+      "event_id": "E000004",
+      "action": "SKIP_EXISTING",
+      "issue_id": 4,
+      "resolved": false
+    },
+    {
+      "event_id": "E000005",
+      "action": "SKIP_EXISTING",
+      "issue_id": 5,
+      "resolved": false
+    },
+    {
+      "event_id": "E000006",
+      "action": "SKIP_EXISTING",
+      "issue_id": 6,
+      "resolved": false
+    },
+    {
+      "event_id": "E000007",
+      "action": "SKIP_EXISTING",
+      "issue_id": 7,
+      "resolved": false
+    },
+    {
+      "event_id": "E000008",
+      "action": "SKIP_EXISTING",
+      "issue_id": 8,
+      "resolved": false
+    },
+    {
+      "event_id": "E000009",
+      "action": "SKIP_EXISTING",
+      "issue_id": 9,
+      "resolved": false
+    },
+    {
+      "event_id": "E000010",
+      "action": "SKIP_EXISTING",
+      "issue_id": 10,
+      "resolved": false
+    },
+    {
+      "event_id": "E000011",
+      "action": "SKIP_EXISTING",
+      "issue_id": 11,
+      "resolved": false
+    },
+    {
+      "event_id": "E000012",
+      "action": "SKIP_EXISTING",
+      "issue_id": 12,
+      "resolved": false
+    },
+    {
+      "event_id": "E000013",
+      "action": "SKIP_EXISTING",
+      "issue_id": 13,
+      "resolved": false
+    },
+    {
+      "event_id": "E000014",
+      "action": "SKIP_EXISTING",
+      "issue_id": 14,
+      "resolved": false
+    },
+    {
+      "event_id": "E000015",
+      "action": "SKIP_EXISTING",
+      "issue_id": 15,
+      "resolved": false
+    },
+    {
+      "event_id": "E000016",
+      "action": "SKIP_EXISTING",
+      "issue_id": 16,
+      "resolved": false
+    },
+    {
+      "event_id": "E000017",
+      "action": "SKIP_EXISTING",
+      "issue_id": 17,
+      "resolved": false
+    },
+    {
+      "event_id": "E000018",
+      "action": "SKIP_EXISTING",
+      "issue_id": 18,
+      "resolved": false
+    },
+    {
+      "event_id": "E000019",
+      "action": "SKIP_EXISTING",
+      "issue_id": 19,
+      "resolved": false
+    },
+    {
+      "event_id": "E000020",
+      "action": "SKIP_EXISTING",
+      "issue_id": 20,
+      "resolved": false
+    }
+  ],
+  "comparison_scope": "event ID, frame, position, exact initial comment including reason/context; resolved state. Historical owner/assignee snapshots unavailable.",
+  "phase_4_status": "COMPLETE",
+  "human_review_status": "PREPARED_NOT_EXECUTED"
+}

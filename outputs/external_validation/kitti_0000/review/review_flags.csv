@@ -1,0 +1,16 @@
+frame_id,track_id,reason,observed_value,threshold,previous_frame_id,related_track_id
+26,26,track_gap,1,1,24,
+28,26,track_gap,1,1,26,
+31,26,track_gap,1,1,29,
+33,26,track_gap,1,1,31,
+38,26,track_gap,2,1,35,
+105,112,track_gap,1,1,103,
+122,152,track_gap,9,1,112,
+122,152,track_reappeared,9,5,112,
+137,322,possible_fragmentation,0.3787800002165332,0.3,135,112
+145,187,track_gap,15,1,129,
+145,187,track_reappeared,15,5,129,
+146,319,track_gap,1,1,144,
+148,229,track_gap,14,1,133,
+148,229,track_reappeared,14,5,133,
+152,363,track_gap,1,1,150,

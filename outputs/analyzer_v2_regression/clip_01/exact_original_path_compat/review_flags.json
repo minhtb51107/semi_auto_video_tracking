@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "interpretation": "heuristic_review_candidates_not_ground_truth",
+  "input_file": "outputs\\runs\\renamed_verified\\clip_01\\tracks.txt",
+  "input_sha256": "29354e2b3d906ab88018bcfb1aa6dce94902da285b0e14412cbe33426cd8abb2",
+  "frame_index_base": 1,
+  "config": {
+    "status": "experimental_uncalibrated",
+    "track_gap_min_missing_frames": 1,
+    "track_reappeared_min_missing_frames": 5,
+    "large_motion_jump_max_diagonals": 1.5,
+    "abnormal_size_change_max_ratio": 2.0,
+    "low_consecutive_iou_min": 0.1,
+    "fragmentation_max_frame_distance": 5,
+    "fragmentation_min_endpoint_iou": 0.3
+  },
+  "summary": {
+    "rows": 622,
+    "tracks": 12,
+    "observed_frames": 190,
+    "flags": 27,
+    "flagged_frames": 20,
+    "empty_input": false
+  },
+  "flags": [
+    {
+      "frame_id": 17,
+      "track_id": 2,
+      "reason": "track_gap",
+      "observed_value": 3,
+      "threshold": 1,
+      "previous_frame_id": 13,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 19,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 17,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 22,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 20,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 28,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 4,
+      "threshold": 1,
+      "previous_frame_id": 23,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 31,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 29,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 39,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 6,
+      "threshold": 1,
+      "previous_frame_id": 32,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 39,
+      "track_id": 12,
+      "reason": "track_reappeared",
+      "observed_value": 6,
+      "threshold": 5,
+      "previous_frame_id": 32,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 42,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 39,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 50,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 7,
+      "threshold": 1,
+      "previous_frame_id": 42,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 50,
+      "track_id": 12,
+      "reason": "track_reappeared",
+      "observed_value": 7,
+      "threshold": 5,
+      "previous_frame_id": 42,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 56,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 4,
+      "threshold": 1,
+      "previous_frame_id": 51,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 59,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 57,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 63,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 60,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 85,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 8,
+      "threshold": 1,
+      "previous_frame_id": 76,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 85,
+      "track_id": 12,
+      "reason": "track_reappeared",
+      "observed_value": 8,
+      "threshold": 5,
+      "previous_frame_id": 76,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 98,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 8,
+      "threshold": 1,
+      "previous_frame_id": 89,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 98,
+      "track_id": 12,
+      "reason": "track_reappeared",
+      "observed_value": 8,
+      "threshold": 5,
+      "previous_frame_id": 89,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 105,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 6,
+      "threshold": 1,
+      "previous_frame_id": 98,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 105,
+      "track_id": 12,
+      "reason": "track_reappeared",
+      "observed_value": 6,
+      "threshold": 5,
+      "previous_frame_id": 98,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 120,
+      "track_id": 47,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 118,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 149,
+      "track_id": 44,
+      "reason": "track_gap",
+      "observed_value": 26,
+      "threshold": 1,
+      "previous_frame_id": 122,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 149,
+      "track_id": 44,
+      "reason": "track_reappeared",
+      "observed_value": 26,
+      "threshold": 5,
+      "previous_frame_id": 122,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 155,
+      "track_id": 44,
+      "reason": "track_gap",
+      "observed_value": 5,
+      "threshold": 1,
+      "previous_frame_id": 149,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 155,
+      "track_id": 44,
+      "reason": "track_reappeared",
+      "observed_value": 5,
+      "threshold": 5,
+      "previous_frame_id": 149,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 157,
+      "track_id": 44,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 155,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 164,
+      "track_id": 44,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 162,
+      "related_track_id": null
+    },
+    {
+      "frame_id": 173,
+      "track_id": 44,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 171,
+      "related_track_id": null
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "preserved_files": 1614,
+  "all_preserved": true,
+  "frozen_runtime_unchanged": true,
+  "original_path_compatibility": [
+    {
+      "dataset": "clip_01",
+      "historical_csv_json_byte_equal": true
+    },
+    {
+      "dataset": "clip_02",
+      "historical_csv_json_byte_equal": true
+    },
+    {
+      "dataset": "kitti_0001",
+      "historical_csv_json_byte_equal": true
+    },
+    {
+      "dataset": "kitti_0000",
+      "historical_csv_json_byte_equal": true
+    }
+  ],
+  "tests_passed": 33
+}

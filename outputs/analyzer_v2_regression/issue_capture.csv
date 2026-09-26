@@ -1,0 +1,25 @@
+dataset,issue_id,issue_type,v1_targeted,v2_targeted,source,note
+clip_01,P2_gap_13_17,visible_gap,True,True,outputs/validation/flag_labels.csv,Same legacy evidence preserved
+clip_01,P12_ghost,ghost_track,True,True,outputs/validation/flag_labels.csv,Repeated flags refer to one physical spurious track
+clip_01,P44_ghost,ghost_track,True,True,outputs/validation/flag_labels.csv,Repeated flags refer to one physical spurious track
+clip_01,P47_gap,visible_gap,True,True,outputs/validation/flag_labels.csv,Same legacy evidence preserved
+clip_01,G5_switch_94,identity_switch_fragmentation,False,False,docs/VALIDATION_RESULTS.md,Two diagnostic rows describe one physical event; not fixed by duplicate rule
+clip_02,P9_gap_30_33,visible_gap,True,True,outputs/validation/flag_labels.csv,First missing interval
+clip_02,P9_gap_33_35,visible_gap,True,True,outputs/validation/flag_labels.csv,Second missing interval
+kitti_0001,P8_1_4,visible_gap,True,True,outputs/external_validation/kitti_0001/flag_labels.csv,Legacy event preserved
+kitti_0001,P8_4_7,visible_gap,True,True,outputs/external_validation/kitti_0001/flag_labels.csv,Legacy event preserved
+kitti_0001,P8_17_19,visible_gap,True,True,outputs/external_validation/kitti_0001/flag_labels.csv,Legacy event preserved
+kitti_0001,E1_G10,missed_track,False,False,outputs/external_validation/kitti_0001/issue_events.csv,No reference-free coverage rule
+kitti_0001,E2_P77_P85,duplicate_prediction,False,True,outputs/external_validation/kitti_0001/issue_events.csv,New possible_duplicate event
+kitti_0000,R001,visible_gap,True,True,outputs/external_validation/kitti_0000/review_events.csv,Legacy event preserved
+kitti_0000,R002,visible_gap,True,True,outputs/external_validation/kitti_0000/review_events.csv,Legacy event preserved
+kitti_0000,R003,visible_gap,True,True,outputs/external_validation/kitti_0000/review_events.csv,Legacy event preserved
+kitti_0000,R004,visible_gap,True,True,outputs/external_validation/kitti_0000/review_events.csv,Legacy event preserved
+kitti_0000,R005,visible_gap,True,True,outputs/external_validation/kitti_0000/review_events.csv,Legacy event preserved
+kitti_0000,R008,fragmentation,True,True,outputs/external_validation/kitti_0000/review_events.csv,Legacy event preserved
+kitti_0000,R009,identity_reuse_handoff,True,True,outputs/external_validation/kitti_0000/review_events.csv,Offline R009/R010 shared physical episode remains two runtime groups
+kitti_0000,R011,identity_reuse,True,True,outputs/external_validation/kitti_0000/review_events.csv,Legacy event preserved
+kitti_0000,U001_G12,severe_undercoverage,False,False,outputs/external_validation/kitti_0000/confirmed_missed_events.csv,No stable prediction coverage
+kitti_0000,U002_P26_P140,duplicate_prediction,False,False,outputs/external_validation/kitti_0000/confirmed_missed_events.csv,Only one shared frame; temporal requirement prevents alert
+kitti_0000,U003_G1,fragmentation,False,False,outputs/external_validation/kitti_0000/confirmed_missed_events.csv,No new identity rule
+kitti_0000,U004_G1,fragmentation,False,False,outputs/external_validation/kitti_0000/confirmed_missed_events.csv,No new identity rule

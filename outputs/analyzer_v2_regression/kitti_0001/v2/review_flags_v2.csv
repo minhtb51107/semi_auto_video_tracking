@@ -1,0 +1,9 @@
+raw_flag_id,frame_id,track_id,related_track_id,reason,observed_value,threshold,previous_frame_id,start_frame,end_frame,explanation
+F000001,4,8,,track_gap,2,1,1,1,4,
+F000002,7,8,,track_gap,2,1,4,4,7,
+F000003,19,8,,track_gap,1,1,17,17,19,
+F000004,24,77,85,possible_duplicate,"{""consecutive_frames"": 2, ""max_center_distance"": 0.03227948419237709, ""max_size_ratio"": 1.119650205761317, ""min_iou"": 0.8698080756195685}","{""duplicate_max_center_distance"": 0.1, ""duplicate_max_size_ratio"": 1.35, ""duplicate_min_consecutive_frames"": 2, ""duplicate_min_iou"": 0.75}",23,23,24,Different IDs coexist with similar boxes in consecutive frames; geometry is not identity proof.
+F000005,29,92,,track_gap,2,1,26,26,29,
+F000006,30,64,,track_gap,12,1,17,17,30,
+F000007,30,64,,track_reappeared,12,5,17,17,30,
+F000008,31,92,,track_gap,1,1,29,29,31,

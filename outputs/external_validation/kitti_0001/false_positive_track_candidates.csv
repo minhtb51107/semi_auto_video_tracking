@@ -1,0 +1,10 @@
+﻿pred_track_id,boxes,first_frame,last_frame,boxes_at_least_half_in_dontcare,classification,note
+6,17,1,17,17,UNCERTAIN,No best-IoU vehicle GT match; not confirmed false-positive object without visual/domain adjudication.
+7,1,1,1,0,UNCERTAIN,No best-IoU vehicle GT match; not confirmed false-positive object without visual/domain adjudication.
+29,1,10,10,1,UNCERTAIN,No best-IoU vehicle GT match; not confirmed false-positive object without visual/domain adjudication.
+32,6,10,15,6,UNCERTAIN,No best-IoU vehicle GT match; not confirmed false-positive object without visual/domain adjudication.
+59,1,17,17,1,UNCERTAIN,No best-IoU vehicle GT match; not confirmed false-positive object without visual/domain adjudication.
+64,2,17,30,1,UNCERTAIN,No best-IoU vehicle GT match; not confirmed false-positive object without visual/domain adjudication.
+80,11,21,31,11,UNCERTAIN,No best-IoU vehicle GT match; not confirmed false-positive object without visual/domain adjudication.
+85,2,23,24,0,TRUE_ISSUE,Confirmed duplicate of P77 on vehicle G93 at frames23-24; see issue_events.csv E2 and frame images. Not a hallucinated object.
+98,6,26,31,6,UNCERTAIN,No best-IoU vehicle GT match; not confirmed false-positive object without visual/domain adjudication.

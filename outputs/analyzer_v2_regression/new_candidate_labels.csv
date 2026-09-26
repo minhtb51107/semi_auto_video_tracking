@@ -1,0 +1,2 @@
+dataset,raw_flag_id,track_id,related_track_id,start_frame,end_frame,verdict,evidence,note
+kitti_0001,F000004,77,85,23,24,TRUE_ISSUE,evidence/kitti_0001_000024.jpg,Previously confirmed E2 duplicate on Van G93; visual context rechecked; one event not two frame errors

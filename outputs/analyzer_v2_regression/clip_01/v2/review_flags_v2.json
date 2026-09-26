@@ -1,0 +1,688 @@
+{
+  "schema_version": 2,
+  "interpretation": "experimental_heuristic_candidates_not_ground_truth",
+  "v1_config": {
+    "status": "experimental_uncalibrated",
+    "track_gap_min_missing_frames": 1,
+    "track_reappeared_min_missing_frames": 5,
+    "large_motion_jump_max_diagonals": 1.5,
+    "abnormal_size_change_max_ratio": 2.0,
+    "low_consecutive_iou_min": 0.1,
+    "fragmentation_max_frame_distance": 5,
+    "fragmentation_min_endpoint_iou": 0.3
+  },
+  "v2_config": {
+    "status": "experimental_uncalibrated",
+    "duplicate_min_iou": 0.75,
+    "duplicate_max_center_distance": 0.1,
+    "duplicate_max_size_ratio": 1.35,
+    "duplicate_min_consecutive_frames": 2,
+    "context_padding": 2
+  },
+  "total_frames": 190,
+  "context_limit": "provided_total_frames",
+  "flags": [
+    {
+      "frame_id": 17,
+      "track_id": 2,
+      "reason": "track_gap",
+      "observed_value": 3,
+      "threshold": 1,
+      "previous_frame_id": 13,
+      "related_track_id": null,
+      "start_frame": 13,
+      "end_frame": 17,
+      "raw_flag_id": "F000001"
+    },
+    {
+      "frame_id": 19,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 17,
+      "related_track_id": null,
+      "start_frame": 17,
+      "end_frame": 19,
+      "raw_flag_id": "F000002"
+    },
+    {
+      "frame_id": 22,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 20,
+      "related_track_id": null,
+      "start_frame": 20,
+      "end_frame": 22,
+      "raw_flag_id": "F000003"
+    },
+    {
+      "frame_id": 28,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 4,
+      "threshold": 1,
+      "previous_frame_id": 23,
+      "related_track_id": null,
+      "start_frame": 23,
+      "end_frame": 28,
+      "raw_flag_id": "F000004"
+    },
+    {
+      "frame_id": 31,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 29,
+      "related_track_id": null,
+      "start_frame": 29,
+      "end_frame": 31,
+      "raw_flag_id": "F000005"
+    },
+    {
+      "frame_id": 39,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 6,
+      "threshold": 1,
+      "previous_frame_id": 32,
+      "related_track_id": null,
+      "start_frame": 32,
+      "end_frame": 39,
+      "raw_flag_id": "F000006"
+    },
+    {
+      "frame_id": 39,
+      "track_id": 12,
+      "reason": "track_reappeared",
+      "observed_value": 6,
+      "threshold": 5,
+      "previous_frame_id": 32,
+      "related_track_id": null,
+      "start_frame": 32,
+      "end_frame": 39,
+      "raw_flag_id": "F000007"
+    },
+    {
+      "frame_id": 42,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 39,
+      "related_track_id": null,
+      "start_frame": 39,
+      "end_frame": 42,
+      "raw_flag_id": "F000008"
+    },
+    {
+      "frame_id": 50,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 7,
+      "threshold": 1,
+      "previous_frame_id": 42,
+      "related_track_id": null,
+      "start_frame": 42,
+      "end_frame": 50,
+      "raw_flag_id": "F000009"
+    },
+    {
+      "frame_id": 50,
+      "track_id": 12,
+      "reason": "track_reappeared",
+      "observed_value": 7,
+      "threshold": 5,
+      "previous_frame_id": 42,
+      "related_track_id": null,
+      "start_frame": 42,
+      "end_frame": 50,
+      "raw_flag_id": "F000010"
+    },
+    {
+      "frame_id": 56,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 4,
+      "threshold": 1,
+      "previous_frame_id": 51,
+      "related_track_id": null,
+      "start_frame": 51,
+      "end_frame": 56,
+      "raw_flag_id": "F000011"
+    },
+    {
+      "frame_id": 59,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 57,
+      "related_track_id": null,
+      "start_frame": 57,
+      "end_frame": 59,
+      "raw_flag_id": "F000012"
+    },
+    {
+      "frame_id": 63,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 60,
+      "related_track_id": null,
+      "start_frame": 60,
+      "end_frame": 63,
+      "raw_flag_id": "F000013"
+    },
+    {
+      "frame_id": 85,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 8,
+      "threshold": 1,
+      "previous_frame_id": 76,
+      "related_track_id": null,
+      "start_frame": 76,
+      "end_frame": 85,
+      "raw_flag_id": "F000014"
+    },
+    {
+      "frame_id": 85,
+      "track_id": 12,
+      "reason": "track_reappeared",
+      "observed_value": 8,
+      "threshold": 5,
+      "previous_frame_id": 76,
+      "related_track_id": null,
+      "start_frame": 76,
+      "end_frame": 85,
+      "raw_flag_id": "F000015"
+    },
+    {
+      "frame_id": 98,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 8,
+      "threshold": 1,
+      "previous_frame_id": 89,
+      "related_track_id": null,
+      "start_frame": 89,
+      "end_frame": 98,
+      "raw_flag_id": "F000016"
+    },
+    {
+      "frame_id": 98,
+      "track_id": 12,
+      "reason": "track_reappeared",
+      "observed_value": 8,
+      "threshold": 5,
+      "previous_frame_id": 89,
+      "related_track_id": null,
+      "start_frame": 89,
+      "end_frame": 98,
+      "raw_flag_id": "F000017"
+    },
+    {
+      "frame_id": 105,
+      "track_id": 12,
+      "reason": "track_gap",
+      "observed_value": 6,
+      "threshold": 1,
+      "previous_frame_id": 98,
+      "related_track_id": null,
+      "start_frame": 98,
+      "end_frame": 105,
+      "raw_flag_id": "F000018"
+    },
+    {
+      "frame_id": 105,
+      "track_id": 12,
+      "reason": "track_reappeared",
+      "observed_value": 6,
+      "threshold": 5,
+      "previous_frame_id": 98,
+      "related_track_id": null,
+      "start_frame": 98,
+      "end_frame": 105,
+      "raw_flag_id": "F000019"
+    },
+    {
+      "frame_id": 120,
+      "track_id": 47,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 118,
+      "related_track_id": null,
+      "start_frame": 118,
+      "end_frame": 120,
+      "raw_flag_id": "F000020"
+    },
+    {
+      "frame_id": 149,
+      "track_id": 44,
+      "reason": "track_gap",
+      "observed_value": 26,
+      "threshold": 1,
+      "previous_frame_id": 122,
+      "related_track_id": null,
+      "start_frame": 122,
+      "end_frame": 149,
+      "raw_flag_id": "F000021"
+    },
+    {
+      "frame_id": 149,
+      "track_id": 44,
+      "reason": "track_reappeared",
+      "observed_value": 26,
+      "threshold": 5,
+      "previous_frame_id": 122,
+      "related_track_id": null,
+      "start_frame": 122,
+      "end_frame": 149,
+      "raw_flag_id": "F000022"
+    },
+    {
+      "frame_id": 155,
+      "track_id": 44,
+      "reason": "track_gap",
+      "observed_value": 5,
+      "threshold": 1,
+      "previous_frame_id": 149,
+      "related_track_id": null,
+      "start_frame": 149,
+      "end_frame": 155,
+      "raw_flag_id": "F000023"
+    },
+    {
+      "frame_id": 155,
+      "track_id": 44,
+      "reason": "track_reappeared",
+      "observed_value": 5,
+      "threshold": 5,
+      "previous_frame_id": 149,
+      "related_track_id": null,
+      "start_frame": 149,
+      "end_frame": 155,
+      "raw_flag_id": "F000024"
+    },
+    {
+      "frame_id": 157,
+      "track_id": 44,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 155,
+      "related_track_id": null,
+      "start_frame": 155,
+      "end_frame": 157,
+      "raw_flag_id": "F000025"
+    },
+    {
+      "frame_id": 164,
+      "track_id": 44,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 162,
+      "related_track_id": null,
+      "start_frame": 162,
+      "end_frame": 164,
+      "raw_flag_id": "F000026"
+    },
+    {
+      "frame_id": 173,
+      "track_id": 44,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 171,
+      "related_track_id": null,
+      "start_frame": 171,
+      "end_frame": 173,
+      "raw_flag_id": "F000027"
+    }
+  ],
+  "events": [
+    {
+      "track_id": 2,
+      "related_track_ids": [],
+      "start_frame": 13,
+      "end_frame": 17,
+      "anchor_frame": 17,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000001"
+      ],
+      "context_start": 11,
+      "context_end": 19,
+      "event_id": "E000001"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 17,
+      "end_frame": 19,
+      "anchor_frame": 19,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000002"
+      ],
+      "context_start": 15,
+      "context_end": 21,
+      "event_id": "E000002"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 20,
+      "end_frame": 22,
+      "anchor_frame": 22,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000003"
+      ],
+      "context_start": 18,
+      "context_end": 24,
+      "event_id": "E000003"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 23,
+      "end_frame": 28,
+      "anchor_frame": 28,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000004"
+      ],
+      "context_start": 21,
+      "context_end": 30,
+      "event_id": "E000004"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 29,
+      "end_frame": 31,
+      "anchor_frame": 31,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000005"
+      ],
+      "context_start": 27,
+      "context_end": 33,
+      "event_id": "E000005"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 32,
+      "end_frame": 39,
+      "anchor_frame": 39,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000006",
+        "F000007"
+      ],
+      "context_start": 30,
+      "context_end": 41,
+      "event_id": "E000006"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 39,
+      "end_frame": 42,
+      "anchor_frame": 42,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000008"
+      ],
+      "context_start": 37,
+      "context_end": 44,
+      "event_id": "E000007"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 42,
+      "end_frame": 50,
+      "anchor_frame": 50,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000009",
+        "F000010"
+      ],
+      "context_start": 40,
+      "context_end": 52,
+      "event_id": "E000008"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 51,
+      "end_frame": 56,
+      "anchor_frame": 56,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000011"
+      ],
+      "context_start": 49,
+      "context_end": 58,
+      "event_id": "E000009"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 57,
+      "end_frame": 59,
+      "anchor_frame": 59,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000012"
+      ],
+      "context_start": 55,
+      "context_end": 61,
+      "event_id": "E000010"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 60,
+      "end_frame": 63,
+      "anchor_frame": 63,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000013"
+      ],
+      "context_start": 58,
+      "context_end": 65,
+      "event_id": "E000011"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 76,
+      "end_frame": 85,
+      "anchor_frame": 85,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000014",
+        "F000015"
+      ],
+      "context_start": 74,
+      "context_end": 87,
+      "event_id": "E000012"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 89,
+      "end_frame": 98,
+      "anchor_frame": 98,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000016",
+        "F000017"
+      ],
+      "context_start": 87,
+      "context_end": 100,
+      "event_id": "E000013"
+    },
+    {
+      "track_id": 12,
+      "related_track_ids": [],
+      "start_frame": 98,
+      "end_frame": 105,
+      "anchor_frame": 105,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000018",
+        "F000019"
+      ],
+      "context_start": 96,
+      "context_end": 107,
+      "event_id": "E000014"
+    },
+    {
+      "track_id": 47,
+      "related_track_ids": [],
+      "start_frame": 118,
+      "end_frame": 120,
+      "anchor_frame": 120,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000020"
+      ],
+      "context_start": 116,
+      "context_end": 122,
+      "event_id": "E000015"
+    },
+    {
+      "track_id": 44,
+      "related_track_ids": [],
+      "start_frame": 122,
+      "end_frame": 149,
+      "anchor_frame": 149,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000021",
+        "F000022"
+      ],
+      "context_start": 120,
+      "context_end": 151,
+      "event_id": "E000016"
+    },
+    {
+      "track_id": 44,
+      "related_track_ids": [],
+      "start_frame": 149,
+      "end_frame": 155,
+      "anchor_frame": 155,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000023",
+        "F000024"
+      ],
+      "context_start": 147,
+      "context_end": 157,
+      "event_id": "E000017"
+    },
+    {
+      "track_id": 44,
+      "related_track_ids": [],
+      "start_frame": 155,
+      "end_frame": 157,
+      "anchor_frame": 157,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000025"
+      ],
+      "context_start": 153,
+      "context_end": 159,
+      "event_id": "E000018"
+    },
+    {
+      "track_id": 44,
+      "related_track_ids": [],
+      "start_frame": 162,
+      "end_frame": 164,
+      "anchor_frame": 164,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000026"
+      ],
+      "context_start": 160,
+      "context_end": 166,
+      "event_id": "E000019"
+    },
+    {
+      "track_id": 44,
+      "related_track_ids": [],
+      "start_frame": 171,
+      "end_frame": 173,
+      "anchor_frame": 173,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000027"
+      ],
+      "context_start": 169,
+      "context_end": 175,
+      "event_id": "E000020"
+    }
+  ],
+  "input_file": "outputs\\runs\\renamed_verified\\clip_01\\tracks.txt",
+  "input_sha256": "29354e2b3d906ab88018bcfb1aa6dce94902da285b0e14412cbe33426cd8abb2"
+}

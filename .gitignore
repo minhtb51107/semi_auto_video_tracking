@@ -1,4 +1,7 @@
 .venv/
+.env
+.env.*
+!.env.example
 __pycache__/
 *.py[cod]
 .runtime/
@@ -8,3 +11,28 @@ gold/
 outputs/runs/*/clip_*/img1/
 outputs/runs/*/clip_*/vis_review/
 # Keep small logs, MOT results, review flags and provenance available.
+# Acquired datasets and generated media stay local; source/metrics evidence is selected explicitly.
+data/external_validation/
+outputs/external_validation/**/*.jpg
+outputs/external_validation/**/*.png
+outputs/analyzer_v2_regression/**/*.jpg
+outputs/human_review/packages/
+outputs/human_review/assets/
+outputs/human_review/qa/
+outputs/human_review/collected/
+outputs/human_review/*.html
+outputs/cvat_integration/*.zip
+outputs/cvat_integration/**/snapshot.json
+outputs/cvat_integration/**/push.lock
+outputs/cvat_integration/**/*.tmp
+# Rebuildable or machine-local audit copies (small curated live evidence remains versioned).
+outputs/checkpoint_audit/local_inventory.json
+outputs/human_review/*.json
+outputs/human_review/HUMAN_REVIEW_PROTOCOL.md
+outputs/human_review_preservation_before.json
+outputs/analyzer_v2_regression/*.log
+outputs/external_validation/**/*.log
+outputs/cvat_integration/kitti_*
+outputs/cvat_integration/preservation_before.json
+outputs/cvat_integration/integrity.json
+outputs/cvat_integration/tests.log

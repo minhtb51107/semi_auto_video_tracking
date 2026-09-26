@@ -1,0 +1,80 @@
+{
+  "label_covered_frames": 154,
+  "resolution": [
+    1242,
+    375
+  ],
+  "classes": {
+    "Car": {
+      "boxes": 243,
+      "tracks": 9,
+      "occlusion": {
+        "0.0": 83,
+        "1.0": 55,
+        "2.0": 105
+      },
+      "truncation": {
+        "0.0": 215,
+        "1.0": 21,
+        "2.0": 7
+      },
+      "height_le_25": 0
+    },
+    "Cyclist": {
+      "boxes": 154,
+      "tracks": 1,
+      "occlusion": {
+        "0.0": 154
+      },
+      "truncation": {
+        "0.0": 154
+      },
+      "height_le_25": 0
+    },
+    "DontCare": {
+      "boxes": 378,
+      "tracks": null,
+      "occlusion": {
+        "-1.0": 378
+      },
+      "truncation": {
+        "-1.0": 378
+      },
+      "height_le_25": 12
+    },
+    "Pedestrian": {
+      "boxes": 22,
+      "tracks": 2,
+      "occlusion": {
+        "0.0": 11,
+        "2.0": 10,
+        "1.0": 1
+      },
+      "truncation": {
+        "0.0": 19,
+        "1.0": 3
+      },
+      "height_le_25": 0
+    },
+    "Van": {
+      "boxes": 292,
+      "tracks": 3,
+      "occlusion": {
+        "0.0": 147,
+        "2.0": 70,
+        "1.0": 69,
+        "3.0": 6
+      },
+      "truncation": {
+        "0.0": 257,
+        "2.0": 7,
+        "1.0": 28
+      },
+      "height_le_25": 0
+    }
+  },
+  "mean_vehicle_boxes": 3.4740259740259742,
+  "peak_vehicle_boxes": 10,
+  "mean_car_boxes": 1.577922077922078,
+  "peak_car_boxes": 8
+}

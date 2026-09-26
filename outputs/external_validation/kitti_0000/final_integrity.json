@@ -1,0 +1,31 @@
+{
+  "verified_utc": "2026-09-24T10:33:31.431412+00:00",
+  "checks": 397,
+  "source_images": 154,
+  "all_pass": true,
+  "blind_lock_sha256": "13589698fa7fb0bddd096aae842421983392fe237b1bd3d5026c28b57455c42e",
+  "label_sha256": "97f772a27181dfc7ef51b3e64b86bd42e682753b6855fdc58d259ecbed501fd4",
+  "label_crc_pass": true,
+  "conversion_reproduced": true,
+  "raw_recheck_equal": true,
+  "adapter_recheck_equal": true,
+  "blind_counts": [
+    534,
+    27,
+    15,
+    12
+  ],
+  "raw_flags": 15,
+  "review_events": 11,
+  "confirmed_missed_events": 4,
+  "flag_verdicts": {
+    "TRUE_ISSUE": 11,
+    "UNCERTAIN": 4
+  },
+  "event_verdicts": {
+    "TRUE_ISSUE": 8,
+    "UNCERTAIN": 3
+  },
+  "tests": "25/25 PASS; final_tests.log",
+  "core_and_round1_unchanged": true
+}

@@ -1,0 +1,45 @@
+{
+  "locked_artifacts_unchanged": {
+    "tools\\check_mot_labels.py": true,
+    "tools\\evaluate_tracking.py": true,
+    "tools\\motlib.py": true,
+    "tools\\reproduce_mvp.py": true,
+    "tools\\review_tracks.py": true,
+    "tools\\run_tracker.py": true,
+    "tools\\validate_review_flags.py": true,
+    "tools\\video_to_clip.py": true,
+    "tools\\visualize_tracks.py": true,
+    "configs\\review_thresholds.json": true,
+    "yolo26n.pt": true,
+    "docs\\EXTERNAL_DATASET.md": true,
+    ".venv\\Lib\\site-packages\\ultralytics\\cfg\\trackers\\bytetrack.yaml": true,
+    "outputs\\external_validation\\kitti_0001\\tracks.txt": true,
+    "outputs\\external_validation\\kitti_0001\\review\\review_flags.csv": true,
+    "outputs\\external_validation\\kitti_0001\\review\\review_flags.json": true
+  },
+  "threshold_matches_prior_validation": true,
+  "source_download_checksums_verified": true,
+  "conversion_reproduced_in_memory": true,
+  "blind_locked_utc": "2026-09-22T17:25:58.433353+00:00",
+  "phase_b_record": {
+    "first_semantic_label_read_utc": "2026-09-22T17:26:12.194464+00:00",
+    "after_blind_lock": "2026-09-22T17:25:58.433353+00:00"
+  },
+  "chronology_caveat": "Local process records, not independent proof of first read; PhaseB timestamp was recorded just after the first semantic read, not a filesystem access audit.",
+  "prediction_categories": {
+    "MATCHED_TARGET": 169,
+    "DONTCARE_OVERLAP": 50,
+    "REGULAR_FP": 5,
+    "AMBIGUOUS": 4
+  },
+  "flag_labels": {
+    "TRUE_ISSUE": 3,
+    "BENIGN_EVENT": 2,
+    "UNCERTAIN": 2
+  },
+  "unique_flag_events": 6,
+  "confirmed_missed_events": 2,
+  "uncertain_missed_events": 3,
+  "audit_overlap_threshold": 0.5,
+  "overlap_policy": "max single-region intersection/prediction area; descriptive audit, not official KITTI ignore preprocessing"
+}

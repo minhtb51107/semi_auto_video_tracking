@@ -1,0 +1,253 @@
+{
+  "schema_version": 2,
+  "interpretation": "experimental_heuristic_candidates_not_ground_truth",
+  "v1_config": {
+    "status": "experimental_uncalibrated",
+    "track_gap_min_missing_frames": 1,
+    "track_reappeared_min_missing_frames": 5,
+    "large_motion_jump_max_diagonals": 1.5,
+    "abnormal_size_change_max_ratio": 2.0,
+    "low_consecutive_iou_min": 0.1,
+    "fragmentation_max_frame_distance": 5,
+    "fragmentation_min_endpoint_iou": 0.3
+  },
+  "v2_config": {
+    "status": "experimental_uncalibrated",
+    "duplicate_min_iou": 0.75,
+    "duplicate_max_center_distance": 0.1,
+    "duplicate_max_size_ratio": 1.35,
+    "duplicate_min_consecutive_frames": 2,
+    "context_padding": 2
+  },
+  "total_frames": 31,
+  "context_limit": "provided_total_frames",
+  "flags": [
+    {
+      "frame_id": 4,
+      "track_id": 8,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 1,
+      "related_track_id": null,
+      "start_frame": 1,
+      "end_frame": 4,
+      "raw_flag_id": "F000001"
+    },
+    {
+      "frame_id": 7,
+      "track_id": 8,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 4,
+      "related_track_id": null,
+      "start_frame": 4,
+      "end_frame": 7,
+      "raw_flag_id": "F000002"
+    },
+    {
+      "frame_id": 19,
+      "track_id": 8,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 17,
+      "related_track_id": null,
+      "start_frame": 17,
+      "end_frame": 19,
+      "raw_flag_id": "F000003"
+    },
+    {
+      "frame_id": 24,
+      "track_id": 77,
+      "related_track_id": 85,
+      "previous_frame_id": 23,
+      "start_frame": 23,
+      "end_frame": 24,
+      "reason": "possible_duplicate",
+      "observed_value": {
+        "consecutive_frames": 2,
+        "min_iou": 0.8698080756195685,
+        "max_center_distance": 0.03227948419237709,
+        "max_size_ratio": 1.119650205761317
+      },
+      "threshold": {
+        "duplicate_max_center_distance": 0.1,
+        "duplicate_max_size_ratio": 1.35,
+        "duplicate_min_consecutive_frames": 2,
+        "duplicate_min_iou": 0.75
+      },
+      "explanation": "Different IDs coexist with similar boxes in consecutive frames; geometry is not identity proof.",
+      "raw_flag_id": "F000004"
+    },
+    {
+      "frame_id": 29,
+      "track_id": 92,
+      "reason": "track_gap",
+      "observed_value": 2,
+      "threshold": 1,
+      "previous_frame_id": 26,
+      "related_track_id": null,
+      "start_frame": 26,
+      "end_frame": 29,
+      "raw_flag_id": "F000005"
+    },
+    {
+      "frame_id": 30,
+      "track_id": 64,
+      "reason": "track_gap",
+      "observed_value": 12,
+      "threshold": 1,
+      "previous_frame_id": 17,
+      "related_track_id": null,
+      "start_frame": 17,
+      "end_frame": 30,
+      "raw_flag_id": "F000006"
+    },
+    {
+      "frame_id": 30,
+      "track_id": 64,
+      "reason": "track_reappeared",
+      "observed_value": 12,
+      "threshold": 5,
+      "previous_frame_id": 17,
+      "related_track_id": null,
+      "start_frame": 17,
+      "end_frame": 30,
+      "raw_flag_id": "F000007"
+    },
+    {
+      "frame_id": 31,
+      "track_id": 92,
+      "reason": "track_gap",
+      "observed_value": 1,
+      "threshold": 1,
+      "previous_frame_id": 29,
+      "related_track_id": null,
+      "start_frame": 29,
+      "end_frame": 31,
+      "raw_flag_id": "F000008"
+    }
+  ],
+  "events": [
+    {
+      "track_id": 8,
+      "related_track_ids": [],
+      "start_frame": 1,
+      "end_frame": 4,
+      "anchor_frame": 4,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000001"
+      ],
+      "context_start": 1,
+      "context_end": 6,
+      "event_id": "E000001"
+    },
+    {
+      "track_id": 8,
+      "related_track_ids": [],
+      "start_frame": 4,
+      "end_frame": 7,
+      "anchor_frame": 7,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000002"
+      ],
+      "context_start": 2,
+      "context_end": 9,
+      "event_id": "E000002"
+    },
+    {
+      "track_id": 8,
+      "related_track_ids": [],
+      "start_frame": 17,
+      "end_frame": 19,
+      "anchor_frame": 19,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000003"
+      ],
+      "context_start": 15,
+      "context_end": 21,
+      "event_id": "E000003"
+    },
+    {
+      "track_id": 64,
+      "related_track_ids": [],
+      "start_frame": 17,
+      "end_frame": 30,
+      "anchor_frame": 30,
+      "reasons": [
+        "track_gap",
+        "track_reappeared"
+      ],
+      "raw_flag_ids": [
+        "F000006",
+        "F000007"
+      ],
+      "context_start": 15,
+      "context_end": 31,
+      "event_id": "E000004"
+    },
+    {
+      "track_id": 77,
+      "related_track_ids": [
+        85
+      ],
+      "start_frame": 23,
+      "end_frame": 24,
+      "anchor_frame": 24,
+      "reasons": [
+        "possible_duplicate"
+      ],
+      "raw_flag_ids": [
+        "F000004"
+      ],
+      "context_start": 21,
+      "context_end": 26,
+      "event_id": "E000005"
+    },
+    {
+      "track_id": 92,
+      "related_track_ids": [],
+      "start_frame": 26,
+      "end_frame": 29,
+      "anchor_frame": 29,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000005"
+      ],
+      "context_start": 24,
+      "context_end": 31,
+      "event_id": "E000006"
+    },
+    {
+      "track_id": 92,
+      "related_track_ids": [],
+      "start_frame": 29,
+      "end_frame": 31,
+      "anchor_frame": 31,
+      "reasons": [
+        "track_gap"
+      ],
+      "raw_flag_ids": [
+        "F000008"
+      ],
+      "context_start": 27,
+      "context_end": 31,
+      "event_id": "E000007"
+    }
+  ],
+  "input_file": "outputs\\external_validation\\kitti_0001\\tracks.txt",
+  "input_sha256": "cb76d020a6ad1e2c851f772c872b83d0ccf17e1867af699a0fb93b4e47d4b422"
+}

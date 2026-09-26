@@ -1,0 +1,3 @@
+event_id,track_id,related_track_ids,start_frame,end_frame,anchor_frame,reasons,raw_flag_ids,context_start,context_end
+E000001,9,[],30,33,33,"[""track_gap""]","[""F000001""]",28,35
+E000002,9,[],33,35,35,"[""track_gap""]","[""F000002""]",31,37

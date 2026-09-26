@@ -1,0 +1,8 @@
+{
+  "status": "experimental_uncalibrated",
+  "duplicate_min_iou": 0.75,
+  "duplicate_max_center_distance": 0.10,
+  "duplicate_max_size_ratio": 1.35,
+  "duplicate_min_consecutive_frames": 2,
+  "context_padding": 2
+}

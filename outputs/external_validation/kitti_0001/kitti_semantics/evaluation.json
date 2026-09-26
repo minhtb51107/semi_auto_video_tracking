@@ -1,0 +1,144 @@
+{
+  "interpretation": "KITTI-aware adjusted audit; not an official KITTI score",
+  "prediction_class_assumption": "All classless MOT predictions are treated as KITTI Car",
+  "semantics": {
+    "target": "Car",
+    "distractor": "Van",
+    "excluded": [
+      "Truck",
+      "Pedestrian",
+      "Person_sitting",
+      "Cyclist",
+      "Tram",
+      "Misc"
+    ],
+    "max_occlusion": 2,
+    "max_truncation": 0,
+    "unmatched_min_height_inclusive": 25,
+    "unmatched_dontcare_ioa_strictly_greater_than": 0.5,
+    "matching": "Hungarian IoU>=0.5 during preprocessing; project metrics re-match after filtering"
+  },
+  "inputs": {
+    "labels": "data\\external_validation\\kitti_0001\\source\\data\\KITTI\\label_2\\0001.txt",
+    "labels_sha256": "c69d6d5f94cbcc5a7c450e6d0bb37616643224a0a68146a47b427f8d96699d16",
+    "prediction": "outputs\\external_validation\\kitti_0001\\tracks.txt",
+    "prediction_sha256": "cb76d020a6ad1e2c851f772c872b83d0ccf17e1867af699a0fb93b4e47d4b422",
+    "raw_evaluation": "outputs\\external_validation\\kitti_0001\\evaluation.json",
+    "raw_evaluation_sha256": "3424136d54094fa40433e1b15832b6c0338e3374acef25f1a7473af8d41589a3"
+  },
+  "raw_project_metrics": {
+    "HOTA": 0.5193,
+    "DetA": 0.4145,
+    "AssA": 0.6589,
+    "LocA": 0.7988,
+    "IDF1": 0.7074,
+    "IDTP": 168,
+    "IDFP": 60,
+    "IDFN": 79,
+    "MOTA": 0.4453,
+    "MOTP": 0.7586,
+    "IDSW": 0,
+    "FP": 59,
+    "FN": 78,
+    "GT_boxes": 247,
+    "PRED_boxes": 228
+  },
+  "adjusted_project_metrics": {
+    "HOTA": 0.5909330312406728,
+    "DetA": 0.4975320700807212,
+    "AssA": 0.7112378820535943,
+    "LocA": 0.8067241868439845,
+    "IDF1": 0.7965616045845272,
+    "IDTP": 139,
+    "IDFP": 7,
+    "IDFN": 64,
+    "MOTA": 0.6502463054187192,
+    "MOTP": 0.7676169326005325,
+    "IDSW": 0,
+    "FP": 7,
+    "FN": 64,
+    "GT_boxes": 203,
+    "PRED_boxes": 146
+  },
+  "sensitivity": {
+    "without_dontcare_ignore": {
+      "HOTA": 0.5863245131847893,
+      "DetA": 0.4938189778957371,
+      "AssA": 0.7055464198809187,
+      "LocA": 0.8062383445092379,
+      "IDF1": 0.792022792022792,
+      "IDTP": 139,
+      "IDFP": 9,
+      "IDFN": 64,
+      "MOTA": 0.6403940886699507,
+      "MOTP": 0.7676169326005325,
+      "IDSW": 0,
+      "FP": 9,
+      "FN": 64,
+      "GT_boxes": 203,
+      "PRED_boxes": 148
+    },
+    "without_small_box_ignore": {
+      "HOTA": 0.5863245131847893,
+      "DetA": 0.4938189778957371,
+      "AssA": 0.7055464198809187,
+      "LocA": 0.8062296067172413,
+      "IDF1": 0.792022792022792,
+      "IDTP": 139,
+      "IDFP": 9,
+      "IDFN": 64,
+      "MOTA": 0.6403940886699507,
+      "MOTP": 0.7676169326005325,
+      "IDSW": 0,
+      "FP": 9,
+      "FN": 64,
+      "GT_boxes": 203,
+      "PRED_boxes": 148
+    },
+    "without_either_unmatched_ignore": {
+      "HOTA": 0.5228065834633145,
+      "DetA": 0.40390394850409617,
+      "AssA": 0.6846941718591377,
+      "LocA": 0.8048220716740137,
+      "IDF1": 0.6932668329177057,
+      "IDTP": 139,
+      "IDFP": 59,
+      "IDFN": 64,
+      "MOTA": 0.3940886699507389,
+      "MOTP": 0.7676169326005325,
+      "IDSW": 0,
+      "FP": 59,
+      "FN": 64,
+      "GT_boxes": 203,
+      "PRED_boxes": 198
+    }
+  },
+  "counts": {
+    "raw_gt_boxes": 247,
+    "raw_pred_boxes": 228,
+    "adjusted_gt_boxes": 203,
+    "adjusted_gt_tracks": 14,
+    "adjusted_pred_boxes": 146,
+    "adjusted_pred_tracks": 14,
+    "removed_predictions": 82,
+    "prediction_statuses": {
+      "IGNORED_MATCHED_IGNORED_CAR": 19,
+      "IGNORED_MATCHED_VAN_DISTRACTOR": 11,
+      "IGNORED_UNMATCHED_DONTCARE_IOA_GT_0_5": 2,
+      "IGNORED_UNMATCHED_HEIGHT_LE_25": 2,
+      "IGNORED_UNMATCHED_HEIGHT_LE_25+UNMATCHED_DONTCARE_IOA_GT_0_5": 48,
+      "KEPT": 146
+    },
+    "gt_statuses": {
+      "DISTRACTOR_VAN": 13,
+      "DONTCARE_REGION": 216,
+      "IGNORED_CAR_TRUNCATED_OR_OCCLUDED": 31,
+      "TARGET_CAR": 203
+    }
+  },
+  "association": {
+    "clear_matches": 139,
+    "id_switches": [],
+    "predicted_ids_matching_multiple_gt": {}
+  }
+}

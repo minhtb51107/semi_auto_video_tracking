@@ -1,0 +1,88 @@
+test_annotation_write_is_impossible_and_pagination (test_cvat_integration.CVATTests.test_annotation_write_is_impossible_and_pagination) ... ok
+test_bad_temporal_and_id_fields (test_cvat_integration.CVATTests.test_bad_temporal_and_id_fields) ... ok
+test_cli_offline_payloads_and_push_protection (test_cvat_integration.CVATTests.test_cli_offline_payloads_and_push_protection) ... ok
+test_dotenv_fallback_and_environment_priority (test_cvat_integration.CVATTests.test_dotenv_fallback_and_environment_priority) ... ok
+test_dotenv_malformed_line_rejected_without_secret_output (test_cvat_integration.CVATTests.test_dotenv_malformed_line_rejected_without_secret_output) ... ok
+test_dry_run_no_remote_mutation (test_cvat_integration.CVATTests.test_dry_run_no_remote_mutation) ... ok
+test_event_schema_and_duplicate_event_rejected (test_cvat_integration.CVATTests.test_event_schema_and_duplicate_event_rejected) ... ok
+test_first_middle_last_and_context_mapping (test_cvat_integration.CVATTests.test_first_middle_last_and_context_mapping) ... ok
+test_invalid_target_job_or_task (test_cvat_integration.CVATTests.test_invalid_target_job_or_task) ... ok
+test_local_writer_lock (test_cvat_integration.CVATTests.test_local_writer_lock) ... ok
+test_missing_credentials_and_unsafe_url (test_cvat_integration.CVATTests.test_missing_credentials_and_unsafe_url) ... ok
+test_namespace_prevents_cross_dataset_collision (test_cvat_integration.CVATTests.test_namespace_prevents_cross_dataset_collision) ... ok
+test_network_http_failure_no_retry_no_secret_leak (test_cvat_integration.CVATTests.test_network_http_failure_no_retry_no_secret_leak) ... ok
+test_object_unavailable_and_experimental_metadata (test_cvat_integration.CVATTests.test_object_unavailable_and_experimental_metadata) ... ok
+test_out_of_bounds_event (test_cvat_integration.CVATTests.test_out_of_bounds_event) ... ok
+test_push_roundtrip_and_second_run_idempotent (test_cvat_integration.CVATTests.test_push_roundtrip_and_second_run_idempotent) ... ok
+test_remote_drift_duplicate_and_deleted_marker_fail_closed (test_cvat_integration.CVATTests.test_remote_drift_duplicate_and_deleted_marker_fail_closed) ... ok
+test_resolved_stays_resolved_and_verify_readonly (test_cvat_integration.CVATTests.test_resolved_stays_resolved_and_verify_readonly) ... ok
+test_timeout_after_server_commit_recovers_without_duplicate (test_cvat_integration.CVATTests.test_timeout_after_server_commit_recovers_without_duplicate) ... ok
+test_unsupported_order_step_subset_dimensions (test_cvat_integration.CVATTests.test_unsupported_order_step_subset_dimensions) ... ok
+test_cli_metadata_api_failure_no_post_no_plan_rewrite (test_cvat_robustness.RobustnessTests.test_cli_metadata_api_failure_no_post_no_plan_rewrite) ... C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py:484: ResourceWarning: Implicitly cleaning up <HTTPError 403: 'secret'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+ok
+test_corrupt_source_lock_and_missing_dryrun_fail (test_cvat_robustness.RobustnessTests.test_corrupt_source_lock_and_missing_dryrun_fail) ... ok
+test_corrupt_state_safe_fail_preserves_bytes (test_cvat_robustness.RobustnessTests.test_corrupt_state_safe_fail_preserves_bytes) ... ok
+test_local_inventory_drift_safe_fail (test_cvat_robustness.RobustnessTests.test_local_inventory_drift_safe_fail) ... ok
+test_lost_response_before_checkpoint_reconciles (test_cvat_robustness.RobustnessTests.test_lost_response_before_checkpoint_reconciles) ... ok
+test_lost_state_recovers_existing_remote_resolved_issues (test_cvat_robustness.RobustnessTests.test_lost_state_recovers_existing_remote_resolved_issues) ... ok
+test_malformed_duplicate_out_of_range_events_no_post (test_cvat_robustness.RobustnessTests.test_malformed_duplicate_out_of_range_events_no_post) ... ok
+test_partial_7_of_20_checkpoint_retry_13_no_duplicates (test_cvat_robustness.RobustnessTests.test_partial_7_of_20_checkpoint_retry_13_no_duplicates) ... ok
+test_raw_source_bytes_changed_even_same_semantics_rejected (test_cvat_robustness.RobustnessTests.test_raw_source_bytes_changed_even_same_semantics_rejected) ... ok
+test_remote_orphan_marker_detects_dropped_event_without_local_state (test_cvat_robustness.RobustnessTests.test_remote_orphan_marker_detects_dropped_event_without_local_state) ... ok
+test_server_unavailable_timeout_401_403_404_no_retry (test_cvat_robustness.RobustnessTests.test_server_unavailable_timeout_401_403_404_no_retry) ... ok
+test_source_drift_before_first_push_preserves_approved_plan (test_cvat_robustness.RobustnessTests.test_source_drift_before_first_push_preserves_approved_plan) ... C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py:484: ResourceWarning: Implicitly cleaning up <HTTPError 401: 'fixture'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py:484: ResourceWarning: Implicitly cleaning up <HTTPError 403: 'fixture'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+C:\Users\PC\AppData\Local\Programs\Python\Python314\Lib\tempfile.py:484: ResourceWarning: Implicitly cleaning up <HTTPError 404: 'fixture'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+ok
+test_stale_lock_no_state_or_plan_mutation (test_cvat_robustness.RobustnessTests.test_stale_lock_no_state_or_plan_mutation) ... ok
+test_task_job_frame_and_image_mismatch_no_post (test_cvat_robustness.RobustnessTests.test_task_job_frame_and_image_mismatch_no_post) ... ok
+test_unexpected_metadata_schema_no_post (test_cvat_robustness.RobustnessTests.test_unexpected_metadata_schema_no_post) ... ok
+test_unexpected_remote_schema_no_post (test_cvat_robustness.RobustnessTests.test_unexpected_remote_schema_no_post) ... ok
+test_excluded_truck_and_deterministic_output (test_evaluate_kitti_semantics.KittiSemanticsTests.test_excluded_truck_and_deterministic_output) ... ok
+test_ioa_greater_than_half_and_hungarian_duplicate (test_evaluate_kitti_semantics.KittiSemanticsTests.test_ioa_greater_than_half_and_hungarian_duplicate) ... ok
+test_matching_precedes_ignore_and_strict_dontcare_boundary (test_evaluate_kitti_semantics.KittiSemanticsTests.test_matching_precedes_ignore_and_strict_dontcare_boundary) ... ok
+test_parser_rejects_malformed_or_nonfinite_rows (test_evaluate_kitti_semantics.KittiSemanticsTests.test_parser_rejects_malformed_or_nonfinite_rows) ... ok
+test_van_invalid_car_small_and_dontcare_are_ignored (test_evaluate_kitti_semantics.KittiSemanticsTests.test_van_invalid_car_small_and_dontcare_are_ignored) ... ok
+test_gap_and_reappearance_share_event_but_not_different_intervals (test_external_acquisition.AcquisitionTests.test_gap_and_reappearance_share_event_but_not_different_intervals) ... ok
+test_preparation_base_size_and_missing_frame (test_external_acquisition.AcquisitionTests.test_preparation_base_size_and_missing_frame) ... ok
+test_range_refuses_whole_archive_and_large_read (test_external_acquisition.AcquisitionTests.test_range_refuses_whole_archive_and_large_read) ... ok
+test_select_only_requested_training_sequence (test_external_acquisition.AcquisitionTests.test_select_only_requested_training_sequence) ... ok
+test_contradictory_verdict_cannot_be_silently_merged (test_external_adjudication.AdjudicationTests.test_contradictory_verdict_cannot_be_silently_merged) ... ok
+test_explicit_handoff_merges_without_losing_raw_flags (test_external_adjudication.AdjudicationTests.test_explicit_handoff_merges_without_losing_raw_flags) ... ok
+test_lock_detects_source_tampering_even_if_manifest_unchanged (test_external_adjudication.AdjudicationTests.test_lock_detects_source_tampering_even_if_manifest_unchanged) ... ok
+test_accounting_javascript_contract (test_human_review.HumanReviewTests.test_accounting_javascript_contract) ... ok
+test_assisted_retains_context_but_not_extra_adjudication (test_human_review.HumanReviewTests.test_assisted_retains_context_but_not_extra_adjudication) ... ok
+test_bad_frame_or_context_rejected (test_human_review.HumanReviewTests.test_bad_frame_or_context_rejected) ... ok
+test_baseline_omits_events_and_gt_and_stable_payload (test_human_review.HumanReviewTests.test_baseline_omits_events_and_gt_and_stable_payload) ... ok
+test_embedded_payload_safe_and_existing_output_refused (test_human_review.HumanReviewTests.test_embedded_payload_safe_and_existing_output_refused) ... ok
+test_all_classes_and_determinism (test_kitti_tracking_to_mot.KittiConversionTests.test_all_classes_and_determinism) ... ok
+test_mapping_ignored_regions_and_parser_roundtrip (test_kitti_tracking_to_mot.KittiConversionTests.test_mapping_ignored_regions_and_parser_roundtrip) ... ok
+test_reject_invalid_or_missing_data (test_kitti_tracking_to_mot.KittiConversionTests.test_reject_invalid_or_missing_data) ... ok
+test_cli_csv_json_contract_and_failure (test_review_tracks.ReviewTests.test_cli_csv_json_contract_and_failure) ... ok
+test_fragmentation_window_and_overlap_exclusion (test_review_tracks.ReviewTests.test_fragmentation_window_and_overlap_exclusion) ... ok
+test_gap_does_not_apply_adjacent_geometry (test_review_tracks.ReviewTests.test_gap_does_not_apply_adjacent_geometry) ... ok
+test_parser_variants_empty_ignored_and_invalid (test_review_tracks.ReviewTests.test_parser_variants_empty_ignored_and_invalid) ... ok
+test_reference_files_parse_when_present (test_review_tracks.ReviewTests.test_reference_files_parse_when_present) ... ok
+test_smooth_motion_entry_exit_global_renumber (test_review_tracks.ReviewTests.test_smooth_motion_entry_exit_global_renumber) ... ok
+test_threshold_boundaries_config_and_sorted_input (test_review_tracks.ReviewTests.test_threshold_boundaries_config_and_sorted_input) ... ok
+test_two_real_annotations_and_mutations (test_review_tracks.ReviewTests.test_two_real_annotations_and_mutations) ... ok
+test_config_guards_and_empty (test_review_tracks_v2.V2Tests.test_config_guards_and_empty) ... ok
+test_exact_boundary_and_size_mismatch (test_review_tracks_v2.V2Tests.test_exact_boundary_and_size_mismatch) ... ok
+test_gap_reappearance_lossless_grouping_and_bounds (test_review_tracks_v2.V2Tests.test_gap_reappearance_lossless_grouping_and_bounds) ... ok
+test_multiple_runs_and_permutation (test_review_tracks_v2.V2Tests.test_multiple_runs_and_permutation) ... ok
+test_nearby_distinct_and_crossing_and_short_overlap (test_review_tracks_v2.V2Tests.test_nearby_distinct_and_crossing_and_short_overlap) ... ok
+test_no_reference_cli_compatibility_and_no_overwrite (test_review_tracks_v2.V2Tests.test_no_reference_cli_compatibility_and_no_overwrite) ... ok
+test_persistent_duplicate_one_flag_and_observations (test_review_tracks_v2.V2Tests.test_persistent_duplicate_one_flag_and_observations) ... ok
+test_temporal_hole_resets_and_entry_exit (test_review_tracks_v2.V2Tests.test_temporal_hole_resets_and_entry_exit) ... ok
+test_decode_order_metadata_and_no_overwrite (test_video_to_clip.VideoTests.test_decode_order_metadata_and_no_overwrite) ... ok
+test_missing_and_invalid_video (test_video_to_clip.VideoTests.test_missing_and_invalid_video) ... ok
+
+----------------------------------------------------------------------
+Ran 74 tests in 3.816s
+
+OK
+[mov,mp4,m4a,3gp,3g2,mj2 @ 000002ca49d89980] moov atom not found

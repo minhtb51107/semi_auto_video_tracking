@@ -1,0 +1,30 @@
+{
+  "1": {
+    "label": "TRUE_ISSUE",
+    "note": "P8 follows GT6 (KITTI ID5). Visible vehicle remains labeled through missing frames; missing prediction needs correction. See P8_context.jpg."
+  },
+  "2": {
+    "label": "TRUE_ISSUE",
+    "note": "P8 follows GT6 (KITTI ID5). Visible vehicle remains labeled through missing frames; missing prediction needs correction. See P8_context.jpg."
+  },
+  "3": {
+    "label": "TRUE_ISSUE",
+    "note": "P8 follows GT6 (KITTI ID5). Visible vehicle remains labeled through missing frames; missing prediction needs correction. See P8_context.jpg."
+  },
+  "4": {
+    "label": "BENIGN_EVENT",
+    "note": "P92 small distant car is within DontCare and has no target GT at frames26-29. Missing detections27-28 are not annotation omissions under declared target policy; not a confirmed hallucination."
+  },
+  "5": {
+    "label": "UNCERTAIN",
+    "note": "P64 only appears at left boundary17 and30, no vehicle-GT match. Frame30 prediction is98.4% within DontCare; partial cars visible. Cannot prove same identity or meaningful gap. Reappeared duplicates gap."
+  },
+  "6": {
+    "label": "UNCERTAIN",
+    "note": "P64 only appears at left boundary17 and30, no vehicle-GT match. Frame30 prediction is98.4% within DontCare; partial cars visible. Cannot prove same identity or meaningful gap. Reappeared duplicates gap."
+  },
+  "7": {
+    "label": "BENIGN_EVENT",
+    "note": "P92 frame30 lies in DontCare; target GT12 begins31 and P92 matches it with IoU0.858. No missing in-scope GT during this gap under declared policy."
+  }
+}
