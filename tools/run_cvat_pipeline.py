@@ -13,6 +13,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import statistics
 import sys
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
@@ -23,6 +24,8 @@ from cvat_integration import (Client, IntegrationError, digest, execute,
 from review_tracks_v2 import DEFAULT_V2, review_v2
 from review_tracks import DEFAULT_CONFIG
 from run_tracker import track_image_dir, write_mot
+from workspace_lifecycle import (WorkspaceError, cleanup_frames, cleanup_run,
+                                 workspace_status)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -182,7 +185,15 @@ def write_metadata(workspace: Path, snapshot: dict, mapping: list[dict]) -> None
         "annotation_hash": snapshot["annotation_hash"],
         "target_sha256": target_fingerprint(snapshot),
     }
-    save(workspace / "metadata.json", public)
+    path = workspace / "metadata.json"
+    if path.is_file():
+        existing = json.loads(path.read_text(encoding="utf-8-sig"))
+        if existing.get("target_sha256") != public["target_sha256"]:
+            raise PipelineError("Live task/frame/label metadata differs from locked workspace")
+        # Preserve the initial lock; a later read-only check must not rewrite history.
+        save(workspace / "metadata_latest.json", public)
+    else:
+        save(path, public)
 
 
 def validate_image(path: Path, width: int, height: int) -> None:
@@ -207,12 +218,17 @@ def ensure_frames(client, workspace: Path, snapshot: dict, mapping: list[dict]) 
         manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
         if manifest.get("target_sha256") != expected_target or not isinstance(manifest.get("frames"), list):
             raise PipelineError("Existing frame manifest does not match CVAT source")
-        for item in manifest["frames"]:
-            path = folder / item["local_name"]
-            if not path.is_file() or sha256_file(path) != item["sha256"]:
-                raise PipelineError("Cached frame is missing or corrupt")
-        if manifest.get("status") == "complete" and len(manifest["frames"]) == len(mapping):
-            return manifest
+        if manifest.get("status") == "cleaned":
+            if list(folder.glob("*.jpg")):
+                raise PipelineError("Cleaned frame manifest conflicts with cached images")
+            manifest = {"target_sha256": expected_target, "frames": []}
+        else:
+            for item in manifest["frames"]:
+                path = folder / item["local_name"]
+                if not path.is_file() or sha256_file(path) != item["sha256"]:
+                    raise PipelineError("Cached frame is missing or corrupt")
+            if manifest.get("status") == "complete" and len(manifest["frames"]) == len(mapping):
+                return manifest
     elif folder.exists() and any(folder.iterdir()):
         raise PipelineError("Frames exist without a valid manifest; refuse ambiguous resume")
     folder.mkdir(parents=True, exist_ok=True)
@@ -396,6 +412,34 @@ def reconcile_prediction_tracks(expected: list[dict], remote: dict) -> dict:
             "matched": len(mapping), "expected": len(expected)}
 
 
+def shape_count_audit(rows, expected: list[dict], remote: dict, total_frames: int) -> dict:
+    grouped = defaultdict(list)
+    for row in rows:
+        grouped[row[1]].append(row[0])
+    gap_boundaries = sum(sum(b > a + 1 for a, b in zip(sorted(frames), sorted(frames)[1:]))
+                         for frames in grouped.values())
+    terminal_boundaries = sum(max(frames) < total_frames for frames in grouped.values() if frames)
+    expected_shapes = [shape for item in expected for shape in item["track"]["shapes"]]
+    remote_shapes = [shape for track in remote.get("tracks", []) for shape in track.get("shapes", [])]
+    result = {
+        "mot_boxes": len(rows),
+        "expected_visible_keyframes": sum(not shape.get("outside", False) for shape in expected_shapes),
+        "generated_outside_keyframes": sum(bool(shape.get("outside")) for shape in expected_shapes),
+        "gap_boundary_outside_keyframes": gap_boundaries,
+        "terminal_outside_keyframes": terminal_boundaries,
+        "expected_total_track_shapes": len(expected_shapes),
+        "remote_visible_keyframes": sum(not shape.get("outside", False) for shape in remote_shapes),
+        "remote_outside_keyframes": sum(bool(shape.get("outside")) for shape in remote_shapes),
+        "remote_total_track_shapes": len(remote_shapes),
+        "all_expected_track_signatures_present": not reconcile_prediction_tracks(expected, remote)["missing"],
+    }
+    result["classification"] = ("EXPECTED" if result["mot_boxes"] == result["expected_visible_keyframes"] == result["remote_visible_keyframes"]
+                                and result["generated_outside_keyframes"] == gap_boundaries + terminal_boundaries
+                                and result["expected_total_track_shapes"] == result["remote_total_track_shapes"]
+                                and result["all_expected_track_signatures_present"] else "BUG_OR_DRIFT")
+    return result
+
+
 def push_predictions(client, workspace: Path, snapshot: dict, annotations: dict,
                      mot_path: Path, mapping: list[dict], label: dict,
                      allow_existing: bool) -> dict:
@@ -456,7 +500,36 @@ def ensure_review(workspace: Path, snapshot: dict, mot_path: Path) -> tuple[dict
     return events, manifest
 
 
-def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url: str) -> dict:
+def _issue_placement(event: dict, rows, mapping: list[dict], prediction_state: dict | None) -> dict:
+    frame_map = {x["mot_frame"]: x for x in mapping}
+    external_id = event["track_id"]
+    cvat_id = (prediction_state or {}).get("external_to_cvat_track", {}).get(str(external_id))
+    if cvat_id is None:
+        anchor = frame_map[event["anchor_frame"]]
+        return {"mode": "FRAME_LEVEL_FALLBACK_UNMAPPED_TRACK", "mot_frame": event["anchor_frame"],
+                "cvat_frame": anchor["cvat_frame"], "position": [10, 10], "bbox": None,
+                "confidence": None, "cvat_track_id": None}
+    candidates = [r for r in (rows or []) if r[1] == external_id]
+    if not candidates:
+        anchor = frame_map[event["anchor_frame"]]
+        return {"mode": "FRAME_LEVEL_FALLBACK_NO_BBOX", "mot_frame": event["anchor_frame"],
+                "cvat_frame": anchor["cvat_frame"], "position": [10, 10], "bbox": None,
+                "confidence": None, "cvat_track_id": cvat_id}
+    chosen = min(candidates, key=lambda r: (abs(r[0] - event["anchor_frame"]), r[0]))
+    frame, _, x, y, width, height, confidence = chosen
+    target = frame_map.get(frame)
+    values = (x, y, width, height, confidence)
+    if (target is None or not all(math.isfinite(v) for v in values) or width <= 0 or height <= 0
+            or x < 0 or y < 0 or x + width > target["width"] + .01 or y + height > target["height"] + .01):
+        raise PipelineError(f"Invalid/out-of-range marker geometry for external track {external_id}")
+    center = [round(x + width / 2, 2), round(y + height / 2, 2)]
+    return {"mode": "ANCHOR_BBOX_CENTER" if frame == event["anchor_frame"] else "NEAREST_BBOX_CENTER",
+            "mot_frame": frame, "cvat_frame": target["cvat_frame"], "position": center,
+            "bbox": [x, y, width, height], "confidence": confidence, "cvat_track_id": cvat_id}
+
+
+def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url: str,
+               rows=None, prediction_state: dict | None = None) -> dict:
     events = parse_events(events_data)
     frame_map = {x["mot_frame"]: x for x in mapping}
     task_id, job_id = snapshot["task"]["id"], snapshot["job"]["id"]
@@ -468,12 +541,28 @@ def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url:
         cv = {key: frame_map[event[key]]["cvat_frame"] for key in
               ("anchor_frame", "start_frame", "end_frame", "context_start", "context_end")}
         marker = f"SATV2|{sequence}|{event['event_id']}"
+        placement = _issue_placement(event, rows, mapping, prediction_state)
+        track_rows = [r for r in (rows or []) if r[1] == event["track_id"]]
+        confidences = [r[6] for r in track_rows]
         metadata = {"event": event, "analyzer_version": "2", "event_source_sha256": digest(events_data),
-                    "external_track_id": event["track_id"], "object_mapping": "EXTERNAL_ID_METADATA_ONLY",
-                    "cvat_frames": cv, "experimental": "possible_duplicate" in event["reasons"]}
-        message = marker + "\n" + json.dumps(metadata, sort_keys=True, ensure_ascii=False)
+                    "external_track_id": event["track_id"], "cvat_track_id": placement["cvat_track_id"],
+                    "object_mapping": "MAPPED_BY_VERIFIED_TRACK_SIGNATURE" if placement["cvat_track_id"] is not None else "UNAVAILABLE",
+                    "cvat_frames": cv, "placement": placement,
+                    "track_confidence": ({"min": min(confidences), "median": statistics.median(confidences),
+                                          "max": max(confidences)} if confidences else None),
+                    "experimental": "possible_duplicate" in event["reasons"]}
+        readable = [marker, f"event_id={event['event_id']}", f"reasons={','.join(event['reasons'])}",
+                    f"cvat_track_id={placement['cvat_track_id']}", f"external_track_id={event['track_id']}",
+                    f"related_external_track_ids={','.join(str(x) for x in event['related_track_ids']) or 'none'}",
+                    f"anchor_frame_mot={event['anchor_frame']}",
+                    f"context_mot={event['context_start']}..{event['context_end']}",
+                    "analyzer_version=2", f"experimental={str(metadata['experimental']).lower()}",
+                    f"marker={placement['mode']} mot_frame={placement['mot_frame']} cvat_frame={placement['cvat_frame']}",
+                    "METADATA_JSON=" + json.dumps(metadata, sort_keys=True, ensure_ascii=False)]
+        message = "\n".join(readable)
         items.append({"event_id": event["event_id"], "marker": marker,
-                      "payload": {"job": job_id, "frame": cv["anchor_frame"], "position": [10, 10], "message": message},
+                      "payload": {"job": job_id, "frame": placement["cvat_frame"],
+                                  "position": placement["position"], "message": message},
                       "metadata": metadata, "links": {k: f"{base_url}/tasks/{task_id}/jobs/{job_id}?frame={v}" for k, v in cv.items()}})
     return {"schema_version": 1, "human_review_status": "PREPARED_NOT_EXECUTED",
             "task_id": task_id, "job_id": job_id, "sequence": sequence, "url": base_url,
@@ -521,11 +610,14 @@ def run(args, client=None, tracker_fn=track_image_dir) -> dict:
     mapping = validate_target(snapshot, args.task_id, args.job_id)
     label = select_label(snapshot, args.label_name)
     write_metadata(workspace, snapshot, mapping)
+    state_path = workspace / "cvat_push" / "predictions.json"
+    prior_push = json.loads(state_path.read_text(encoding="utf-8-sig")) if state_path.is_file() else None
+    annotations_changed = bool(prior_push and prior_push.get("status") == "verified"
+                               and annotation_hash(annotations) != prior_push.get("annotation_hash_after"))
     config = tracking_config(args)
     if args.dry_run:
         local = local_artifact_summary(workspace)
-        existing_without_state = (not annotation_is_empty(annotations)
-                                  and not (workspace / "cvat_push" / "predictions.json").is_file())
+        existing_without_state = not annotation_is_empty(annotations) and prior_push is None
         result = {"status": "DRY_RUN", "mutated_cvat": False, "task_id": args.task_id,
                   "job_id": args.job_id, "stage": args.stage, "frame_count": len(mapping),
                   "frame_range": [mapping[0]["cvat_frame"], mapping[-1]["cvat_frame"]],
@@ -538,11 +630,18 @@ def run(args, client=None, tracker_fn=track_image_dir) -> dict:
                   "annotation_push_method": "PATCH job annotations action=create (append only)",
                   "planned_annotation_tracks": local["predicted_tracks"],
                   "planned_review_issues": local["review_events"],
-                  "annotation_safety": ("WOULD_ABORT_EXISTING_ANNOTATIONS" if existing_without_state and not args.allow_existing_annotations
+                  "annotation_safety": ("CVAT_ANNOTATION_STATE_CHANGED_SINCE_PREDICTION_PUSH" if annotations_changed else
+                                        "WOULD_ABORT_EXISTING_ANNOTATIONS" if existing_without_state and not args.allow_existing_annotations
                                         else "PASS"),
                   "note": "Unknown counts require a real local inference run; dry-run never downloads frames or runs the model."}
-        save(workspace / "run_summary.json", result)
+        summary_path = workspace / "run_summary.json"
+        if summary_path.is_file() and json.loads(summary_path.read_text(encoding="utf-8-sig")).get("status") == "COMPLETE":
+            save(workspace / "dry_run_summary.json", result)
+        else:
+            save(summary_path, result)
         return result
+    if annotations_changed:
+        raise PipelineError("CVAT annotation state changed since prediction push")
     if args.stage in ("annotate", "all") and not annotation_is_empty(annotations):
         state = workspace / "cvat_push" / "predictions.json"
         if not state.is_file() and not args.allow_existing_annotations:
@@ -568,7 +667,7 @@ def run(args, client=None, tracker_fn=track_image_dir) -> dict:
         issues = None; review_manifest = None
         if args.stage in ("review", "all"):
             events, review_manifest = ensure_review(workspace, snapshot, mot_path)
-            plan = issue_plan(events, snapshot, mapping, client.url)
+            plan = issue_plan(events, snapshot, mapping, client.url, read_mot_rows(mot_path), prediction_push)
             issues = push_issues(client, workspace, plan)
         result = {"status": "COMPLETE", "mutated_cvat": True, "task_id": args.task_id,
                   "job_id": args.job_id, "stage": args.stage, "frame_count": len(mapping),
@@ -597,6 +696,11 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--classes", type=lambda x: [int(v) for v in x.split(",") if v.strip()], default=DEFAULT_CLASSES)
     p.add_argument("--device", default=None)
     p.add_argument("--output-root", type=Path, default=ROOT / "outputs" / "runs")
+    actions = p.add_mutually_exclusive_group()
+    actions.add_argument("--workspace-status", action="store_true")
+    actions.add_argument("--cleanup-frames", action="store_true")
+    actions.add_argument("--cleanup-run", action="store_true")
+    p.add_argument("--confirm-cleanup-run", metavar="WORKSPACE_NAME")
     return p
 
 
@@ -606,8 +710,18 @@ def main(argv=None) -> int:
     if args.task_id < 1 or args.job_id < 1:
         parser().error("task/job IDs must be positive")
     try:
-        result = run(args)
-    except (PipelineError, IntegrationError, OSError, ValueError) as exc:
+        workspace = Path(args.output_root) / f"task_{args.task_id}_job_{args.job_id}"
+        if args.confirm_cleanup_run and not args.cleanup_run:
+            raise PipelineError("--confirm-cleanup-run requires --cleanup-run")
+        if args.workspace_status:
+            result = workspace_status(workspace)
+        elif args.cleanup_frames:
+            result = cleanup_frames(workspace)
+        elif args.cleanup_run:
+            result = cleanup_run(workspace, args.confirm_cleanup_run)
+        else:
+            result = run(args)
+    except (PipelineError, IntegrationError, WorkspaceError, OSError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
     print(json.dumps(result, indent=2, ensure_ascii=False))

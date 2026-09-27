@@ -1,0 +1,17 @@
+{
+  "mot_boxes": 607,
+  "expected_visible_keyframes": 607,
+  "generated_outside_keyframes": 35,
+  "gap_boundary_outside_keyframes": 21,
+  "terminal_outside_keyframes": 14,
+  "expected_total_track_shapes": 642,
+  "remote_visible_keyframes": 607,
+  "remote_outside_keyframes": 35,
+  "remote_total_track_shapes": 642,
+  "all_expected_track_signatures_present": true,
+  "classification": "EXPECTED",
+  "task_id": 20,
+  "job_id": 18,
+  "mot_sha256": "1b3ba9916290191e43d6a0b238582d818d927debd513d2844aefad6b96ed68a8",
+  "remote_annotation_sha256": "a38b207730b855fe694253a1dc88e5545f1c4006258305b9c0f3f1f21b041a68"
+}

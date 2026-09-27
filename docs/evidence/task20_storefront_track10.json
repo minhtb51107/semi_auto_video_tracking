@@ -1,0 +1,285 @@
+{
+  "status": "OBSERVED_LIVE_HUMAN_VISUAL_CANDIDATE",
+  "interpretation": "Visual evidence supports storefront/background patch rather than a vehicle; this is not benchmark ground truth.",
+  "task_id": 20,
+  "job_id": 18,
+  "external_track_id": 10,
+  "cvat_track_id": 19,
+  "first_frame": 17,
+  "last_frame": 116,
+  "span_frames": 100,
+  "detected_frames": 42,
+  "detected_frame_ids": [
+    17,
+    18,
+    20,
+    27,
+    48,
+    51,
+    52,
+    54,
+    56,
+    59,
+    60,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    79,
+    87,
+    88,
+    91,
+    96,
+    98,
+    99,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    111,
+    113,
+    115,
+    116
+  ],
+  "confidence": {
+    "min": 0.2506,
+    "median": 0.33630000000000004,
+    "mean": 0.3480738095238095,
+    "max": 0.5142
+  },
+  "bbox_ranges": {
+    "x": [
+      490.04,
+      498.54
+    ],
+    "y": [
+      210.98,
+      219.73
+    ],
+    "width": [
+      94.54,
+      105.21
+    ],
+    "height": [
+      52.61,
+      60.05
+    ]
+  },
+  "center_motion": {
+    "net_pixels": 3.0216717227389203,
+    "median_step_pixels": 1.1436892060346073,
+    "center_x_range": [
+      542.08,
+      546.305
+    ],
+    "center_y_range": [
+      240.41,
+      246.035
+    ]
+  },
+  "gaps": [
+    {
+      "previous_frame": 18,
+      "next_frame": 20,
+      "missing_frames": 1
+    },
+    {
+      "previous_frame": 20,
+      "next_frame": 27,
+      "missing_frames": 6
+    },
+    {
+      "previous_frame": 27,
+      "next_frame": 48,
+      "missing_frames": 20
+    },
+    {
+      "previous_frame": 48,
+      "next_frame": 51,
+      "missing_frames": 2
+    },
+    {
+      "previous_frame": 52,
+      "next_frame": 54,
+      "missing_frames": 1
+    },
+    {
+      "previous_frame": 54,
+      "next_frame": 56,
+      "missing_frames": 1
+    },
+    {
+      "previous_frame": 56,
+      "next_frame": 59,
+      "missing_frames": 2
+    },
+    {
+      "previous_frame": 60,
+      "next_frame": 62,
+      "missing_frames": 1
+    },
+    {
+      "previous_frame": 75,
+      "next_frame": 79,
+      "missing_frames": 3
+    },
+    {
+      "previous_frame": 79,
+      "next_frame": 87,
+      "missing_frames": 7
+    },
+    {
+      "previous_frame": 88,
+      "next_frame": 91,
+      "missing_frames": 2
+    },
+    {
+      "previous_frame": 91,
+      "next_frame": 96,
+      "missing_frames": 4
+    },
+    {
+      "previous_frame": 96,
+      "next_frame": 98,
+      "missing_frames": 1
+    },
+    {
+      "previous_frame": 99,
+      "next_frame": 104,
+      "missing_frames": 4
+    },
+    {
+      "previous_frame": 109,
+      "next_frame": 111,
+      "missing_frames": 1
+    },
+    {
+      "previous_frame": 111,
+      "next_frame": 113,
+      "missing_frames": 1
+    },
+    {
+      "previous_frame": 113,
+      "next_frame": 115,
+      "missing_frames": 1
+    }
+  ],
+  "analyzer_flags": [
+    {
+      "raw_flag_id": "F000002",
+      "frame_id": 20,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000003",
+      "frame_id": 27,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000004",
+      "frame_id": 27,
+      "reason": "track_reappeared"
+    },
+    {
+      "raw_flag_id": "F000005",
+      "frame_id": 48,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000006",
+      "frame_id": 48,
+      "reason": "track_reappeared"
+    },
+    {
+      "raw_flag_id": "F000007",
+      "frame_id": 51,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000008",
+      "frame_id": 54,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000009",
+      "frame_id": 56,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000010",
+      "frame_id": 59,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000012",
+      "frame_id": 62,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000013",
+      "frame_id": 79,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000014",
+      "frame_id": 87,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000015",
+      "frame_id": 87,
+      "reason": "track_reappeared"
+    },
+    {
+      "raw_flag_id": "F000016",
+      "frame_id": 91,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000017",
+      "frame_id": 96,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000018",
+      "frame_id": 98,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000019",
+      "frame_id": 104,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000020",
+      "frame_id": 111,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000021",
+      "frame_id": 113,
+      "reason": "track_gap"
+    },
+    {
+      "raw_flag_id": "F000022",
+      "frame_id": 115,
+      "reason": "track_gap"
+    }
+  ],
+  "source_hashes": {
+    "mot_sha256": "1b3ba9916290191e43d6a0b238582d818d927debd513d2844aefad6b96ed68a8",
+    "frame_inventory_sha256": "8184f0226f8ae2eaea8d6862a923d6d10972ca56a29119152828496589c4eff8"
+  }
+}

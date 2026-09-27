@@ -77,7 +77,7 @@ Sau khi annotation stage đã verify, chạy hoặc chạy lại auto-review:
 1. Reload job trong CVAT để thấy rectangle tracks.
 2. Mở **Issues** trong job.
 3. Chọn một Issue để tới anchor frame.
-4. Comment của Issue ghi `event_id`, reason, external track ID, related track IDs và context range.
+4. Comment của Issue ghi `event_id`, reason, external track ID, related track IDs và context range. Với run mới, marker nằm ở tâm bbox tại anchor frame và comment còn ghi CVAT track ID. Nếu anchor không có bbox, runner dùng bbox gần nhất và ghi rõ fallback; marker `[10,10]` chỉ còn dùng khi không có mapping/bbox.
 5. Mở rộng trước/sau context khi cần và tự quyết định chỉnh annotation. Runner không tự sửa, merge, đổi ID hoặc xóa box.
 
 ## 7. Resume và chạy lại
@@ -114,3 +114,41 @@ Flag này chỉ cho phép append; nó vẫn không xóa annotation cũ. Hãy dù
 - HTTP/auth error: kiểm tra CVAT đang chạy, `CVAT_URL` và token trong `.env`.
 
 Để bắt đầu một task khác, chỉ thay `--task-id` và `--job-id`; URL vẫn lấy từ `CVAT_URL` trong environment hoặc `.env`.
+
+## 9. Kiểm tra dung lượng workspace
+
+Lệnh này hoàn toàn read-only và không cần kết nối CVAT:
+
+```powershell
+.venv\Scripts\python.exe -X utf8 tools/run_cvat_pipeline.py --task-id 20 --job-id 18 --workspace-status
+```
+
+Output tách dung lượng frames, predictions, MOT và evidence/metadata; đồng thời kiểm run đã complete, hashes còn đúng và cleanup có đủ điều kiện hay không.
+
+## 10. Xóa downloaded frames sau verify
+
+```powershell
+.venv\Scripts\python.exe -X utf8 tools/run_cvat_pipeline.py --task-id 20 --job-id 18 --cleanup-frames
+```
+
+Lệnh chỉ chạy khi annotation push và Issue push đều verified, hashes đúng và không có failure/lock. Nó xóa JPEG đã tải và file `.tmp` tái tạo được. Nó giữ frame manifest cùng hashes, metadata, model/config hashes, MOT, review events/flags, external→CVAT mapping, push state và run summary. Chạy lần hai là no-op. Nếu chạy pipeline lại sau cleanup, frame có thể được tải lại từ CVAT.
+
+## 11. Preview cleanup run
+
+Preview, chưa xóa gì:
+
+```powershell
+.venv\Scripts\python.exe -X utf8 tools/run_cvat_pipeline.py --task-id 20 --job-id 18 --cleanup-run
+```
+
+Sau khi kiểm đúng danh sách và workspace, mới xác nhận bằng chính tên workspace:
+
+```powershell
+.venv\Scripts\python.exe -X utf8 tools/run_cvat_pipeline.py --task-id 20 --job-id 18 --cleanup-run --confirm-cleanup-run task_20_job_18
+```
+
+Sau xác nhận, cleanup xóa toàn bộ artifact chi tiết của run và chỉ giữ `minimal_audit_manifest.json` với task/job identity, timestamps, model/config/source hashes, result summary, CVAT mapping summary và danh sách file đã xóa. Muốn giữ khả năng resume/audit chi tiết thì chỉ dùng `--cleanup-frames`. Không có auto-cleanup mặc định.
+
+## 12. Sau khi sửa annotation bằng tay
+
+Human edit làm annotation hash khác state được khóa sau auto-annotation. Dry-run báo `CVAT_ANNOTATION_STATE_CHANGED_SINCE_PREDICTION_PUSH`; run thật dừng với `CVAT annotation state changed since prediction push`. Tool không overwrite, append lại prediction hay tự nhận human edit là generated state. Hiện chưa có automatic reconciliation; giữ workspace và review thay đổi thủ công.

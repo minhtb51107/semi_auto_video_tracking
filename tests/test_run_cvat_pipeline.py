@@ -17,7 +17,7 @@ TEST_TEMP.mkdir(parents=True, exist_ok=True)
 sys.path.insert(0, str(PROJECT_ROOT / "tools"))
 from run_cvat_pipeline import (PipelineError, annotation_is_empty, cvat_track_payloads,
     ensure_frames, fetch_live_snapshot, issue_plan, push_predictions, read_mot_rows,
-    run, target_fingerprint, validate_target)
+    run, shape_count_audit, target_fingerprint, validate_target)
 
 
 @contextmanager
@@ -218,6 +218,36 @@ class PipelineTests(unittest.TestCase):
             self.assertEqual(second["issue_push"]["skipped"],len(api.issues))
             self.assertEqual(tracker.calls,1)
 
+    def test_post_human_edit_rerun_fails_before_mutation(self):
+        api=FakeCVAT()
+        with test_workspace() as tmp:
+            tracker=CounterTracker(); run(args(tmp,"all"),api,tracker)
+            issue_count=len(api.issues); patches=api.annotation_patches
+            api.annotations["tracks"][0]["shapes"][0]["points"][0] += 1
+            with self.assertRaisesRegex(PipelineError,"annotation state changed"):
+                run(args(tmp,"review"),api,tracker)
+            self.assertEqual((len(api.issues),api.annotation_patches),(issue_count,patches))
+
+    def test_post_completion_dry_run_preserves_locked_history(self):
+        api=FakeCVAT()
+        with test_workspace() as tmp:
+            root=Path(tmp); tracker=CounterTracker(); run(args(tmp,"all"),api,tracker)
+            workspace=root/"runs"/"task_20_job_18"
+            locked_summary=(workspace/"run_summary.json").read_bytes()
+            locked_metadata=json.loads((workspace/"metadata.json").read_text(encoding="utf-8-sig"))
+            api.annotations["tracks"][0]["shapes"][0]["points"][0] += 1
+            result=run(args(tmp,"all",True),api,tracker)
+            self.assertEqual(result["annotation_safety"],
+                             "CVAT_ANNOTATION_STATE_CHANGED_SINCE_PREDICTION_PUSH")
+            self.assertEqual((workspace/"run_summary.json").read_bytes(),locked_summary)
+            self.assertEqual(json.loads((workspace/"metadata.json").read_text(encoding="utf-8-sig")),
+                             locked_metadata)
+            latest=json.loads((workspace/"metadata_latest.json").read_text(encoding="utf-8-sig"))
+            self.assertNotEqual(latest["annotation_hash"],locked_metadata["annotation_hash"])
+            self.assertEqual(json.loads((workspace/"dry_run_summary.json").read_text())["status"],
+                             "DRY_RUN")
+            self.assertEqual((api.annotation_patches,len(api.issues)),(1,1))
+
     def test_review_only_requires_completed_annotation_stage(self):
         api=FakeCVAT()
         with test_workspace() as tmp:
@@ -240,8 +270,48 @@ class PipelineTests(unittest.TestCase):
         data={"schema_version":2,"events":[{"event_id":"E000001","track_id":7,"related_track_ids":[],"start_frame":1,"end_frame":3,"anchor_frame":2,"context_start":1,"context_end":5,"reasons":["track_gap"],"raw_flag_ids":["F1"]}]}
         plan=issue_plan(data,snapshot,mapping,api.url); item=plan["items"][0]
         self.assertEqual(item["payload"]["frame"],11)
-        self.assertEqual(item["metadata"]["object_mapping"],"EXTERNAL_ID_METADATA_ONLY")
+        self.assertEqual(item["metadata"]["object_mapping"],"UNAVAILABLE")
         self.assertNotIn("object_id",item["payload"])
+
+    def test_issue_marker_uses_anchor_bbox_center_and_readable_metadata(self):
+        api=FakeCVAT(); snapshot,_=fetch_live_snapshot(api,20,18); mapping=validate_target(snapshot,20,18)
+        data={"schema_version":2,"events":[{"event_id":"E000001","track_id":7,"related_track_ids":[],"start_frame":1,"end_frame":3,"anchor_frame":3,"context_start":1,"context_end":5,"reasons":["track_gap"],"raw_flag_ids":["F1"]}]}
+        rows=CounterTracker()(None,None,None,None,None,None,None,None,None)
+        plan=issue_plan(data,snapshot,mapping,api.url,rows,{"external_to_cvat_track":{"7":1000}})
+        item=plan["items"][0]
+        self.assertEqual((item["payload"]["frame"],item["payload"]["position"]),(2,[21.0,15.0]))
+        self.assertEqual(item["metadata"]["placement"]["mode"],"ANCHOR_BBOX_CENTER")
+        for value in ["event_id=E000001","reasons=track_gap","cvat_track_id=1000","external_track_id=7",
+                      "related_external_track_ids=none","analyzer_version=2"]:
+            self.assertIn(value,item["payload"]["message"])
+
+    def test_issue_marker_nearest_bbox_fallback_is_deterministic(self):
+        api=FakeCVAT(); snapshot,_=fetch_live_snapshot(api,20,18); mapping=validate_target(snapshot,20,18)
+        event={"event_id":"E000001","track_id":7,"related_track_ids":[],"start_frame":1,"end_frame":3,"anchor_frame":2,"context_start":1,"context_end":5,"reasons":["track_gap"],"raw_flag_ids":["F1"]}
+        rows=CounterTracker()(None,None,None,None,None,None,None,None,None)
+        item=issue_plan({"schema_version":2,"events":[event]},snapshot,mapping,api.url,rows,{"external_to_cvat_track":{"7":1000}})["items"][0]
+        self.assertEqual((item["payload"]["frame"],item["metadata"]["placement"]["mot_frame"]),(0,1))
+        self.assertEqual(item["metadata"]["placement"]["mode"],"NEAREST_BBOX_CENTER")
+
+    def test_issue_marker_unmapped_track_and_invalid_geometry(self):
+        api=FakeCVAT(); snapshot,_=fetch_live_snapshot(api,20,18); mapping=validate_target(snapshot,20,18)
+        event={"event_id":"E000001","track_id":7,"related_track_ids":[],"start_frame":1,"end_frame":3,"anchor_frame":3,"context_start":1,"context_end":5,"reasons":["track_gap"],"raw_flag_ids":["F1"]}
+        rows=CounterTracker()(None,None,None,None,None,None,None,None,None)
+        fallback=issue_plan({"schema_version":2,"events":[event]},snapshot,mapping,api.url,rows,{"external_to_cvat_track":{}})["items"][0]
+        self.assertEqual(fallback["metadata"]["placement"]["mode"],"FRAME_LEVEL_FALLBACK_UNMAPPED_TRACK")
+        self.assertEqual(fallback["payload"]["position"],[10,10])
+        bad=[(3,7,99,10,20,10,.8)]
+        with self.assertRaisesRegex(PipelineError,"geometry"):
+            issue_plan({"schema_version":2,"events":[event]},snapshot,mapping,api.url,bad,{"external_to_cvat_track":{"7":1000}})
+
+    def test_shape_count_audit_distinguishes_visible_and_outside_keyframes(self):
+        api=FakeCVAT(); snapshot,_=fetch_live_snapshot(api,20,18); mapping=validate_target(snapshot,20,18)
+        rows=[(1,7,1,2,10,5,.9),(3,7,2,2,10,5,.8)]
+        expected=cvat_track_payloads(rows,mapping,158)
+        api.create_annotations(18,{"tracks":[x["track"] for x in expected]})
+        audit=shape_count_audit(rows,expected,api.annotations,5)
+        self.assertEqual((audit["mot_boxes"],audit["gap_boundary_outside_keyframes"],audit["terminal_outside_keyframes"],audit["remote_total_track_shapes"]),(2,1,1,4))
+        self.assertEqual(audit["classification"],"EXPECTED")
 
 
 if __name__ == "__main__":
