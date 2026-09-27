@@ -38,7 +38,9 @@ def load_dotenv(path=None, environ=None):
             value = value[1:-1]
         if '\n' in value or '\r' in value:
             raise IntegrationError(f'Invalid .env value for {key}')
-        if key not in environ:
+        # An empty inherited variable is not a usable credential/config value.
+        # Treat it as missing so a local, ignored .env can still supply it.
+        if not environ.get(key):
             environ[key] = value
             loaded[key] = value
     return loaded

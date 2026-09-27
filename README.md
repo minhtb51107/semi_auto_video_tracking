@@ -6,6 +6,8 @@ External KITTI 0001: [held-out results](docs/EXTERNAL_VALIDATION_RESULTS.md), [K
 
 CVAT live integration đã kiểm chứng trên task6/job4: tạo20 issues, retry0 duplicate, Resolve thủ công issue1 và read-back thành công; annotation hash giữ nguyên. Xem [live verification](docs/CVAT_LIVE_VERIFICATION.md), [robustness tests](docs/ROBUSTNESS_RESULTS.md), [integration guide](docs/CVAT_INTEGRATION_GUIDE.md). Task6 chỉ là integration/regression sandbox. `HUMAN_REVIEW_STATUS=PREPARED_NOT_EXECUTED`; [Human Pilot V2](docs/HUMAN_PILOT_V2_PLAN.md) mới là specification cho dữ liệu reviewer chưa xem.
 
+Để tự chạy auto-annotation và auto-review trên một CVAT task mới, xem [workflow dành cho người dùng](docs/USER_WORKFLOW.md).
+
 Project này phát triển từ **Day03 VideoTracking lab**, repo nguồn:
 https://github.com/minhtb51107/K4-L2-DAY03-TRANBINHMINH-2A202602174-VideoTracking
 

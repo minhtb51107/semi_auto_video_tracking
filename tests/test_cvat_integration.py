@@ -154,6 +154,9 @@ class CVATTests(unittest.TestCase):
             self.assertEqual(env['CVAT_TASK_ID'], '6')
             self.assertNotIn('IGNORED', env)
             self.assertNotIn('CVAT_URL', loaded)
+            env = {'CVAT_TOKEN': ''}
+            load_dotenv(path, env)
+            self.assertEqual(env['CVAT_TOKEN'], 'file-secret')
 
     def test_dotenv_malformed_line_rejected_without_secret_output(self):
         with tempfile.TemporaryDirectory() as tmp:

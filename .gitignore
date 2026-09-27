@@ -36,3 +36,4 @@ outputs/cvat_integration/kitti_*
 outputs/cvat_integration/preservation_before.json
 outputs/cvat_integration/integrity.json
 outputs/cvat_integration/tests.log
+outputs/runs/task_*/

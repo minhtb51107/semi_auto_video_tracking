@@ -34,11 +34,20 @@ def track_clip(clip: Path, model_name: str, tracker: str, conf: float, iou: floa
                imgsz: int, classes: list[int], device: str | None = None,
                verbose: bool = True) -> list[tuple[int, int, float, float, float, float, float]]:
     """Trả về list (frame, track_id, x, y, w, h, conf) với frame đánh số từ 1."""
+    return track_image_dir(clip / "img1", model_name, tracker, conf, iou, imgsz,
+                           classes, device, verbose)
+
+
+def track_image_dir(image_dir: Path, model_name: str, tracker: str, conf: float,
+                    iou: float, imgsz: int, classes: list[int],
+                    device: str | None = None, verbose: bool = True
+                    ) -> list[tuple[int, int, float, float, float, float, float]]:
+    """Track a directly-addressed JPEG directory using the unchanged model loop."""
     from ultralytics import YOLO
 
-    images = sorted((clip / "img1").glob("*.jpg"))
+    images = sorted(Path(image_dir).glob("*.jpg"))
     if not images:
-        raise SystemExit(f"Không thấy ảnh trong {clip / 'img1'}")
+        raise SystemExit(f"Không thấy ảnh trong {image_dir}")
 
     model = YOLO(model_name)
     rows: list[tuple[int, int, float, float, float, float, float]] = []
