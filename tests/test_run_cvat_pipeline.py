@@ -17,7 +17,7 @@ TEST_TEMP.mkdir(parents=True, exist_ok=True)
 sys.path.insert(0, str(PROJECT_ROOT / "tools"))
 from run_cvat_pipeline import (PipelineError, annotation_is_empty, cvat_track_payloads,
     ensure_frames, fetch_live_snapshot, issue_plan, push_predictions, read_mot_rows,
-    run, shape_count_audit, target_fingerprint, validate_target)
+    push_issues, run, shape_count_audit, target_fingerprint, validate_target)
 
 
 @contextmanager
@@ -284,6 +284,25 @@ class PipelineTests(unittest.TestCase):
         for value in ["event_id=E000001","reasons=track_gap","cvat_track_id=1000","external_track_id=7",
                       "related_external_track_ids=none","analyzer_version=2"]:
             self.assertIn(value,item["payload"]["message"])
+        for value in ["Possible tracking issue", "Label: unknown", "Reasons:\n- track gap",
+                      "Suggested action:"]:
+            self.assertIn(value,item["payload"]["message"])
+
+    def test_existing_issue_plan_keeps_pre_upgrade_comment_and_position(self):
+        api=FakeCVAT()
+        with test_workspace() as tmp:
+            root=Path(tmp); folder=root/"cvat_push"; folder.mkdir()
+            old={"schema_version":1,"task_id":20,"job_id":18,"sequence":"task_20_job_18","source_sha256":"source",
+                 "items":[{"event_id":"E000001","marker":"SATV2|task_20_job_18|E000001",
+                           "payload":{"job":18,"frame":2,"position":[10,10],
+                                      "message":"SATV2|task_20_job_18|E000001\nlegacy"}}]}
+            new=copy.deepcopy(old); new["items"][0]["payload"].update(position=[20,20],message="changed")
+            (folder/"issues_plan.json").write_text(json.dumps(old))
+            first=push_issues(api,root,new)
+            second=push_issues(api,root,new)
+            self.assertEqual((first["created"],second["created"]),(1,0))
+            self.assertEqual(api.issues[0]["position"],[10,10])
+            self.assertTrue(api.comments[0]["message"].endswith("legacy"))
 
     def test_issue_marker_nearest_bbox_fallback_is_deterministic(self):
         api=FakeCVAT(); snapshot,_=fetch_live_snapshot(api,20,18); mapping=validate_target(snapshot,20,18)

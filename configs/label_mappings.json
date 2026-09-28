@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "labels": {
+    "person": {
+      "detector_classes": [0],
+      "aliases": ["pedestrian"]
+    },
+    "vehicle": {
+      "detector_classes": [2, 5, 7],
+      "aliases": ["car", "bus", "truck"]
+    },
+    "laptop": {
+      "detector_classes": [63],
+      "aliases": ["notebook_computer"]
+    },
+    "cell_phone": {
+      "detector_classes": [67],
+      "aliases": ["phone", "mobile_phone"]
+    }
+  }
+}

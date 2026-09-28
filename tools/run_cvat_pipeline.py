@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the existing tracking and Analyzer v2 workflow against one CVAT job.
+"""Run configurable tracking and Analyzer v2 for one CVAT job or all task jobs.
 
 The runner only appends predictions with CVAT's ``action=create`` endpoint. It
 never clears or replaces annotations. MOT frames are local and 1-based; CVAT
@@ -15,6 +15,7 @@ import math
 from pathlib import Path
 import statistics
 import sys
+import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request
@@ -24,6 +25,10 @@ from cvat_integration import (Client, IntegrationError, digest, execute,
 from review_tracks_v2 import DEFAULT_V2, review_v2
 from review_tracks import DEFAULT_CONFIG
 from run_tracker import track_image_dir, write_mot
+from label_mapping import (LabelMappingError, load_label_config,
+                           match_task_labels)
+from tracking_runtime import (ByteTrackTracker, TrackBox, TrackingRuntimeError,
+                              UltralyticsYOLODetector, run_chunked)
 from workspace_lifecycle import (WorkspaceError, cleanup_frames, cleanup_run,
                                  workspace_status)
 
@@ -32,6 +37,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MODEL = "yolo26n.pt"
 DEFAULT_TRACKER = "bytetrack.yaml"
 DEFAULT_CLASSES = [2, 5, 7]
+DEFAULT_LABEL_CONFIG = ROOT / "configs" / "label_mappings.json"
 
 
 class PipelineError(ValueError):
@@ -172,6 +178,21 @@ def select_label(snapshot: dict, name: str) -> dict:
     return labels[0]
 
 
+def resolve_label_plan(snapshot: dict, args) -> dict:
+    config = load_label_config(getattr(args, "label_config", DEFAULT_LABEL_CONFIG))
+    selected = None
+    if getattr(args, "labels", None):
+        selected = [x.strip() for x in args.labels.split(",") if x.strip()]
+    elif getattr(args, "label_name", None):  # compatibility for older callers/tests
+        selected = [args.label_name]
+    plan = match_task_labels(snapshot["labels"], config, selected,
+                             getattr(args, "classes", None))
+    plan["config_path"] = config["path"]
+    if not plan["supported"] and not plan["unsupported"]:
+        raise PipelineError("No CVAT labels were selected")
+    return plan
+
+
 def write_metadata(workspace: Path, snapshot: dict, mapping: list[dict]) -> None:
     task, job = snapshot["task"], snapshot["job"]
     public = {
@@ -282,14 +303,20 @@ def resolve_tracker(path_or_name: str) -> Path:
     return candidate.resolve()
 
 
-def tracking_config(args) -> dict:
+def tracking_config(args, label_plan: dict | None = None) -> dict:
     model = resolve_model(args.model)
     tracker = resolve_tracker(args.tracker)
+    classes = (label_plan["detector_classes"] if label_plan is not None
+               else (getattr(args, "classes", None) or DEFAULT_CLASSES))
     return {"model": str(model), "model_sha256": sha256_file(model),
             "tracker_argument": args.tracker, "tracker_file": str(tracker),
             "tracker_sha256": sha256_file(tracker), "conf": args.conf, "iou": args.iou,
-            "imgsz": args.imgsz, "classes": args.classes, "device": args.device,
-            "runner_sha256": sha256_file(Path(__file__).with_name("run_tracker.py"))}
+            "imgsz": args.imgsz, "classes": classes, "device": args.device,
+            "chunk_size": getattr(args, "chunk_size", 500),
+            "detector": "UltralyticsYOLODetector", "tracker": "ByteTrackTracker",
+            "label_mapping_sha256": (label_plan or {}).get("config_sha256"),
+            "labels": (label_plan or {}).get("supported"),
+            "runner_sha256": sha256_file(Path(__file__).with_name("tracking_runtime.py"))}
 
 
 def read_mot_rows(path: Path) -> list[tuple[int, int, float, float, float, float, float]]:
@@ -314,11 +341,44 @@ def read_mot_rows(path: Path) -> list[tuple[int, int, float, float, float, float
     return sorted(rows)
 
 
+def read_track_boxes(path: Path, label_plan: dict) -> list[TrackBox]:
+    class_names = {int(class_id): row["canonical_label"]
+                   for class_id, row in label_plan["class_to_label"].items()}
+    output = []
+    for number, raw in enumerate(Path(path).read_text(encoding="utf-8-sig").splitlines(), 1):
+        if not raw.strip():
+            continue
+        parts = raw.split(",")
+        if len(parts) < 8:
+            if len(class_names) != 1:
+                raise PipelineError(f"MOT row {number} has no class identity")
+            class_id = next(iter(class_names))
+        else:
+            try:
+                class_id = int(float(parts[7]))
+            except ValueError:
+                raise PipelineError(f"Malformed MOT class row {number}") from None
+            if class_id < 0 and len(class_names) == 1:  # legacy vehicle artifacts
+                class_id = next(iter(class_names))
+        if class_id not in class_names:
+            raise PipelineError(f"MOT row {number} has unsupported detector class {class_id}")
+        try:
+            frame, track_id = int(parts[0]), int(parts[1])
+            x, y, w, h, confidence = (float(value) for value in parts[2:7])
+        except ValueError:
+            raise PipelineError(f"Malformed MOT row {number}") from None
+        output.append(TrackBox(frame, track_id, (x, y, w, h), confidence,
+                               class_id, class_names[class_id]))
+    read_mot_rows(path)  # retain the established geometry/uniqueness validation
+    return sorted(output, key=lambda row: (row.frame_id, row.track_id))
+
+
 def ensure_predictions(workspace: Path, snapshot: dict, frames_manifest: dict, args,
-                       tracker_fn=track_image_dir) -> tuple[Path, dict]:
+                       label_plan: dict, tracker_fn=track_image_dir,
+                       runtime_factory=None) -> tuple[Path, dict]:
     folder, mot_folder = workspace / "predictions", workspace / "mot"
     manifest_path, mot_path = folder / "manifest.json", mot_folder / "predictions.txt"
-    config = tracking_config(args)
+    config = tracking_config(args, label_plan)
     expected = {"target_sha256": target_fingerprint(snapshot),
                 "frame_inventory_sha256": frames_manifest["inventory_sha256"],
                 "tracking_config_sha256": canonical_hash(config)}
@@ -334,32 +394,72 @@ def ensure_predictions(workspace: Path, snapshot: dict, frames_manifest: dict, a
         if not manifest_path.is_file():
             raise PipelineError("Prediction artifact exists without a valid manifest")
     folder.mkdir(parents=True, exist_ok=True); mot_folder.mkdir(parents=True, exist_ok=True)
-    save(manifest_path, {"schema_version": 1, "status": "running", **expected,
+    save(manifest_path, {"schema_version": 2, "status": "running", **expected,
                          "tracking_config": config})
-    rows = tracker_fn(workspace / "frames", config["model"], args.tracker, args.conf,
-                      args.iou, args.imgsz, args.classes, args.device, True)
+    if not label_plan["detector_classes"]:
+        rows = []; detection_count = 0
+    elif runtime_factory is not None or tracker_fn is track_image_dir:
+        if runtime_factory is None:
+            detector = UltralyticsYOLODetector(config["model"], config["classes"], args.conf,
+                                               args.iou, args.imgsz, args.device)
+            tracker = ByteTrackTracker(config["tracker_file"])
+        else:
+            detector, tracker = runtime_factory(config)
+        images = [workspace / "frames" / item["local_name"] for item in frames_manifest["frames"]]
+        rows, chunk_state = run_chunked(images, detector, tracker, config["chunk_size"],
+                                        folder / "chunks", expected["tracking_config_sha256"],
+                                        expected["frame_inventory_sha256"])
+        detection_count = chunk_state["detection_count"]
+    else:
+        if len(label_plan["supported"]) != 1:
+            raise PipelineError("Legacy combined tracker injection only supports one CVAT label")
+        class_id = label_plan["supported"][0]["detector_classes"][0]
+        class_name = label_plan["class_to_label"][class_id]["canonical_label"]
+        legacy = tracker_fn(workspace / "frames", config["model"], args.tracker, args.conf,
+                            args.iou, args.imgsz, config["classes"], args.device, True)
+        rows = [TrackBox(row[0], row[1], tuple(row[2:6]), row[6], class_id, class_name)
+                for row in legacy]
+        detection_count = len(rows)  # legacy combined adapter cannot expose pre-tracker drops
     temp = mot_path.with_suffix(".tmp")
     write_mot(rows, temp); temp.replace(mot_path)
-    manifest = {"schema_version": 1, "status": "complete", **expected, "tracking_config": config,
+    per_class = {}
+    for row in rows:
+        summary_name = label_plan["class_to_label"][row.class_id]["cvat_label"]
+        value = per_class.setdefault(summary_name, {"boxes": 0, "track_ids": set()})
+        value["boxes"] += 1; value["track_ids"].add(row.track_id)
+    per_class = {name: {"boxes": value["boxes"], "tracks": len(value["track_ids"])}
+                 for name, value in sorted(per_class.items())}
+    manifest = {"schema_version": 2, "status": "complete", **expected, "tracking_config": config,
                 "mot_sha256": sha256_file(mot_path), "box_count": len(rows),
-                "track_count": len({r[1] for r in rows})}
+                "track_count": len({r.track_id for r in rows}), "per_class": per_class,
+                "detection_count": detection_count,
+                "unsupported_labels": label_plan["unsupported"]}
     save(manifest_path, manifest)
     return mot_path, manifest
 
 
-def cvat_track_payloads(rows, mapping: list[dict], label_id: int) -> list[dict]:
+def cvat_track_payloads(rows, mapping: list[dict], labels) -> list[dict]:
     frame_map = {x["mot_frame"]: x for x in mapping}
     grouped = defaultdict(list)
     for row in rows:
         if row[0] not in frame_map:
             raise PipelineError(f"Prediction frame {row[0]} is out of job bounds")
-        grouped[row[1]].append(row)
+        class_id = row.class_id if isinstance(row, TrackBox) else None
+        grouped[(row[1], class_id)].append(row)
     payloads = []
     last_local = len(mapping)
-    for external_id, detections in sorted(grouped.items()):
-        detections.sort()
+    for (external_id, class_id), detections in sorted(grouped.items()):
+        detections.sort(key=lambda row: (row[0], row[1]))
+        if isinstance(labels, int):
+            label_id, label_name = labels, None
+        else:
+            selected = labels["class_to_label"].get(class_id)
+            if selected is None:
+                raise PipelineError(f"No CVAT label mapping for detector class {class_id}")
+            label_id, label_name = selected["cvat_label_id"], selected["cvat_label"]
         shapes, previous = [], None
-        for frame, _, x, y, w, h, confidence in detections:
+        for detection in detections:
+            frame, _, x, y, w, h, confidence = detection.legacy() if isinstance(detection, TrackBox) else detection
             if previous is not None and frame != previous[0] + 1:
                 pf, px, py, pw, ph = previous[:5]
                 outside_local = pf + 1
@@ -375,7 +475,9 @@ def cvat_track_payloads(rows, mapping: list[dict], label_id: int) -> list[dict]:
             shapes.append({"type": "rectangle", "frame": frame_map[pf + 1]["cvat_frame"],
                            "points": [px, py, px + pw, py + ph], "outside": True,
                            "occluded": False, "z_order": 0, "rotation": 0, "attributes": []})
-        payloads.append({"external_track_id": external_id,
+        payloads.append({"external_track_id": external_id, "detector_class_id": class_id,
+                         "class_name": (detections[0].class_name if isinstance(detections[0], TrackBox) else None),
+                         "cvat_label": label_name,
                          "confidence": {"min": min(x[6] for x in detections),
                                         "max": max(x[6] for x in detections)},
                          "track": {"label_id": label_id, "frame": shapes[0]["frame"], "group": 0,
@@ -441,14 +543,20 @@ def shape_count_audit(rows, expected: list[dict], remote: dict, total_frames: in
 
 
 def push_predictions(client, workspace: Path, snapshot: dict, annotations: dict,
-                     mot_path: Path, mapping: list[dict], label: dict,
+                     mot_path: Path, mapping: list[dict], label_plan: dict,
                      allow_existing: bool) -> dict:
     folder = workspace / "cvat_push"; folder.mkdir(parents=True, exist_ok=True)
     state_path = folder / "predictions.json"
-    rows = read_mot_rows(mot_path)
-    expected = cvat_track_payloads(rows, mapping, label["id"])
+    if "class_to_label" not in label_plan:  # backward-compatible direct helper use
+        legacy_label = {"cvat_label_id": label_plan["id"], "cvat_label": label_plan["name"],
+                        "canonical_label": label_plan["name"], "detector_classes": [0]}
+        label_plan = {"supported": [legacy_label], "unsupported": [],
+                      "class_to_label": {0: legacy_label}, "detector_classes": [0]}
+    rows = read_track_boxes(mot_path, label_plan)
+    expected = cvat_track_payloads(rows, mapping, label_plan)
     source = {"target_sha256": target_fingerprint(snapshot), "mot_sha256": sha256_file(mot_path),
-              "label_id": label["id"], "expected_sha256": canonical_hash(expected)}
+              "label_mapping_sha256": canonical_hash(label_plan["supported"]),
+              "expected_sha256": canonical_hash(expected)}
     prior = json.loads(state_path.read_text(encoding="utf-8-sig")) if state_path.is_file() else None
     if prior and any(prior.get(k) != v for k, v in source.items()):
         raise PipelineError("Prediction push state belongs to different inputs")
@@ -471,6 +579,7 @@ def push_predictions(client, workspace: Path, snapshot: dict, annotations: dict,
         raise PipelineError("Prediction read-back verification failed")
     result = {**prepared, "status": "verified", "created_tracks": len(reconciliation["missing"]),
               "skipped_tracks": reconciliation["matched"], "external_to_cvat_track": verified["external_to_cvat_track"],
+              "track_labels": {str(x["external_track_id"]): x["cvat_label"] for x in expected},
               "annotation_hash_after": annotation_hash(after), "annotation_count_after": annotation_counts(after),
               "confidence_preservation": "MOT_ONLY_NO_CVAT_LABEL_ATTRIBUTE"}
     save(state_path, result)
@@ -516,7 +625,7 @@ def _issue_placement(event: dict, rows, mapping: list[dict], prediction_state: d
                 "cvat_frame": anchor["cvat_frame"], "position": [10, 10], "bbox": None,
                 "confidence": None, "cvat_track_id": cvat_id}
     chosen = min(candidates, key=lambda r: (abs(r[0] - event["anchor_frame"]), r[0]))
-    frame, _, x, y, width, height, confidence = chosen
+    frame, _, x, y, width, height, confidence = chosen.legacy() if isinstance(chosen, TrackBox) else chosen
     target = frame_map.get(frame)
     values = (x, y, width, height, confidence)
     if (target is None or not all(math.isfinite(v) for v in values) or width <= 0 or height <= 0
@@ -551,13 +660,21 @@ def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url:
                     "track_confidence": ({"min": min(confidences), "median": statistics.median(confidences),
                                           "max": max(confidences)} if confidences else None),
                     "experimental": "possible_duplicate" in event["reasons"]}
-        readable = [marker, f"event_id={event['event_id']}", f"reasons={','.join(event['reasons'])}",
-                    f"cvat_track_id={placement['cvat_track_id']}", f"external_track_id={event['track_id']}",
-                    f"related_external_track_ids={','.join(str(x) for x in event['related_track_ids']) or 'none'}",
-                    f"anchor_frame_mot={event['anchor_frame']}",
-                    f"context_mot={event['context_start']}..{event['context_end']}",
-                    "analyzer_version=2", f"experimental={str(metadata['experimental']).lower()}",
-                    f"marker={placement['mode']} mot_frame={placement['mot_frame']} cvat_frame={placement['cvat_frame']}",
+        label_name = (prediction_state or {}).get("track_labels", {}).get(str(event["track_id"]), "unknown")
+        metadata["label"] = label_name
+        readable = [marker, "Possible tracking issue", "", f"Label: {label_name}",
+                    f"CVAT track: {placement['cvat_track_id']}", f"External track: {event['track_id']}",
+                    f"Related external tracks: {', '.join(str(x) for x in event['related_track_ids']) or 'none'}",
+                    f"Anchor frame: {event['anchor_frame']}",
+                    f"Review context: {event['context_start']}-{event['context_end']}", "", "Reasons:",
+                    *[f"- {reason.replace('_', ' ')}" for reason in event["reasons"]], "",
+                    "Suggested action:", "Inspect object identity, class, and track continuity.", "",
+                    f"Analyzer: v2; experimental={str(metadata['experimental']).lower()}",
+                    f"Marker: {placement['mode']} at MOT frame {placement['mot_frame']} / CVAT frame {placement['cvat_frame']}",
+                    (f"AUDIT event_id={event['event_id']} reasons={','.join(event['reasons'])} "
+                     f"cvat_track_id={placement['cvat_track_id']} external_track_id={event['track_id']} "
+                     f"related_external_track_ids={','.join(str(x) for x in event['related_track_ids']) or 'none'} "
+                     "analyzer_version=2"),
                     "METADATA_JSON=" + json.dumps(metadata, sort_keys=True, ensure_ascii=False)]
         message = "\n".join(readable)
         items.append({"event_id": event["event_id"], "marker": marker,
@@ -574,9 +691,16 @@ def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url:
 def push_issues(client, workspace: Path, plan: dict) -> dict:
     folder = workspace / "cvat_push"; folder.mkdir(parents=True, exist_ok=True)
     plan_path, state_path = folder / "issues_plan.json", folder / "issues_state.json"
-    if plan_path.is_file() and canonical_hash(json.loads(plan_path.read_text(encoding="utf-8-sig"))) != canonical_hash(plan):
-        raise PipelineError("Existing issue plan differs from current Analyzer output")
-    save(plan_path, plan)
+    if plan_path.is_file():
+        locked = json.loads(plan_path.read_text(encoding="utf-8-sig"))
+        if canonical_hash(locked) != canonical_hash(plan):
+            stable = lambda value: (value.get("task_id"), value.get("job_id"), value.get("source_sha256"),
+                                    [(x.get("event_id"), x.get("marker")) for x in value.get("items", [])])
+            if stable(locked) != stable(plan):
+                raise PipelineError("Existing issue plan differs from current Analyzer output")
+            plan = locked  # preserve already-pushed comment/position semantics across UX upgrades
+    else:
+        save(plan_path, plan)
     prior = None
     if state_path.is_file():
         prior = json.loads(state_path.read_text(encoding="utf-8-sig")).get("event_issue_map")
@@ -589,32 +713,34 @@ def push_issues(client, workspace: Path, plan: dict) -> dict:
 
 
 def local_artifact_summary(workspace: Path) -> dict:
-    result = {"predicted_boxes": None, "predicted_tracks": None, "review_flags": None,
+    result = {"detector_detections": None, "predicted_boxes": None, "predicted_tracks": None, "review_flags": None,
               "review_events": None}
     pred = workspace / "predictions" / "manifest.json"
     review = workspace / "predictions" / "review_manifest.json"
     if pred.is_file():
         value = json.loads(pred.read_text(encoding="utf-8-sig"))
-        result.update(predicted_boxes=value.get("box_count"), predicted_tracks=value.get("track_count"))
+        result.update(detector_detections=value.get("detection_count"),
+                      predicted_boxes=value.get("box_count"), predicted_tracks=value.get("track_count"))
     if review.is_file():
         value = json.loads(review.read_text(encoding="utf-8-sig"))
         result.update(review_flags=value.get("raw_flag_count"), review_events=value.get("event_count"))
     return result
 
 
-def run(args, client=None, tracker_fn=track_image_dir) -> dict:
+def run(args, client=None, tracker_fn=track_image_dir, runtime_factory=None) -> dict:
+    started = time.perf_counter(); stage_times = {}
     workspace = Path(args.output_root) / f"task_{args.task_id}_job_{args.job_id}"
     workspace.mkdir(parents=True, exist_ok=True)
     client = client or PipelineClient()
     snapshot, annotations = fetch_live_snapshot(client, args.task_id, args.job_id)
     mapping = validate_target(snapshot, args.task_id, args.job_id)
-    label = select_label(snapshot, args.label_name)
+    label_plan = resolve_label_plan(snapshot, args)
     write_metadata(workspace, snapshot, mapping)
     state_path = workspace / "cvat_push" / "predictions.json"
     prior_push = json.loads(state_path.read_text(encoding="utf-8-sig")) if state_path.is_file() else None
     annotations_changed = bool(prior_push and prior_push.get("status") == "verified"
                                and annotation_hash(annotations) != prior_push.get("annotation_hash_after"))
-    config = tracking_config(args)
+    config = tracking_config(args, label_plan)
     if args.dry_run:
         local = local_artifact_summary(workspace)
         existing_without_state = not annotation_is_empty(annotations) and prior_push is None
@@ -625,11 +751,13 @@ def run(args, client=None, tracker_fn=track_image_dir) -> dict:
                   "job": {k: snapshot["job"].get(k) for k in ("id", "task_id", "type", "dimension", "start_frame", "stop_frame")},
                   "annotation_summary": annotation_counts(annotations),
                   "labels": [{"id": x.get("id"), "name": x.get("name"), "type": x.get("type")} for x in snapshot["labels"]],
-                  "selected_label": {"id": label["id"], "name": label["name"]},
+                  "label_plan": {"supported": label_plan["supported"],
+                                 "unsupported": label_plan["unsupported"]},
                   "tracking_config": config, **local,
                   "annotation_push_method": "PATCH job annotations action=create (append only)",
                   "planned_annotation_tracks": local["predicted_tracks"],
                   "planned_review_issues": local["review_events"],
+                  "elapsed_seconds": round(time.perf_counter() - started, 6),
                   "annotation_safety": ("CVAT_ANNOTATION_STATE_CHANGED_SINCE_PREDICTION_PUSH" if annotations_changed else
                                         "WOULD_ABORT_EXISTING_ANNOTATIONS" if existing_without_state and not args.allow_existing_annotations
                                         else "PASS"),
@@ -650,11 +778,18 @@ def run(args, client=None, tracker_fn=track_image_dir) -> dict:
     with writer_lock(workspace / "cvat_push"):
         mot_path = workspace / "mot" / "predictions.txt"
         if args.stage in ("annotate", "all"):
+            mark = time.perf_counter()
             frames_manifest = ensure_frames(client, workspace, snapshot, mapping)
-            mot_path, predictions = ensure_predictions(workspace, snapshot, frames_manifest, args, tracker_fn)
+            stage_times["fetch_frames"] = time.perf_counter() - mark
+            mark = time.perf_counter()
+            mot_path, predictions = ensure_predictions(workspace, snapshot, frames_manifest, args,
+                                                       label_plan, tracker_fn, runtime_factory)
+            stage_times["inference"] = time.perf_counter() - mark
             latest = client.request("GET", f"/api/jobs/{args.job_id}/annotations")
+            mark = time.perf_counter()
             prediction_push = push_predictions(client, workspace, snapshot, latest, mot_path, mapping,
-                                                label, args.allow_existing_annotations)
+                                                label_plan, args.allow_existing_annotations)
+            stage_times["annotation_push"] = time.perf_counter() - mark
         else:
             manifest = workspace / "predictions" / "manifest.json"
             push_state = workspace / "cvat_push" / "predictions.json"
@@ -666,34 +801,93 @@ def run(args, client=None, tracker_fn=track_image_dir) -> dict:
                 raise PipelineError("Prediction push state is stale or incomplete")
         issues = None; review_manifest = None
         if args.stage in ("review", "all"):
+            mark = time.perf_counter()
             events, review_manifest = ensure_review(workspace, snapshot, mot_path)
-            plan = issue_plan(events, snapshot, mapping, client.url, read_mot_rows(mot_path), prediction_push)
+            stage_times["analyzer"] = time.perf_counter() - mark
+            plan = issue_plan(events, snapshot, mapping, client.url,
+                              read_track_boxes(mot_path, label_plan), prediction_push)
+            mark = time.perf_counter()
             issues = push_issues(client, workspace, plan)
+            stage_times["issue_push"] = time.perf_counter() - mark
         result = {"status": "COMPLETE", "mutated_cvat": True, "task_id": args.task_id,
                   "job_id": args.job_id, "stage": args.stage, "frame_count": len(mapping),
                   "predicted_boxes": predictions["box_count"], "predicted_tracks": predictions["track_count"],
+                  "detector_detections": predictions.get("detection_count"),
+                  "tracks_per_class": predictions.get("per_class", {}),
+                  "tracking_config": predictions.get("tracking_config"),
+                  "labels": {"supported": label_plan["supported"], "unsupported": label_plan["unsupported"]},
                   "annotation_push": prediction_push,
                   "review_flags": review_manifest.get("raw_flag_count") if review_manifest else None,
                   "review_events": review_manifest.get("event_count") if review_manifest else None,
-                  "issue_push": {k: issues.get(k) for k in ("created", "skipped", "verified", "annotations_unchanged")} if issues else None}
+                  "issue_push": {k: issues.get(k) for k in ("created", "skipped", "verified", "annotations_unchanged")} if issues else None,
+                  "elapsed_seconds": round(time.perf_counter() - started, 6),
+                  "stage_elapsed_seconds": {key: round(value, 6) for key, value in stage_times.items()}}
         save(workspace / "run_summary.json", result)
         return result
+
+
+def run_task(args, client=None, tracker_fn=track_image_dir, runtime_factory=None) -> dict:
+    """Process task annotation jobs deterministically while preserving per-job outcomes."""
+    client = client or PipelineClient()
+    task = client.request("GET", f"/api/tasks/{args.task_id}")
+    if task.get("id") != args.task_id:
+        raise PipelineError("Task response does not match requested task")
+    jobs = client.listing("/api/jobs", task_id=args.task_id)
+    applicable = sorted((job for job in jobs if job.get("task_id") == args.task_id
+                         and job.get("type") == "annotation"), key=lambda job: job.get("id", -1))
+    if not applicable or any(type(job.get("id")) is not int for job in applicable):
+        raise PipelineError("Task has no applicable annotation jobs")
+    started = time.perf_counter(); results = []
+    for job in applicable:
+        child = argparse.Namespace(**vars(args)); child.job_id = job["id"]; child.all_jobs = False
+        try:
+            value = run(child, client, tracker_fn, runtime_factory)
+            results.append({"job_id": job["id"], "status": value["status"],
+                            "workspace": f"task_{args.task_id}_job_{job['id']}",
+                            "frame_count": value.get("frame_count"),
+                            "predicted_boxes": value.get("predicted_boxes"),
+                            "predicted_tracks": value.get("predicted_tracks"),
+                            "review_events": value.get("review_events"),
+                            "issues_created": (value.get("issue_push") or {}).get("created"),
+                            "issues_skipped": (value.get("issue_push") or {}).get("skipped"),
+                            "elapsed_seconds": value.get("elapsed_seconds")})
+        except (PipelineError, IntegrationError, LabelMappingError, TrackingRuntimeError,
+                WorkspaceError, OSError, ValueError) as exc:
+            failure = {"schema_version": 1, "task_id": args.task_id, "job_id": job["id"],
+                       "status": "FAILED", "requested_stage": args.stage,
+                       "failure_stage": "pipeline_validation_or_execution", "error": str(exc)}
+            save(Path(args.output_root) / f"task_{args.task_id}_job_{job['id']}" / "failure_summary.json",
+                 failure)
+            results.append({"job_id": job["id"], "status": "FAILED", "error": str(exc)})
+    summary = {"schema_version": 1, "task_id": args.task_id,
+               "status": "COMPLETE" if all(x["status"] != "FAILED" for x in results) else "PARTIAL_FAILURE",
+               "jobs_total": len(results), "jobs_complete": sum(x["status"] != "FAILED" for x in results),
+               "jobs_failed": sum(x["status"] == "FAILED" for x in results),
+               "elapsed_seconds": round(time.perf_counter() - started, 6), "jobs": results}
+    save(Path(args.output_root) / f"task_{args.task_id}_summary.json", summary)
+    return summary
 
 
 def parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--task-id", required=True, type=int)
-    p.add_argument("--job-id", required=True, type=int)
+    targets = p.add_mutually_exclusive_group(required=True)
+    targets.add_argument("--job-id", type=int)
+    targets.add_argument("--all-jobs", action="store_true")
     p.add_argument("--stage", choices=("annotate", "review", "all"), default="all")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--allow-existing-annotations", action="store_true")
-    p.add_argument("--label-name", default="vehicle")
+    p.add_argument("--labels", help="Comma-separated configured/CVAT labels, e.g. person,cell_phone")
+    p.add_argument("--label-name", help=argparse.SUPPRESS)
+    p.add_argument("--label-config", type=Path, default=DEFAULT_LABEL_CONFIG)
     p.add_argument("--model", default=DEFAULT_MODEL)
     p.add_argument("--tracker", default=DEFAULT_TRACKER)
     p.add_argument("--conf", type=float, default=0.25)
     p.add_argument("--iou", type=float, default=0.7)
     p.add_argument("--imgsz", type=int, default=960)
-    p.add_argument("--classes", type=lambda x: [int(v) for v in x.split(",") if v.strip()], default=DEFAULT_CLASSES)
+    p.add_argument("--classes", type=lambda x: [int(v) for v in x.split(",") if v.strip()], default=None,
+                   help="Optional detector-class restriction after label mapping")
+    p.add_argument("--chunk-size", type=int, default=500)
     p.add_argument("--device", default=None)
     p.add_argument("--output-root", type=Path, default=ROOT / "outputs" / "runs")
     actions = p.add_mutually_exclusive_group()
@@ -707,9 +901,14 @@ def parser() -> argparse.ArgumentParser:
 def main(argv=None) -> int:
     load_dotenv()
     args = parser().parse_args(argv)
-    if args.task_id < 1 or args.job_id < 1:
+    command_started = time.perf_counter()
+    if args.task_id < 1 or (args.job_id is not None and args.job_id < 1):
         parser().error("task/job IDs must be positive")
+    if args.chunk_size < 1:
+        parser().error("--chunk-size must be positive")
     try:
+        if args.all_jobs and (args.workspace_status or args.cleanup_frames or args.cleanup_run):
+            raise PipelineError("Workspace lifecycle actions require one --job-id")
         workspace = Path(args.output_root) / f"task_{args.task_id}_job_{args.job_id}"
         if args.confirm_cleanup_run and not args.cleanup_run:
             raise PipelineError("--confirm-cleanup-run requires --cleanup-run")
@@ -719,13 +918,24 @@ def main(argv=None) -> int:
             result = cleanup_frames(workspace)
         elif args.cleanup_run:
             result = cleanup_run(workspace, args.confirm_cleanup_run)
+        elif args.all_jobs:
+            result = run_task(args)
         else:
             result = run(args)
-    except (PipelineError, IntegrationError, WorkspaceError, OSError, ValueError) as exc:
+    except (PipelineError, IntegrationError, LabelMappingError, TrackingRuntimeError,
+            WorkspaceError, OSError, ValueError) as exc:
+        if args.job_id is not None and not (args.workspace_status or args.cleanup_frames or args.cleanup_run):
+            message = str(exc)
+            endpoint = message.split("endpoint=", 1)[1].split()[0] if "endpoint=" in message else None
+            save(Path(args.output_root) / f"task_{args.task_id}_job_{args.job_id}" / "failure_summary.json",
+                 {"schema_version": 1, "status": "FAILED", "task_id": args.task_id,
+                  "job_id": args.job_id, "requested_stage": args.stage,
+                  "failure_stage": "pipeline_validation_or_execution", "failure_endpoint": endpoint,
+                  "error": message, "elapsed_seconds": round(time.perf_counter()-command_started, 6)})
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
     print(json.dumps(result, indent=2, ensure_ascii=False))
-    return 0
+    return 2 if result.get("status") in ("FAILED", "PARTIAL_FAILURE") else 0
 
 
 if __name__ == "__main__":

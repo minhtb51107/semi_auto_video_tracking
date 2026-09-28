@@ -4,10 +4,10 @@
 
 | Hạng mục | Trạng thái | Gate tiếp theo |
 |---|---|---|
-| Multi-label | Pipeline map COCO car/bus/truck vào đúng một CVAT rectangle label `vehicle`. Generic label mapping chưa có. | Chỉ thiết kế mapping khi có task thật cần nhiều label và policy conflict rõ. |
+| Multi-label | Configurable mapping và aliases đã IMPLEMENTED/MOCK_TESTED; class identity đi qua normalized runtime, MOT và CVAT label ID. | Cần LIVE_VERIFIED trên disposable multi-label task; taxonomy/model khác COCO vẫn cần config phù hợp. |
 | Sampled/deleted/included frames | Unsupported và safe-fail. | Cần use case + kiểm chứng chính xác CVAT frame addressing trước khi mở. |
-| Multiple jobs | Runner xử lý một `task_id/job_id` mỗi invocation và hỗ trợ job có frame offset; không batch toàn task. | Batch orchestration khi có task nhiều segment thật, kèm isolation/retry từng job. |
-| Large scale | Chưa có evidence cho 1,000+ frame, nhiều task, concurrent run hay worker dài hạn. | Benchmark CPU/GPU, disk, timeout, crash recovery và concurrency lock. |
+| Multiple jobs | `--all-jobs` orchestration, workspace riêng và partial-failure summary đã IMPLEMENTED/MOCK_TESTED. | Cần LIVE_VERIFIED trên disposable task nhiều jobs. |
+| Large scale | Chunk/checkpoint/replay resume đã MOCK_TESTED; chưa có evidence live cho 1,000+ frame, nhiều task, concurrent run hay worker dài hạn. | Benchmark CPU/GPU, disk, timeout và concurrency lock trên long task. |
 | Human efficiency | `HUMAN_REVIEW_STATUS = PREPARED_NOT_EXECUTED`. | Chạy held-out baseline vs assisted pilot với timing thật. Không claim time saving trước đó. |
 | Semantic false positives | Track storefront task 20 đã được điều tra; Analyzer chỉ surface gap chứ không hiểu semantic. | Tập hợp nhiều adjudicated cases trước khi thử crop verifier. |
 | False negatives | Vehicle không bao giờ được detector tạo box hoàn toàn vô hình với MOT-only Analyzer. | Thêm signal độc lập với final MOT; không giả lập missed-object rule. |
@@ -20,7 +20,7 @@
 
 **IMPLEMENTED / MOCK_TESTED:** Khi external track đã map, Issue dùng tâm bbox ở anchor frame. Nếu anchor không có bbox, runner chọn detection gần nhất theo `(absolute frame distance, earlier frame)` và đặt Issue ở frame đó. Nếu track không map hoặc không có bbox, runner dùng frame-level marker `[10,10]` và ghi fallback mode. Geometry NaN, bbox âm hoặc vượt frame làm pipeline safe-fail.
 
-Comment mới chứa event ID, reasons, CVAT track ID, external track ID, anchor/context, Analyzer version, experimental status, placement mode và structured metadata. CVAT Issue API vẫn không bind Issue trực tiếp vào object; spatial point + verified track mapping là giới hạn hiện tại.
+Comment mới mở đầu bằng mô tả dễ đọc, label, CVAT/external track, context, reasons và suggested action; event ID, Analyzer version, placement mode và structured metadata vẫn được giữ cho audit. CVAT Issue API vẫn không bind Issue trực tiếp vào object; spatial point + verified track mapping là giới hạn hiện tại.
 
 Task 20 có local preview **22/22 `ANCHOR_BBOX_CENTER`** tại [task20_issue_placement_preview.json](evidence/task20_issue_placement_preview.json), nhưng live Issues cũ chưa được thay đổi. Trạng thái này là **NOT LIVE_TESTED** cho UX mới.
 

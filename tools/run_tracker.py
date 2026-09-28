@@ -6,14 +6,8 @@
         --model yolo26n.pt --tracker bytetrack.yaml \
         --out outputs/model_bytetrack_clip_01.txt
 
-    # Treatment: same detector input, appearance-assisted association
-    python3 tools/run_tracker.py --clip data/clips/clip_01 \
-        --model yolo26n.pt --tracker configs/trackers/botsort-reid.yaml \
-        --out outputs/model_reid_clip_01.txt
-
 Đây chính là "tracking-by-detection" trong slide: YOLO tìm bbox trên từng frame,
-tracker nối các bbox đó qua thời gian. ByteTrack dùng Kalman + IoU; BoT-SORT có
-thể thêm ReID/appearance nếu YAML bật `with_reid`. File xuất ra đọc được bằng
+tracker nối các bbox đó qua thời gian. ByteTrack dùng Kalman + IoU. File xuất ra đọc được bằng
 cùng `tools/evaluate_tracking.py` đã dùng để chấm nhãn tay, nên có thể so sánh
 control, treatment và gold mà không đổi định dạng.
 
@@ -24,6 +18,9 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+
+from tracking_runtime import (ByteTrackTracker, TrackBox,
+                              UltralyticsYOLODetector)
 
 # COCO không có lớp "van"; van bị model xếp vào car hoặc truck.
 # Gold của lab chỉ gán xe bốn bánh, nên KHÔNG lấy motorcycle/bicycle/person.
@@ -42,33 +39,23 @@ def track_image_dir(image_dir: Path, model_name: str, tracker: str, conf: float,
                     iou: float, imgsz: int, classes: list[int],
                     device: str | None = None, verbose: bool = True
                     ) -> list[tuple[int, int, float, float, float, float, float]]:
-    """Track a directly-addressed JPEG directory using the unchanged model loop."""
-    from ultralytics import YOLO
+    """Backward-compatible 7-column rows over the normalized runtime."""
+    return [row.legacy() for row in track_image_dir_normalized(
+        image_dir, model_name, tracker, conf, iou, imgsz, classes, device, verbose
+    )]
 
+
+def track_image_dir_normalized(image_dir: Path, model_name: str, tracker: str, conf: float,
+                               iou: float, imgsz: int, classes: list[int],
+                               device: str | None = None, verbose: bool = True) -> list[TrackBox]:
     images = sorted(Path(image_dir).glob("*.jpg"))
     if not images:
         raise SystemExit(f"Không thấy ảnh trong {image_dir}")
-
-    model = YOLO(model_name)
-    rows: list[tuple[int, int, float, float, float, float, float]] = []
-
+    detector = UltralyticsYOLODetector(model_name, classes, conf, iou, imgsz, device)
+    tracker_impl = ByteTrackTracker(tracker)
+    rows: list[TrackBox] = []
     for index, image_path in enumerate(images, start=1):
-        # persist=True giữ trạng thái tracker giữa các frame — thiếu nó thì mỗi
-        # frame là một clip mới và track_id bị đánh lại từ đầu.
-        results = model.track(
-            source=str(image_path), persist=True, tracker=tracker,
-            conf=conf, iou=iou, imgsz=imgsz, classes=classes,
-            device=device, verbose=False,
-        )
-        boxes = results[0].boxes
-        if boxes is None or boxes.id is None:
-            continue
-        for xyxy, track_id, score in zip(
-            boxes.xyxy.tolist(), boxes.id.int().tolist(), boxes.conf.tolist()
-        ):
-            x1, y1, x2, y2 = xyxy
-            rows.append((index, int(track_id), x1, y1, x2 - x1, y2 - y1, score))
-
+        rows.extend(tracker_impl.update(detector.detect(image_path, index), index))
         if verbose and index % 25 == 0:
             print(f"  frame {index}/{len(images)} · {len(rows)} bbox tích luỹ")
 
@@ -79,8 +66,11 @@ def write_mot(rows, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         "\n".join(
-            f"{f},{t},{x:.2f},{y:.2f},{w:.2f},{h:.2f},{c:.4f},-1,-1,-1"
-            for f, t, x, y, w, h, c in sorted(rows)
+            (f"{row.frame_id},{row.track_id},{row.bbox[0]:.2f},{row.bbox[1]:.2f},"
+             f"{row.bbox[2]:.2f},{row.bbox[3]:.2f},{row.confidence:.4f},{row.class_id},-1,-1"
+             if isinstance(row, TrackBox) else
+             f"{row[0]},{row[1]},{row[2]:.2f},{row[3]:.2f},{row[4]:.2f},{row[5]:.2f},{row[6]:.4f},-1,-1,-1")
+            for row in sorted(rows, key=lambda value: (value[0], value[1]))
         ) + "\n",
         encoding="utf-8",
     )
@@ -93,7 +83,7 @@ def main() -> int:
     parser.add_argument("--model", default="yolo26n.pt")
     parser.add_argument(
         "--tracker", default="bytetrack.yaml",
-        help="tracker YAML, ví dụ bytetrack.yaml hoặc configs/trackers/botsort-reid.yaml",
+        help="ByteTrack YAML (tracker_type=bytetrack)",
     )
     parser.add_argument("--conf", type=float, default=0.25, help="ngưỡng confidence của detector")
     parser.add_argument("--iou", type=float, default=0.7, help="ngưỡng NMS")
