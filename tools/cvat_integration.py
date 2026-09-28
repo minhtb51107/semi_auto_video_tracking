@@ -21,7 +21,10 @@ def load_dotenv(path=None, environ=None):
     path = Path(path or Path(__file__).resolve().parents[1]/'.env')
     if not path.is_file():
         return {}
-    allowed = {'CVAT_URL', 'CVAT_TOKEN', 'CVAT_TASK_ID', 'CVAT_JOB_ID', 'CVAT_AUTH_SCHEME'}
+    allowed = {
+        'CVAT_URL', 'CVAT_TOKEN', 'CVAT_TASK_ID', 'CVAT_JOB_ID',
+        'CVAT_AUTH_SCHEME', 'KAGGLE_API_TOKEN',
+    }
     loaded = {}
     for number, raw in enumerate(path.read_text(encoding='utf-8-sig').splitlines(), 1):
         line = raw.strip()

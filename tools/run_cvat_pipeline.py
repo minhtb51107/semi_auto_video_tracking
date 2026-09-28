@@ -145,9 +145,17 @@ def validate_target(snapshot: dict, task_id: int, job_id: int) -> list[dict]:
     if meta.get("included_frames"):
         raise PipelineError("Explicit included-frame tasks are unsupported")
     frames = meta.get("frames")
-    if not isinstance(frames, list) or len(frames) <= stop:
+    if not isinstance(frames, list):
         raise PipelineError("CVAT did not return complete frame metadata")
-    selected = frames[start:stop + 1]
+    # /api/jobs/{id}/data/meta in current CVAT returns job-local frames even
+    # though job start/stop are absolute task frame numbers. Keep support for
+    # task-scoped snapshots used by older artifacts/mocks as well.
+    if len(frames) == count and meta.get("start_frame") == start and meta.get("stop_frame") == stop:
+        selected = frames
+    elif len(frames) > stop:
+        selected = frames[start:stop + 1]
+    else:
+        raise PipelineError("CVAT did not return complete frame metadata")
     if len(selected) != count or any(not f.get("name") or not f.get("width") or not f.get("height") for f in selected):
         raise PipelineError("Incomplete frame names/dimensions")
     return [{"mot_frame": i + 1, "cvat_frame": start + i,
@@ -628,13 +636,23 @@ def _issue_placement(event: dict, rows, mapping: list[dict], prediction_state: d
     frame, _, x, y, width, height, confidence = chosen.legacy() if isinstance(chosen, TrackBox) else chosen
     target = frame_map.get(frame)
     values = (x, y, width, height, confidence)
-    if (target is None or not all(math.isfinite(v) for v in values) or width <= 0 or height <= 0
-            or x < 0 or y < 0 or x + width > target["width"] + .01 or y + height > target["height"] + .01):
+    if target is None or not all(math.isfinite(v) for v in values) or width <= 0 or height <= 0:
         raise PipelineError(f"Invalid/out-of-range marker geometry for external track {external_id}")
-    center = [round(x + width / 2, 2), round(y + height / 2, 2)]
-    return {"mode": "ANCHOR_BBOX_CENTER" if frame == event["anchor_frame"] else "NEAREST_BBOX_CENTER",
+    # Detectors legitimately return boxes clipped by the image boundary (for
+    # example, a vehicle entering at x < 0). CVAT accepts that track geometry,
+    # but an Issue marker itself must be inside the image. Anchor it at the
+    # center of the visible intersection and reject boxes wholly off-frame.
+    x1, y1 = max(0.0, x), max(0.0, y)
+    x2, y2 = min(float(target["width"]), x + width), min(float(target["height"]), y + height)
+    if x2 <= x1 or y2 <= y1:
+        raise PipelineError(f"Invalid/out-of-range marker geometry for external track {external_id}")
+    clipped = any(abs(a - b) > .01 for a, b in ((x1, x), (y1, y), (x2, x + width), (y2, y + height)))
+    center = [round((x1 + x2) / 2, 2), round((y1 + y2) / 2, 2)]
+    base_mode = "ANCHOR_BBOX_CENTER" if frame == event["anchor_frame"] else "NEAREST_BBOX_CENTER"
+    return {"mode": ("CLIPPED_" + base_mode) if clipped else base_mode,
             "mot_frame": frame, "cvat_frame": target["cvat_frame"], "position": center,
-            "bbox": [x, y, width, height], "confidence": confidence, "cvat_track_id": cvat_id}
+            "bbox": [x, y, width, height], "visible_bbox": [x1, y1, x2 - x1, y2 - y1],
+            "confidence": confidence, "cvat_track_id": cvat_id}
 
 
 def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url: str,

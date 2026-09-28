@@ -158,6 +158,15 @@ class CVATTests(unittest.TestCase):
             load_dotenv(path, env)
             self.assertEqual(env['CVAT_TOKEN'], 'file-secret')
 
+    def test_dotenv_allows_kaggle_token_without_overriding_environment(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'.env'
+            path.write_text('KAGGLE_API_TOKEN=local-placeholder\nCVAT_URL=http://localhost:8080\n')
+            env = {'KAGGLE_API_TOKEN': 'inherited-placeholder'}
+            loaded = load_dotenv(path, env)
+            self.assertEqual(env['KAGGLE_API_TOKEN'], 'inherited-placeholder')
+            self.assertNotIn('KAGGLE_API_TOKEN', loaded)
+
     def test_dotenv_malformed_line_rejected_without_secret_output(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp)/'.env'; path.write_text('CVAT_TOKEN=fixture-only\nbroken-line\n')

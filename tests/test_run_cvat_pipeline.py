@@ -116,6 +116,22 @@ class PipelineTests(unittest.TestCase):
         self.assertTrue(annotation_is_empty(ann)); self.assertEqual(len(mapping), 5)
         self.assertEqual((mapping[0]["mot_frame"], mapping[0]["cvat_frame"]), (1, 0))
 
+    def test_nonzero_job_uses_job_local_frame_metadata_with_absolute_cvat_frames(self):
+        api = FakeCVAT(frames=3)
+        api.task["size"] = 6
+        api.job.update(start_frame=3, stop_frame=5, frame_count=3)
+        api.meta.update(start_frame=3, stop_frame=5)
+        api.meta["frames"] = [
+            {"name": f"source_{i}.jpg", "width": 100, "height": 50}
+            for i in range(3, 6)
+        ]
+        snapshot, _ = fetch_live_snapshot(api, 20, 18)
+        mapping = validate_target(snapshot, 20, 18)
+        self.assertEqual([row["cvat_frame"] for row in mapping], [3, 4, 5])
+        self.assertEqual([row["mot_frame"] for row in mapping], [1, 2, 3])
+        self.assertEqual([row["remote_name"] for row in mapping],
+                         ["source_3.jpg", "source_4.jpg", "source_5.jpg"])
+
     def test_task_job_mismatch_safe_failure(self):
         api = FakeCVAT(); api.job["task_id"] = 99
         with self.assertRaisesRegex(PipelineError, "mismatch"):
@@ -319,7 +335,12 @@ class PipelineTests(unittest.TestCase):
         fallback=issue_plan({"schema_version":2,"events":[event]},snapshot,mapping,api.url,rows,{"external_to_cvat_track":{}})["items"][0]
         self.assertEqual(fallback["metadata"]["placement"]["mode"],"FRAME_LEVEL_FALLBACK_UNMAPPED_TRACK")
         self.assertEqual(fallback["payload"]["position"],[10,10])
-        bad=[(3,7,99,10,20,10,.8)]
+        partial=[(3,7,-5,10,20,10,.8)]
+        clipped=issue_plan({"schema_version":2,"events":[event]},snapshot,mapping,api.url,partial,{"external_to_cvat_track":{"7":1000}})["items"][0]
+        self.assertEqual(clipped["payload"]["position"],[7.5,15.0])
+        self.assertEqual(clipped["metadata"]["placement"]["mode"],"CLIPPED_ANCHOR_BBOX_CENTER")
+        self.assertEqual(clipped["metadata"]["placement"]["visible_bbox"],[0.0,10,15.0,10])
+        bad=[(3,7,101,10,20,10,.8)]
         with self.assertRaisesRegex(PipelineError,"geometry"):
             issue_plan({"schema_version":2,"events":[event]},snapshot,mapping,api.url,bad,{"external_to_cvat_track":{"7":1000}})
 

@@ -37,3 +37,4 @@ outputs/cvat_integration/preservation_before.json
 outputs/cvat_integration/integrity.json
 outputs/cvat_integration/tests.log
 outputs/runs/task_*/
+outputs/runs/task_*_summary.json
