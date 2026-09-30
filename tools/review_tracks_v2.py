@@ -8,7 +8,8 @@ import math
 from pathlib import Path
 
 from motlib import by_frame, iou
-from review_tracks import DEFAULT_CONFIG, analyze, load_config, load_tracks, review_file
+from review_tracks import (DEFAULT_CONFIG, analyze, classes_compatible, load_config,
+                           load_tracks, review_file)
 
 DEFAULT_V2 = Path(__file__).resolve().parents[1] / 'configs/review_v2.json'
 
@@ -30,7 +31,7 @@ def validate_config(c):
     return c
 
 
-def duplicate_flags(detections, config):
+def duplicate_flags(detections, config, class_compatibility=None):
     c = validate_config(config)
     pairs = defaultdict(list)
     for frame, boxes in sorted(by_frame(detections).items()):
@@ -41,7 +42,7 @@ def duplicate_flags(detections, config):
                     continue
                 # Only comparable semantic classes can be duplicate tracks.
                 # Legacy MOT rows have class_id=None and retain v1 behavior.
-                if a.class_id is not None and b.class_id is not None and a.class_id != b.class_id:
+                if not classes_compatible(a.class_id, b.class_id, class_compatibility):
                     continue
                 overlap = iou(a, b)
                 distance = math.hypot(a.x+a.w/2-b.x-b.w/2, a.y+a.h/2-b.y-b.h/2)
@@ -92,11 +93,12 @@ def aggregate_events(flags, padding=2, total_frames=None):
     return events
 
 
-def analyze_v2(detections, v1_config, v2_config, total_frames=None):
+def analyze_v2(detections, v1_config, v2_config, total_frames=None,
+               class_compatibility=None):
     validate_config(v2_config)
     if total_frames is not None and (type(total_frames) is not int or total_frames < max((d.frame for d in detections), default=0) or total_frames < 1):
         raise ValueError('total_frames must cover all predictions')
-    legacy = analyze(detections, v1_config)
+    legacy = analyze(detections, v1_config, class_compatibility)
     classes = {}
     for detection in detections:
         if detection.track_id not in classes or classes[detection.track_id] is None:
@@ -105,7 +107,7 @@ def analyze_v2(detections, v1_config, v2_config, total_frames=None):
                   class_id=classes.get(f['track_id']),
                   related_class_id=classes.get(f['related_track_id']) if f['related_track_id'] is not None else None)
              for f in legacy]
-    flags += duplicate_flags(detections, v2_config)
+    flags += duplicate_flags(detections, v2_config, class_compatibility)
     for flag in flags:
         flag.setdefault('class_id', classes.get(flag['track_id']))
         flag.setdefault('related_class_id', classes.get(flag['related_track_id']) if flag['related_track_id'] is not None else None)
@@ -114,6 +116,7 @@ def analyze_v2(detections, v1_config, v2_config, total_frames=None):
         f['raw_flag_id'] = f'F{n:06d}'
     return dict(schema_version=2, interpretation='experimental_heuristic_candidates_not_ground_truth',
         v1_config=v1_config, v2_config=v2_config, total_frames=total_frames,
+        class_compatibility=class_compatibility,
         context_limit='provided_total_frames' if total_frames is not None else 'unbounded_without_sequence_metadata',
         flags=flags, events=aggregate_events(flags,v2_config['context_padding'],total_frames))
 
@@ -125,12 +128,13 @@ def write_csv(path, rows, fields):
             writer.writerow({k:json.dumps(row.get(k),sort_keys=True) if isinstance(row.get(k),(dict,list)) else row.get(k) for k in fields})
 
 
-def review_v2(tracks, v1_config, v2_config, out, total_frames=None):
+def review_v2(tracks, v1_config, v2_config, out, total_frames=None,
+              class_compatibility=None):
     tracks,v1_config,v2_config,out=map(Path,(tracks,v1_config,v2_config,out))
     names=['review_flags_v2.json','review_flags_v2.csv','review_events.json','review_events.csv']
     if any((out/n).exists() or (out/n).resolve() in {tracks.resolve(),v1_config.resolve(),v2_config.resolve()} for n in names):
         raise ValueError('Use fresh output paths; refuse overwrite')
-    result=analyze_v2(load_tracks(tracks),load_config(v1_config),validate_config(json.loads(v2_config.read_text(encoding='utf-8-sig'))),total_frames)
+    result=analyze_v2(load_tracks(tracks),load_config(v1_config),validate_config(json.loads(v2_config.read_text(encoding='utf-8-sig'))),total_frames,class_compatibility)
     result.update(input_file=str(tracks),input_sha256=hashlib.sha256(tracks.read_bytes()).hexdigest())
     out.mkdir(parents=True,exist_ok=True)
     (out/names[0]).write_text(json.dumps(result,indent=2,allow_nan=False)+'\n',encoding='utf-8')

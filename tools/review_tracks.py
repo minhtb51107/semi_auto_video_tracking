@@ -81,7 +81,24 @@ def load_tracks(path):
     return detections
 
 
-def analyze(detections, config):
+def classes_compatible(first, second, class_compatibility=None):
+    """Compare detector classes using canonical labels when they are known.
+
+    With no mapping (or an incomplete mapping), retain the prior safe behavior:
+    known detector subclasses must be equal, while class-less legacy MOT rows
+    remain eligible for geometry-only analysis.
+    """
+    if first is None or second is None:
+        return True
+    if class_compatibility is not None:
+        first_group = class_compatibility.get(first)
+        second_group = class_compatibility.get(second)
+        if first_group is not None and second_group is not None:
+            return first_group == second_group
+    return first == second
+
+
+def analyze(detections, config, class_compatibility=None):
     validate_config(config)
     tracks = by_track(detections)
     flags = []
@@ -124,8 +141,8 @@ def analyze(detections, config):
                 continue
             # Class-aware MOT must not suggest cross-class fragmentation.
             # Missing class identity keeps the legacy geometry-only behavior.
-            if (old[-1].class_id is not None and new[0].class_id is not None
-                    and old[-1].class_id != new[0].class_id):
+            if not classes_compatible(old[-1].class_id, new[0].class_id,
+                                      class_compatibility):
                 continue
             distance = new[0].frame - old[-1].frame
             if 1 <= distance <= config['fragmentation_max_frame_distance']:

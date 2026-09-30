@@ -103,19 +103,19 @@ Possible tracking issue
 Severity: HIGH
 Priority score: 72
 Label: vehicle
-CVAT track: 19
-External track: 10
-Anchor frame: 26
-Review context: 17-28
+Primary track: CVAT 19 / external 10
+Related tracks: CVAT 24 / external 14
+CVAT anchor frame: 25
+CVAT review context: 16-27
 
 Reasons:
 - track gap
 
 Suggested action:
-Inspect object identity, class, and track continuity.
+- Continuity check: inspect CVAT 19 / external 10 across CVAT frames 16-27 and decide whether missing shapes, occlusion, or a true exit caused the gap.
 ```
 
-Structured `METADATA_JSON` và deterministic marker vẫn nằm cuối comment để audit/idempotency. Marker dùng tâm suspect bbox; nếu anchor thiếu bbox, nó dùng bbox gần nhất. `[10,10]` chỉ là fallback khi object mapping/bbox không khả dụng. Plan/Issues cũ giữ nguyên comment và position khi rerun.
+Mọi frame trong phần dành cho người đọc đều ghi rõ theo CVAT 0-based. Structured `METADATA_JSON` vẫn giữ MOT 1-based fields và deterministic marker để audit/idempotency. Marker dùng tâm suspect bbox; nếu anchor thiếu bbox, nó dùng bbox gần nhất. `[10,10]` chỉ là fallback khi object mapping/bbox không khả dụng. Plan/Issues cũ giữ nguyên comment và position khi rerun.
 
 Mặc định runner vẫn tạo Issue cho mọi event như phiên bản trước. Để giới hạn scope review, dùng một hoặc cả hai tùy chọn:
 

@@ -304,6 +304,49 @@ class PipelineTests(unittest.TestCase):
                       "Suggested action:"]:
             self.assertIn(value,item["payload"]["message"])
 
+    def test_issue_comments_use_cvat_first_middle_last_frames_and_track_pairs(self):
+        api=FakeCVAT(); snapshot,_=fetch_live_snapshot(api,20,18); mapping=validate_target(snapshot,20,18)
+        events=[]
+        for event_id,anchor,reason in (("E000001",1,"track_gap"),
+                                       ("E000002",3,"track_reappeared"),
+                                       ("E000003",5,"possible_duplicate")):
+            events.append({"event_id":event_id,"track_id":7,
+                           "related_track_ids":[8] if reason=="possible_duplicate" else [],
+                           "start_frame":anchor,"end_frame":anchor,"anchor_frame":anchor,
+                           "context_start":1,"context_end":5,"reasons":[reason],
+                           "raw_flag_ids":["F"+event_id[-1]]})
+        state={"external_to_cvat_track":{"7":1000,"8":1001}}
+        rows=[(frame,7,10+frame,10,20,10,.8) for frame in (1,3,5)]
+        plan=issue_plan({"schema_version":2,"events":events},snapshot,mapping,api.url,
+                        rows,state)
+        messages=[item["payload"]["message"] for item in plan["items"]]
+        for message,cvat_frame in zip(messages,(0,2,4)):
+            self.assertIn(f"CVAT anchor frame: {cvat_frame}",message)
+            self.assertIn("CVAT review context: 0-4",message)
+        self.assertIn("Continuity check:",messages[0])
+        self.assertNotIn("Identity check:",messages[0])
+        self.assertIn("Identity check:",messages[1])
+        self.assertNotIn("Continuity check:",messages[1])
+        self.assertIn("Duplicate check:",messages[2])
+        self.assertIn("CVAT 1000 / external 7",messages[2])
+        self.assertIn("CVAT 1001 / external 8",messages[2])
+        self.assertEqual([item["payload"]["frame"] for item in plan["items"]],[0,2,4])
+
+    def test_fragmentation_comment_names_both_cvat_and_external_tracks(self):
+        api=FakeCVAT(); snapshot,_=fetch_live_snapshot(api,20,18); mapping=validate_target(snapshot,20,18)
+        event={"event_id":"E000001","track_id":11,"related_track_ids":[8],
+               "start_frame":4,"end_frame":4,"anchor_frame":4,"context_start":2,
+               "context_end":5,"reasons":["possible_fragmentation"],"raw_flag_ids":["F1"]}
+        state={"external_to_cvat_track":{"11":168,"8":165}}
+        item=issue_plan({"schema_version":2,"events":[event]},snapshot,mapping,api.url,
+                        [(4,11,10,10,20,20,.8)],state)["items"][0]
+        message=item["payload"]["message"]
+        self.assertIn("Fragmentation check:",message)
+        self.assertIn("CVAT 168 / external 11",message)
+        self.assertIn("CVAT 165 / external 8",message)
+        self.assertEqual(item["metadata"]["related_track_mappings"],
+                         [{"external_track_id":8,"cvat_track_id":165}])
+
     def test_existing_issue_plan_keeps_pre_upgrade_comment_and_position(self):
         api=FakeCVAT()
         with test_workspace() as tmp:

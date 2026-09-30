@@ -10,6 +10,11 @@ They are not copied or relabeled as ground truth and are not automatically
 scored. Large images, datasets, model weights, and CVAT workspaces do not belong
 in this directory.
 
+`OBSERVED_RULE_FIXTURE` rows contain only lightweight geometry copied from a
+locked, visually audited artifact. They lock confirmed rule behavior while the
+linked report remains the source for the physical-object interpretation. They
+are regression evidence, not a benchmark or synthetic ground truth.
+
 Run:
 
 ```powershell

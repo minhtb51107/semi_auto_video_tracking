@@ -49,6 +49,23 @@ class V2Tests(unittest.TestCase):
         self.assertEqual(len(duplicate_flags(self.pair(offset=0),c)),1)
         rows=[d for f in [1,2,3] for d in [Det(f,1,0,0,100,60),Det(f,2,0,0,200,60)]]
         self.assertEqual(duplicate_flags(rows,self.c),[])
+    def test_task44_bus_cross_subclass_duplicate_uses_canonical_vehicle(self):
+        # Locked task44 observations: CVAT frames 13-14 (MOT 14-15), the
+        # same bus was represented by external tracks 3 and 11. Detector
+        # subclasses were bus=5 and truck=7, both mapped to CVAT vehicle.
+        rows=[
+            Det(14,3,430.30,150.39,371.62,278.23,.6547,5),
+            Det(14,11,450.80,129.46,331.14,291.19,.6171,7),
+            Det(15,3,405.22,138.05,374.24,280.21,.7720,5),
+            Det(15,11,424.59,124.41,333.94,292.93,.5710,7),
+        ]
+        self.assertEqual(duplicate_flags(rows,self.c),[])
+        flags=duplicate_flags(rows,self.c,{5:"vehicle",7:"vehicle"})
+        self.assertEqual(len(flags),1)
+        self.assertEqual((flags[0]["track_id"],flags[0]["related_track_id"]),(3,11))
+        self.assertEqual((flags[0]["start_frame"],flags[0]["end_frame"]),(14,15))
+        self.assertGreaterEqual(flags[0]["observed_value"]["min_iou"],self.c["duplicate_min_iou"])
+        self.assertEqual(duplicate_flags(rows,self.c,{5:"bus",7:"truck"}),[])
     def test_no_reference_cli_compatibility_and_no_overwrite(self):
         with tempfile.TemporaryDirectory() as tmp:
             d=Path(tmp);tracks=d/'prediction.txt'

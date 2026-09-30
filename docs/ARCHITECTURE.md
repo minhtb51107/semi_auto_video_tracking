@@ -47,8 +47,8 @@ Final validation and release-check are separate read-only stages. They fetch the
 
 `qa_workflow.py` deterministically samples frames outside all flagged context ranges using task/job, annotation hash, seed and config. QA samples use a distinct Issue namespace. CVAT remains the source of truth for Issue resolution.
 
-Class-aware Analyzer comparisons apply only when both track classes are known. Missing class identity follows legacy comparison behavior so older MOT files remain usable.
+Inter-track Analyzer comparisons use canonical/CVAT-label compatibility from the locked label plan when both detector classes are mapped. For example, COCO car, bus, and truck remain eligible as the same canonical `vehicle`. With no complete mapping, known subclasses retain the prior exact-class check; missing class identity follows legacy geometry-only behavior so older MOT files remain usable.
 
 ## Future gates
 
-Semantic verification, detector-level missed-object proposals, automatic relabeling, generic model taxonomy mapping, BoT-SORT exposure, live 1,000+ frame benchmarks and concurrent workers are not implemented. Release readiness does not prove semantic correctness.
+Semantic verification, detector-level missed-object proposals, automatic relabeling, generic model taxonomy mapping, BoT-SORT exposure, live 1,000+ frame benchmarks and concurrent workers are not implemented. Pre-tracker class/confidence histories are preserved in chunk checkpoints; `DETECTOR_COVERAGE_AUDIT_DESIGN.md` explains why current evidence supports a design only, not a runtime missed-object rule. Release readiness does not prove semantic correctness.

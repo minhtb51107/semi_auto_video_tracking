@@ -598,13 +598,22 @@ def push_predictions(client, workspace: Path, snapshot: dict, annotations: dict,
     return result
 
 
-def ensure_review(workspace: Path, snapshot: dict, mot_path: Path) -> tuple[dict, dict]:
+def _class_compatibility(label_plan: dict) -> dict[int, str]:
+    """Map detector subclasses to the canonical label used by this CVAT run."""
+    return {int(class_id): row["canonical_label"]
+            for class_id, row in label_plan.get("class_to_label", {}).items()}
+
+
+def ensure_review(workspace: Path, snapshot: dict, mot_path: Path,
+                  label_plan: dict) -> tuple[dict, dict]:
     manifest_path = workspace / "predictions" / "review_manifest.json"
     events_path = workspace / "review_events.json"
+    compatibility = _class_compatibility(label_plan)
     expected = {"mot_sha256": sha256_file(mot_path),
                 "v1_config_sha256": sha256_file(DEFAULT_CONFIG),
                 "v2_config_sha256": sha256_file(DEFAULT_V2),
                 "analyzer_sha256": sha256_file(Path(__file__).with_name("review_tracks_v2.py")),
+                "class_compatibility_sha256": canonical_hash(compatibility),
                 "total_frames": snapshot["job"]["stop_frame"] - snapshot["job"]["start_frame"] + 1}
     if manifest_path.is_file():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
@@ -613,7 +622,8 @@ def ensure_review(workspace: Path, snapshot: dict, mot_path: Path) -> tuple[dict
         return json.loads(events_path.read_text(encoding="utf-8-sig")), manifest
     if events_path.exists():
         raise PipelineError("Review events exist without a valid manifest")
-    result = review_v2(mot_path, DEFAULT_CONFIG, DEFAULT_V2, workspace, expected["total_frames"])
+    result = review_v2(mot_path, DEFAULT_CONFIG, DEFAULT_V2, workspace,
+                       expected["total_frames"], compatibility)
     events = json.loads(events_path.read_text(encoding="utf-8-sig"))
     manifest = {"schema_version": 1, **expected, "events_sha256": sha256_file(events_path),
                 "raw_flag_count": len(result["flags"]), "event_count": len(result["events"])}
@@ -694,6 +704,32 @@ def _issue_placement(event: dict, rows, mapping: list[dict], prediction_state: d
             "confidence": confidence, "cvat_track_id": cvat_id}
 
 
+def _display_track(cvat_id, external_id) -> str:
+    return f"CVAT {cvat_id if cvat_id is not None else 'unmapped'} / external {external_id}"
+
+
+def _suggested_actions(event: dict, cv: dict, cvat_track_id, related_pairs: list[tuple]) -> list[str]:
+    primary = _display_track(cvat_track_id, event["track_id"])
+    related = ", ".join(_display_track(cvat_id, external_id)
+                        for external_id, cvat_id in related_pairs) or "no related track"
+    actions = []
+    reasons = set(event["reasons"])
+    if "possible_duplicate" in reasons:
+        actions.append(f"Duplicate check: compare {primary} with {related} across CVAT frames "
+                       f"{cv['context_start']}-{cv['context_end']}; retain both only if they are different physical objects.")
+    if "possible_fragmentation" in reasons:
+        actions.append(f"Fragmentation check: compare {primary} with {related} across CVAT frames "
+                       f"{cv['context_start']}-{cv['context_end']}; consolidate identity only if they are the same physical object.")
+    if "track_gap" in reasons:
+        actions.append(f"Continuity check: inspect {primary} across CVAT frames "
+                       f"{cv['context_start']}-{cv['context_end']} and decide whether missing shapes, occlusion, or a true exit caused the gap.")
+    if "track_reappeared" in reasons:
+        actions.append(f"Identity check: compare the last pre-gap and first post-gap object for {primary}; split the track if physical identity changed.")
+    if reasons & {"large_motion_jump", "abnormal_size_change", "low_consecutive_iou"}:
+        actions.append(f"Geometry check: inspect {primary} at CVAT frame {cv['anchor_frame']} and adjacent frames; correct the box or identity only after visual confirmation.")
+    return actions or [f"Inspect {primary} across CVAT frames {cv['context_start']}-{cv['context_end']} and decide whether annotation correction is required."]
+
+
 def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url: str,
                rows=None, prediction_state: dict | None = None,
                qa_samples_data: dict | None = None) -> dict:
@@ -709,10 +745,16 @@ def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url:
               ("anchor_frame", "start_frame", "end_frame", "context_start", "context_end")}
         marker = f"SATV2|{sequence}|{event['event_id']}"
         placement = _issue_placement(event, rows, mapping, prediction_state)
+        external_to_cvat = (prediction_state or {}).get("external_to_cvat_track", {})
+        related_pairs = [(external_id, external_to_cvat.get(str(external_id)))
+                         for external_id in event["related_track_ids"]]
         track_rows = [r for r in (rows or []) if r[1] == event["track_id"]]
         confidences = [r[6] for r in track_rows]
         metadata = {"event": event, "analyzer_version": "2", "event_source_sha256": digest(events_data),
                     "external_track_id": event["track_id"], "cvat_track_id": placement["cvat_track_id"],
+                    "related_track_mappings": [{"external_track_id": external_id,
+                                                 "cvat_track_id": cvat_id}
+                                                for external_id, cvat_id in related_pairs],
                     "object_mapping": "MAPPED_BY_VERIFIED_TRACK_SIGNATURE" if placement["cvat_track_id"] is not None else "UNAVAILABLE",
                     "cvat_frames": cv, "placement": placement,
                     "track_confidence": ({"min": min(confidences), "median": statistics.median(confidences),
@@ -723,16 +765,17 @@ def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url:
                         priority_reasons=event.get("priority_reasons", []), type="REVIEW_EVENT")
         label_name = (prediction_state or {}).get("track_labels", {}).get(str(event["track_id"]), "unknown")
         metadata["label"] = label_name
+        actions = _suggested_actions(event, cv, placement["cvat_track_id"], related_pairs)
         readable = [marker, "Possible tracking issue", "", f"Severity: {metadata['severity']}",
                     f"Priority score: {metadata['priority_score']}", f"Label: {label_name}",
-                    f"CVAT track: {placement['cvat_track_id']}", f"External track: {event['track_id']}",
-                    f"Related external tracks: {', '.join(str(x) for x in event['related_track_ids']) or 'none'}",
-                    f"Anchor frame: {event['anchor_frame']}",
-                    f"Review context: {event['context_start']}-{event['context_end']}", "", "Reasons:",
+                    f"Primary track: {_display_track(placement['cvat_track_id'], event['track_id'])}",
+                    f"Related tracks: {', '.join(_display_track(c, e) for e, c in related_pairs) or 'none'}",
+                    f"CVAT anchor frame: {cv['anchor_frame']}",
+                    f"CVAT review context: {cv['context_start']}-{cv['context_end']}", "", "Reasons:",
                     *[f"- {reason.replace('_', ' ')}" for reason in event["reasons"]], "",
-                    "Suggested action:", "Inspect object identity, class, and track continuity.", "",
+                    "Suggested action:", *[f"- {action}" for action in actions], "",
                     f"Analyzer: v2; experimental={str(metadata['experimental']).lower()}",
-                    f"Marker: {placement['mode']} at MOT frame {placement['mot_frame']} / CVAT frame {placement['cvat_frame']}",
+                    f"Marker: {placement['mode']} at CVAT frame {placement['cvat_frame']}",
                     (f"AUDIT event_id={event['event_id']} reasons={','.join(event['reasons'])} "
                      f"cvat_track_id={placement['cvat_track_id']} external_track_id={event['track_id']} "
                      f"related_external_track_ids={','.join(str(x) for x in event['related_track_ids']) or 'none'} "
@@ -757,7 +800,7 @@ def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url:
                     "interpretation": "random_review_sample_not_claimed_correct"}
         message = "\n".join([
             marker, "Random non-flagged QA sample", "", "Severity: LOW",
-            f"Frame: {sample['frame']}", f"Nearby external tracks: {', '.join(str(x) for x in sample['nearby_track_ids']) or 'none'}",
+            f"CVAT frame: {sample['cvat_frame']}", f"Nearby external tracks: {', '.join(str(x) for x in sample['nearby_track_ids']) or 'none'}",
             "Reason: RANDOM_QA", "", "Suggested action:",
             "Inspect this apparently clean frame for missed tracking or annotation problems.", "",
             "METADATA_JSON=" + json.dumps(metadata, sort_keys=True, ensure_ascii=False),
@@ -961,7 +1004,7 @@ def run(args, client=None, tracker_fn=track_image_dir, runtime_factory=None) -> 
         issues = None; review_manifest = None; selected = None; prioritized = None; qa = None; completion = None
         if args.stage in ("review", "all"):
             mark = time.perf_counter()
-            events, review_manifest = ensure_review(workspace, snapshot, mot_path)
+            events, review_manifest = ensure_review(workspace, snapshot, mot_path, label_plan)
             rows = read_track_boxes(mot_path, label_plan)
             current_annotations = client.request("GET", f"/api/jobs/{args.job_id}/annotations")
             selected, prioritized, qa = ensure_review_selection(

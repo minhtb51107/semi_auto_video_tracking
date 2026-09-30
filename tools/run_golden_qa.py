@@ -33,18 +33,25 @@ def run_manifest(path=DEFAULT_MANIFEST):
                 raise ValueError(f"Missing observed reference: {case['reference']}")
             results.append({"id": case["id"], "status": "REFERENCE_PRESENT", "automated_ground_truth": False})
             continue
-        if kind != "SYNTHETIC_RULE_FIXTURE":
+        if kind not in {"SYNTHETIC_RULE_FIXTURE", "OBSERVED_RULE_FIXTURE"}:
             raise ValueError(f"Unknown source_kind in {case.get('id')}")
+        if kind == "OBSERVED_RULE_FIXTURE":
+            reference = ROOT / case["reference"]
+            if not reference.is_file():
+                raise ValueError(f"Missing observed reference: {case['reference']}")
         detections = [Det(int(x[0]), int(x[1]), *map(float, x[2:7]), int(x[7]))
                       for x in case.get("detections", [])]
         total = max((x.frame for x in detections), default=1)
-        output = analyze_v2(detections, v1, v2, total)
+        compatibility = {int(k): v for k, v in case.get("class_compatibility", {}).items()}
+        output = analyze_v2(detections, v1, v2, total, compatibility or None)
         reasons = {x["reason"] for x in output["flags"]}
         missing_reasons = sorted(set(case.get("expect_reasons", [])) - reasons)
         forbidden = sorted(set(case.get("forbid_reasons", [])) & reasons)
         if missing_reasons or forbidden:
             raise ValueError(f"Golden case {case['id']} failed: missing={missing_reasons}, forbidden={forbidden}")
         results.append({"id": case["id"], "status": "PASS", "reasons": sorted(reasons),
+                        "evidence_kind": ("AUDITED_OBSERVED_GEOMETRY" if kind == "OBSERVED_RULE_FIXTURE"
+                                          else "SYNTHETIC_BEHAVIOR_FIXTURE"),
                         "automated_ground_truth": False})
     return {"schema_version": 1, "status": "PASS", "cases": results,
             "interpretation": "behavior_regression_not_accuracy_benchmark"}

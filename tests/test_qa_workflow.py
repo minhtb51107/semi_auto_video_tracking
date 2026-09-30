@@ -77,12 +77,16 @@ class PriorityAndQAWorkflowTests(unittest.TestCase):
         same = [Det(d.frame, d.track_id, d.x, d.y, d.w, d.h, d.conf, 2) for d in cross]
         legacy = [Det(d.frame, d.track_id, d.x, d.y, d.w, d.h) for d in cross]
         self.assertEqual(duplicate_flags(cross, config), [])
+        self.assertEqual(len(duplicate_flags(cross, config, {0: "road_user", 2: "road_user"})), 1)
+        self.assertEqual(duplicate_flags(cross, config, {0: "person", 2: "vehicle"}), [])
         self.assertEqual(len(duplicate_flags(same, config)), 1)
         self.assertEqual(len(duplicate_flags(legacy, config)), 1)
         v1 = load_config()
         fragmented_cross = [Det(1, 1, 0, 0, 20, 20, 1, 0), Det(2, 2, 0, 0, 20, 20, 1, 2)]
         fragmented_legacy = [Det(1, 1, 0, 0, 20, 20), Det(2, 2, 0, 0, 20, 20)]
         self.assertFalse(any(x["reason"] == "possible_fragmentation" for x in analyze(fragmented_cross, v1)))
+        self.assertTrue(any(x["reason"] == "possible_fragmentation"
+                            for x in analyze(fragmented_cross, v1, {0: "road_user", 2: "road_user"})))
         self.assertTrue(any(x["reason"] == "possible_fragmentation" for x in analyze(fragmented_legacy, v1)))
 
     def test_random_qa_is_deterministic_unique_and_excludes_flag_context(self):

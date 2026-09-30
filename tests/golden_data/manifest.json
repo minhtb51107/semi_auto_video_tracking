@@ -57,6 +57,27 @@
       "category": ["identity_ambiguity"],
       "source_kind": "OBSERVED_REFERENCE_ONLY",
       "reference": "docs/EXTERNAL_VALIDATION_COMPARISON.md"
+    },
+    {
+      "id": "observed_task44_bus_fragmentation_duplicate",
+      "category": ["persistent_duplicate", "identity_ambiguity"],
+      "source_kind": "OBSERVED_RULE_FIXTURE",
+      "reference": "docs/OUTPUT_QUALITY_AUDIT.md",
+      "task_id": 44,
+      "job_id": 61,
+      "cvat_frames": [8, 14],
+      "cvat_track_ids": [160, 165, 168],
+      "external_track_ids": [3, 8, 11],
+      "detections": [
+        [14, 3, 430.30, 150.39, 371.62, 278.23, 0.6547, 5],
+        [14, 11, 450.80, 129.46, 331.14, 291.19, 0.6171, 7],
+        [15, 3, 405.22, 138.05, 374.24, 280.21, 0.7720, 5],
+        [15, 11, 424.59, 124.41, 333.94, 292.93, 0.5710, 7]
+      ],
+      "class_compatibility": {"5": "vehicle", "7": "vehicle"},
+      "expect_reasons": ["possible_duplicate"],
+      "confirmed_findings": ["FRAGMENTATION", "DUPLICATE_TRACK"],
+      "note": "Audited observed geometry copied from the locked task44 MOT artifact; the visual finding remains documented in the reference and no synthetic ground truth is claimed."
     }
   ]
 }
