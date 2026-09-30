@@ -239,15 +239,15 @@ def reconcile(plan, issues, comments, prior=None):
             raise IntegrationError('Unexpected comment schema or duplicate comment ID')
         seen_comments.add(c['id'])
     issue_map = {i['id']: i for i in issues if i.get('job') == plan['job_id']}
+    expected = {i['marker'] for i in plan['items']}
+    prefixes = (f"SATV2|{plan['sequence']}|", f"QA-SAMPLE|{plan['sequence']}|")
     by_marker = {}
     for c in comments:
         message = c.get('message', '')
         marker = message.split('\n', 1)[0]
-        if marker.startswith('SATV2|'):
+        if marker in expected or marker.startswith(prefixes):
             by_marker.setdefault(marker, []).append(c)
-    prefix = f"SATV2|{plan['sequence']}|"
-    expected = {i['marker'] for i in plan['items']}
-    if any(m.startswith(prefix) and m not in expected for m in by_marker):
+    if any(m.startswith(prefixes) and m not in expected for m in by_marker):
         raise IntegrationError('Remote namespace contains events absent from this source; refuse source drift')
     actions = []
     for item in plan['items']:

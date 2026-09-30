@@ -24,6 +24,10 @@ from cvat_integration import (Client, IntegrationError, digest, execute,
                               load_dotenv, parse_events, save, writer_lock)
 from review_tracks_v2 import DEFAULT_V2, review_v2
 from review_tracks import DEFAULT_CONFIG
+from review_priority import (DEFAULT_POLICY, load_policy, prioritize_events,
+                             select_events)
+from qa_workflow import (compact_review_state, deterministic_qa_samples,
+                         final_validate, release_decision)
 from run_tracker import track_image_dir, write_mot
 from label_mapping import (LabelMappingError, load_label_config,
                            match_task_labels)
@@ -617,6 +621,41 @@ def ensure_review(workspace: Path, snapshot: dict, mot_path: Path) -> tuple[dict
     return events, manifest
 
 
+def _lock_json(path: Path, value: dict, mismatch_message: str) -> dict:
+    if path.is_file():
+        existing = json.loads(path.read_text(encoding="utf-8-sig"))
+        if canonical_hash(existing) != canonical_hash(value):
+            raise PipelineError(mismatch_message)
+        return existing
+    save(path, value)
+    return value
+
+
+def ensure_review_selection(workspace: Path, events: dict, rows, mapping: list[dict],
+                            snapshot: dict, annotations: dict, args) -> tuple[dict, dict, dict]:
+    """Prioritize all events, select requested review scope, and plan random QA."""
+    flags_path = workspace / "review_flags_v2.json"
+    if not flags_path.is_file():
+        raise PipelineError("Analyzer flags are missing for prioritization")
+    flags = json.loads(flags_path.read_text(encoding="utf-8-sig"))
+    policy = load_policy(getattr(args, "qa_policy", DEFAULT_POLICY))
+    prioritized = prioritize_events(events, flags, rows, mapping, policy)
+    selected = select_events(prioritized, getattr(args, "min_review_severity", None),
+                             getattr(args, "max_review_events", None))
+    qa = deterministic_qa_samples(events, rows, mapping,
+                                  getattr(args, "qa_sample_count", 0),
+                                  getattr(args, "qa_seed", 42),
+                                  snapshot["task"]["id"], snapshot["job"]["id"],
+                                  annotation_hash(annotations))
+    prioritized = _lock_json(workspace / "review_events_prioritized.json", prioritized,
+                             "Existing prioritized events differ from current policy/input")
+    selected = _lock_json(workspace / "review_events_selected.json", selected,
+                          "Existing review selection differs; use a fresh workspace")
+    qa = _lock_json(workspace / "qa_samples.json", qa,
+                    "Existing random QA plan differs; use a fresh workspace")
+    return selected, prioritized, qa
+
+
 def _issue_placement(event: dict, rows, mapping: list[dict], prediction_state: dict | None) -> dict:
     frame_map = {x["mot_frame"]: x for x in mapping}
     external_id = event["track_id"]
@@ -656,7 +695,8 @@ def _issue_placement(event: dict, rows, mapping: list[dict], prediction_state: d
 
 
 def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url: str,
-               rows=None, prediction_state: dict | None = None) -> dict:
+               rows=None, prediction_state: dict | None = None,
+               qa_samples_data: dict | None = None) -> dict:
     events = parse_events(events_data)
     frame_map = {x["mot_frame"]: x for x in mapping}
     task_id, job_id = snapshot["task"]["id"], snapshot["job"]["id"]
@@ -678,9 +718,13 @@ def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url:
                     "track_confidence": ({"min": min(confidences), "median": statistics.median(confidences),
                                           "max": max(confidences)} if confidences else None),
                     "experimental": "possible_duplicate" in event["reasons"]}
+        metadata.update(severity=event.get("severity", "LOW"),
+                        priority_score=event.get("priority_score", 0),
+                        priority_reasons=event.get("priority_reasons", []), type="REVIEW_EVENT")
         label_name = (prediction_state or {}).get("track_labels", {}).get(str(event["track_id"]), "unknown")
         metadata["label"] = label_name
-        readable = [marker, "Possible tracking issue", "", f"Label: {label_name}",
+        readable = [marker, "Possible tracking issue", "", f"Severity: {metadata['severity']}",
+                    f"Priority score: {metadata['priority_score']}", f"Label: {label_name}",
                     f"CVAT track: {placement['cvat_track_id']}", f"External track: {event['track_id']}",
                     f"Related external tracks: {', '.join(str(x) for x in event['related_track_ids']) or 'none'}",
                     f"Anchor frame: {event['anchor_frame']}",
@@ -699,11 +743,37 @@ def issue_plan(events_data: dict, snapshot: dict, mapping: list[dict], base_url:
                       "payload": {"job": job_id, "frame": placement["cvat_frame"],
                                   "position": placement["position"], "message": message},
                       "metadata": metadata, "links": {k: f"{base_url}/tasks/{task_id}/jobs/{job_id}?frame={v}" for k, v in cv.items()}})
+    qa_items = []
+    for sample in (qa_samples_data or {}).get("samples", []):
+        marker = f"QA-SAMPLE|{sequence}|{sample['sample_id']}"
+        anchor = sample.get("anchor")
+        external_id = anchor.get("external_track_id") if anchor else None
+        cvat_id = ((prediction_state or {}).get("external_to_cvat_track", {}).get(str(external_id))
+                   if external_id is not None else None)
+        position = anchor.get("position") if anchor else [10, 10]
+        metadata = {"type": "RANDOM_QA", "sample": sample, "severity": "LOW",
+                    "priority_score": 0, "external_track_id": external_id,
+                    "cvat_track_id": cvat_id, "analyzer_version": "2",
+                    "interpretation": "random_review_sample_not_claimed_correct"}
+        message = "\n".join([
+            marker, "Random non-flagged QA sample", "", "Severity: LOW",
+            f"Frame: {sample['frame']}", f"Nearby external tracks: {', '.join(str(x) for x in sample['nearby_track_ids']) or 'none'}",
+            "Reason: RANDOM_QA", "", "Suggested action:",
+            "Inspect this apparently clean frame for missed tracking or annotation problems.", "",
+            "METADATA_JSON=" + json.dumps(metadata, sort_keys=True, ensure_ascii=False),
+        ])
+        item = {"event_id": sample["sample_id"], "marker": marker,
+                "payload": {"job": job_id, "frame": sample["cvat_frame"],
+                            "position": position, "message": message},
+                "metadata": metadata,
+                "links": {"anchor_frame": f"{base_url}/tasks/{task_id}/jobs/{job_id}?frame={sample['cvat_frame']}"}}
+        items.append(item); qa_items.append(item)
     return {"schema_version": 1, "human_review_status": "PREPARED_NOT_EXECUTED",
             "task_id": task_id, "job_id": job_id, "sequence": sequence, "url": base_url,
             "source_sha256": digest(events_data), "snapshot_status": "LIVE_VERIFIED",
             "image_inventory_sha256": canonical_hash(mapping), "frame_mapping": mapping,
-            "items": items, "validation_errors": [], "event_count": len(items)}
+            "items": items, "qa_items": qa_items, "validation_errors": [],
+            "event_count": len(items)-len(qa_items), "qa_sample_count": len(qa_items)}
 
 
 def push_issues(client, workspace: Path, plan: dict) -> dict:
@@ -730,6 +800,67 @@ def push_issues(client, workspace: Path, plan: dict) -> dict:
     return result
 
 
+def _load_json_or(path: Path, default):
+    return json.loads(path.read_text(encoding="utf-8-sig")) if path.is_file() else default
+
+
+def _remote_review_completion(plan: dict, issues: list[dict], comments: list[dict]) -> dict:
+    issue_by_id = {x.get("id"): x for x in issues}
+    marker_issue = {}
+    for comment in comments:
+        first = str(comment.get("message", "")).splitlines()[0].strip()
+        if first and comment.get("issue") in issue_by_id:
+            marker_issue[first] = issue_by_id[comment["issue"]]
+    review_items = [x for x in plan.get("items", []) if x.get("metadata", {}).get("type") != "RANDOM_QA"]
+    qa_items = [x for x in plan.get("items", []) if x.get("metadata", {}).get("type") == "RANDOM_QA"]
+    return {
+        "issues_remote": len(issues),
+        "review_issues_resolved": sum(marker_issue.get(x["marker"], {}).get("resolved") is True for x in review_items),
+        "qa_samples_completed": sum(marker_issue.get(x["marker"], {}).get("resolved") is True for x in qa_items),
+    }
+
+
+def run_read_only_qa_stage(client, workspace: Path, snapshot: dict, annotations: dict,
+                           mapping: list[dict], label_plan: dict, args) -> dict:
+    """Run final validation/release decision without any CVAT mutation."""
+    plan = _load_json_or(workspace / "cvat_push" / "issues_plan.json",
+                         {"schema_version": 1, "items": [], "qa_items": []})
+    prediction_state = _load_json_or(workspace / "cvat_push" / "predictions.json", {})
+    issues = client.listing("/api/issues", job_id=args.job_id)
+    comments = client.listing("/api/comments", job_id=args.job_id)
+    before_hash = annotation_hash(annotations)
+    validation_snapshot = dict(snapshot, mapping=mapping)
+    validation = final_validate(validation_snapshot, annotations, label_plan, plan,
+                                {"items": plan.get("qa_items", [])}, issues, comments,
+                                prediction_state)
+    after = client.request("GET", f"/api/jobs/{args.job_id}/annotations")
+    if annotation_hash(after) != before_hash:
+        raise PipelineError("Annotation changed during read-only validation; retry from a stable snapshot")
+    validation["annotations_unchanged"] = True
+    validation["task_id"] = args.task_id; validation["job_id"] = args.job_id
+    save(workspace / "final_validation.json", validation)
+    decision = None
+    if args.stage == "release-check":
+        decision = release_decision(validation, load_policy(getattr(args, "qa_policy", DEFAULT_POLICY)))
+        decision.update(schema_version=1, task_id=args.task_id, job_id=args.job_id,
+                        interpretation="readiness_decision_only_no_export")
+        save(workspace / "release_check.json", decision)
+    prior_state = _load_json_or(workspace / "review_state.json", {})
+    state = compact_review_state(args.task_id, args.job_id, plan,
+                                 {"items": plan.get("qa_items", [])}, validation, decision)
+    for key in ("raw_flags", "aggregated_events", "selected_events",
+                "issues_created", "issues_skipped"):
+        if key in prior_state:
+            state[key] = prior_state[key]
+    state.update(_remote_review_completion(plan, issues, comments))
+    save(workspace / "review_state.json", state)
+    result = decision or {"status": ("FINAL_VALIDATION_PASS" if validation["structural_checks"] == "PASS"
+                                     else "FINAL_VALIDATION_FAIL")}
+    return {**result, "stage": args.stage, "read_only": True,
+            "frame_count": len(mapping),
+            "final_validation": validation, "review_state": state}
+
+
 def local_artifact_summary(workspace: Path) -> dict:
     result = {"detector_detections": None, "predicted_boxes": None, "predicted_tracks": None, "review_flags": None,
               "review_events": None}
@@ -754,6 +885,9 @@ def run(args, client=None, tracker_fn=track_image_dir, runtime_factory=None) -> 
     mapping = validate_target(snapshot, args.task_id, args.job_id)
     label_plan = resolve_label_plan(snapshot, args)
     write_metadata(workspace, snapshot, mapping)
+    if args.stage in ("final-validate", "release-check"):
+        return run_read_only_qa_stage(client, workspace, snapshot, annotations,
+                                      mapping, label_plan, args)
     state_path = workspace / "cvat_push" / "predictions.json"
     prior_push = json.loads(state_path.read_text(encoding="utf-8-sig")) if state_path.is_file() else None
     annotations_changed = bool(prior_push and prior_push.get("status") == "verified"
@@ -772,6 +906,13 @@ def run(args, client=None, tracker_fn=track_image_dir, runtime_factory=None) -> 
                   "label_plan": {"supported": label_plan["supported"],
                                  "unsupported": label_plan["unsupported"]},
                   "tracking_config": config, **local,
+                  "review_selection": {
+                      "min_severity": getattr(args, "min_review_severity", None),
+                      "max_events": getattr(args, "max_review_events", None),
+                      "qa_sample_count": getattr(args, "qa_sample_count", 0),
+                      "qa_seed": getattr(args, "qa_seed", 42),
+                      "policy": str(getattr(args, "qa_policy", DEFAULT_POLICY)),
+                  },
                   "annotation_push_method": "PATCH job annotations action=create (append only)",
                   "planned_annotation_tracks": local["predicted_tracks"],
                   "planned_review_issues": local["review_events"],
@@ -817,16 +958,33 @@ def run(args, client=None, tracker_fn=track_image_dir, runtime_factory=None) -> 
             prediction_push = json.loads(push_state.read_text(encoding="utf-8-sig"))
             if prediction_push.get("status") != "verified" or prediction_push.get("mot_sha256") != sha256_file(mot_path):
                 raise PipelineError("Prediction push state is stale or incomplete")
-        issues = None; review_manifest = None
+        issues = None; review_manifest = None; selected = None; prioritized = None; qa = None; completion = None
         if args.stage in ("review", "all"):
             mark = time.perf_counter()
             events, review_manifest = ensure_review(workspace, snapshot, mot_path)
-            stage_times["analyzer"] = time.perf_counter() - mark
-            plan = issue_plan(events, snapshot, mapping, client.url,
-                              read_track_boxes(mot_path, label_plan), prediction_push)
+            rows = read_track_boxes(mot_path, label_plan)
+            current_annotations = client.request("GET", f"/api/jobs/{args.job_id}/annotations")
+            selected, prioritized, qa = ensure_review_selection(
+                workspace, events, rows, mapping, snapshot, current_annotations, args)
+            stage_times["analyzer_and_priority"] = time.perf_counter() - mark
+            plan = issue_plan(selected, snapshot, mapping, client.url, rows,
+                              prediction_push, qa)
+            _lock_json(workspace / "qa_issue_plan.json",
+                       {"schema_version": 1, "items": plan.get("qa_items", [])},
+                       "Existing QA Issue plan differs")
             mark = time.perf_counter()
             issues = push_issues(client, workspace, plan)
             stage_times["issue_push"] = time.perf_counter() - mark
+            remote_issues = client.listing("/api/issues", job_id=args.job_id)
+            remote_comments = client.listing("/api/comments", job_id=args.job_id)
+            completion = _remote_review_completion(plan, remote_issues, remote_comments)
+            state = compact_review_state(args.task_id, args.job_id, plan,
+                                         {"items": plan.get("qa_items", [])})
+            state.update(completion, raw_flags=review_manifest.get("raw_flag_count"),
+                         aggregated_events=review_manifest.get("event_count"),
+                         selected_events=len(selected["events"]),
+                         issues_created=issues.get("created"), issues_skipped=issues.get("skipped"))
+            save(workspace / "review_state.json", state)
         result = {"status": "COMPLETE", "mutated_cvat": True, "task_id": args.task_id,
                   "job_id": args.job_id, "stage": args.stage, "frame_count": len(mapping),
                   "predicted_boxes": predictions["box_count"], "predicted_tracks": predictions["track_count"],
@@ -837,6 +995,11 @@ def run(args, client=None, tracker_fn=track_image_dir, runtime_factory=None) -> 
                   "annotation_push": prediction_push,
                   "review_flags": review_manifest.get("raw_flag_count") if review_manifest else None,
                   "review_events": review_manifest.get("event_count") if review_manifest else None,
+                  "selected_review_events": len((selected or {}).get("events", [])) if review_manifest else None,
+                  "events_by_severity": (prioritized or {}).get("severity_counts"),
+                  "qa_samples_requested": (qa or {}).get("requested"),
+                  "qa_samples_generated": (qa or {}).get("generated"),
+                  "qa_samples_completed": (completion or {}).get("qa_samples_completed"),
                   "issue_push": {k: issues.get(k) for k in ("created", "skipped", "verified", "annotations_unchanged")} if issues else None,
                   "elapsed_seconds": round(time.perf_counter() - started, 6),
                   "stage_elapsed_seconds": {key: round(value, 6) for key, value in stage_times.items()}}
@@ -866,6 +1029,12 @@ def run_task(args, client=None, tracker_fn=track_image_dir, runtime_factory=None
                             "predicted_boxes": value.get("predicted_boxes"),
                             "predicted_tracks": value.get("predicted_tracks"),
                             "review_events": value.get("review_events"),
+                            "selected_review_events": value.get("selected_review_events"),
+                            "events_by_severity": value.get("events_by_severity"),
+                            "qa_samples_generated": value.get("qa_samples_generated"),
+                            "qa_samples_completed": value.get("qa_samples_completed"),
+                            "final_validation_status": (value.get("final_validation") or {}).get("structural_checks"),
+                            "release_gate_status": value.get("status") if args.stage == "release-check" else None,
                             "issues_created": (value.get("issue_push") or {}).get("created"),
                             "issues_skipped": (value.get("issue_push") or {}).get("skipped"),
                             "elapsed_seconds": value.get("elapsed_seconds")})
@@ -892,7 +1061,7 @@ def parser() -> argparse.ArgumentParser:
     targets = p.add_mutually_exclusive_group(required=True)
     targets.add_argument("--job-id", type=int)
     targets.add_argument("--all-jobs", action="store_true")
-    p.add_argument("--stage", choices=("annotate", "review", "all"), default="all")
+    p.add_argument("--stage", choices=("annotate", "review", "all", "final-validate", "release-check"), default="all")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--allow-existing-annotations", action="store_true")
     p.add_argument("--labels", help="Comma-separated configured/CVAT labels, e.g. person,cell_phone")
@@ -906,6 +1075,11 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--classes", type=lambda x: [int(v) for v in x.split(",") if v.strip()], default=None,
                    help="Optional detector-class restriction after label mapping")
     p.add_argument("--chunk-size", type=int, default=500)
+    p.add_argument("--qa-policy", type=Path, default=DEFAULT_POLICY)
+    p.add_argument("--min-review-severity", choices=("CRITICAL", "HIGH", "MEDIUM", "LOW"))
+    p.add_argument("--max-review-events", type=int)
+    p.add_argument("--qa-sample-count", type=int, default=0)
+    p.add_argument("--qa-seed", type=int, default=42)
     p.add_argument("--device", default=None)
     p.add_argument("--output-root", type=Path, default=ROOT / "outputs" / "runs")
     actions = p.add_mutually_exclusive_group()
@@ -924,6 +1098,10 @@ def main(argv=None) -> int:
         parser().error("task/job IDs must be positive")
     if args.chunk_size < 1:
         parser().error("--chunk-size must be positive")
+    if args.max_review_events is not None and args.max_review_events < 1:
+        parser().error("--max-review-events must be positive")
+    if args.qa_sample_count < 0:
+        parser().error("--qa-sample-count must be non-negative")
     try:
         if args.all_jobs and (args.workspace_status or args.cleanup_frames or args.cleanup_run):
             raise PipelineError("Workspace lifecycle actions require one --job-id")
@@ -953,7 +1131,7 @@ def main(argv=None) -> int:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
     print(json.dumps(result, indent=2, ensure_ascii=False))
-    return 2 if result.get("status") in ("FAILED", "PARTIAL_FAILURE") else 0
+    return 2 if result.get("status") in ("FAILED", "PARTIAL_FAILURE", "BLOCKED", "FINAL_VALIDATION_FAIL") else 0
 
 
 if __name__ == "__main__":

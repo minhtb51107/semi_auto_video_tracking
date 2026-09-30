@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "required_categories": [
+    "track_gap",
+    "track_reappeared",
+    "persistent_duplicate",
+    "edge_of_frame",
+    "occlusion",
+    "class_aware_duplicate",
+    "stable_false_positive",
+    "small_object",
+    "identity_ambiguity"
+  ],
+  "cases": [
+    {
+      "id": "synthetic_gap_reappearance",
+      "category": ["track_gap", "track_reappeared", "occlusion"],
+      "source_kind": "SYNTHETIC_RULE_FIXTURE",
+      "detections": [[1, 1, 10, 10, 20, 20, 0.9, 2], [8, 1, 11, 10, 20, 20, 0.8, 2]],
+      "expect_reasons": ["track_gap", "track_reappeared"]
+    },
+    {
+      "id": "synthetic_persistent_duplicate",
+      "category": ["persistent_duplicate"],
+      "source_kind": "SYNTHETIC_RULE_FIXTURE",
+      "detections": [[1, 1, 10, 10, 30, 20, 0.9, 2], [1, 2, 10, 10, 30, 20, 0.8, 2], [2, 1, 11, 10, 30, 20, 0.9, 2], [2, 2, 11, 10, 30, 20, 0.8, 2]],
+      "expect_reasons": ["possible_duplicate"]
+    },
+    {
+      "id": "synthetic_class_aware_overlap",
+      "category": ["class_aware_duplicate"],
+      "source_kind": "SYNTHETIC_RULE_FIXTURE",
+      "detections": [[1, 1, 10, 10, 30, 20, 0.9, 0], [1, 2, 10, 10, 30, 20, 0.8, 2], [2, 1, 11, 10, 30, 20, 0.9, 0], [2, 2, 11, 10, 30, 20, 0.8, 2]],
+      "forbid_reasons": ["possible_duplicate"]
+    },
+    {
+      "id": "synthetic_edge_geometry",
+      "category": ["edge_of_frame"],
+      "source_kind": "SYNTHETIC_RULE_FIXTURE",
+      "detections": [[1, 1, -10, 10, 30, 20, 0.7, 2], [2, 1, -5, 10, 30, 20, 0.7, 2]],
+      "expect_reasons": []
+    },
+    {
+      "id": "observed_storefront_candidate",
+      "category": ["stable_false_positive"],
+      "source_kind": "OBSERVED_REFERENCE_ONLY",
+      "reference": "docs/SEMANTIC_FALSE_POSITIVE_INVESTIGATION.md"
+    },
+    {
+      "id": "observed_kitti_small_object",
+      "category": ["small_object"],
+      "source_kind": "OBSERVED_REFERENCE_ONLY",
+      "reference": "docs/KITTI_EVALUATION_RESULTS.md"
+    },
+    {
+      "id": "observed_identity_ambiguity",
+      "category": ["identity_ambiguity"],
+      "source_kind": "OBSERVED_REFERENCE_ONLY",
+      "reference": "docs/EXTERNAL_VALIDATION_COMPARISON.md"
+    }
+  ]
+}

@@ -37,6 +37,7 @@ class Det:
     w: float
     h: float
     conf: float = 1.0
+    class_id: int | None = None
 
     @property
     def corners(self) -> tuple[float, float, float, float]:
@@ -74,6 +75,8 @@ def parse_mot(path: Path | str, *, min_conf: float = 0.0, drop_ignored: bool = T
             track_id = int(float(parts[1]))
             x, y, w, h = (float(p) for p in parts[2:6])
             conf = float(parts[6]) if len(parts) > 6 else 1.0
+            raw_class = int(float(parts[7])) if len(parts) > 7 else -1
+            class_id = raw_class if raw_class >= 0 else None
         except ValueError as exc:
             raise MotFormatError(f"{path}:{line_number}: cột không phải số ({exc})") from exc
 
@@ -81,7 +84,7 @@ def parse_mot(path: Path | str, *, min_conf: float = 0.0, drop_ignored: bool = T
             continue
         if conf < min_conf:
             continue
-        dets.append(Det(frame, track_id, x, y, w, h, conf))
+        dets.append(Det(frame, track_id, x, y, w, h, conf, class_id))
     return dets
 
 

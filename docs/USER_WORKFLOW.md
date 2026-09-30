@@ -100,6 +100,8 @@ Issue mới có comment dễ đọc:
 ```text
 Possible tracking issue
 
+Severity: HIGH
+Priority score: 72
 Label: vehicle
 CVAT track: 19
 External track: 10
@@ -115,7 +117,43 @@ Inspect object identity, class, and track continuity.
 
 Structured `METADATA_JSON` và deterministic marker vẫn nằm cuối comment để audit/idempotency. Marker dùng tâm suspect bbox; nếu anchor thiếu bbox, nó dùng bbox gần nhất. `[10,10]` chỉ là fallback khi object mapping/bbox không khả dụng. Plan/Issues cũ giữ nguyên comment và position khi rerun.
 
-## 8. Workspace và observability
+Mặc định runner vẫn tạo Issue cho mọi event như phiên bản trước. Để giới hạn scope review, dùng một hoặc cả hai tùy chọn:
+
+```powershell
+.venv\Scripts\python.exe -X utf8 tools/run_cvat_pipeline.py --task-id 20 --job-id 18 --stage all --min-review-severity HIGH
+.venv\Scripts\python.exe -X utf8 tools/run_cvat_pipeline.py --task-id 20 --job-id 18 --stage all --max-review-events 25
+```
+
+Priority là heuristic giải thích được, không phải xác suất lỗi. Event ID và raw Analyzer reason không đổi sau khi xếp hạng.
+
+Để lấy mẫu QA từ frame ngoài context của mọi Analyzer event:
+
+```powershell
+.venv\Scripts\python.exe -X utf8 tools/run_cvat_pipeline.py --task-id 20 --job-id 18 --stage all --qa-sample-count 20 --qa-seed 42
+```
+
+Các Issue này bắt đầu bằng `QA-SAMPLE|`, có severity `LOW`, và chỉ yêu cầu kiểm tra vùng tưởng như sạch. Resolve một QA Issue sau khi đã xem frame đó; việc lấy mẫu không khẳng định frame là đúng.
+
+## 8. Final validation và release gate
+
+Sau khi sửa annotation và Resolve Issues trong CVAT, chạy validation read-only:
+
+```powershell
+.venv\Scripts\python.exe -X utf8 tools/run_cvat_pipeline.py --task-id 20 --job-id 18 --stage final-validate
+.venv\Scripts\python.exe -X utf8 tools/run_cvat_pipeline.py --task-id 20 --job-id 18 --stage release-check
+```
+
+`final-validate` kiểm tra schema, label/frame, bbox hữu hạn và hợp lệ, thứ tự shape, exact duplicates, impossible jump, mapping orphan và trạng thái Issue/QA. Nó đọc annotation trước/sau để xác nhận stage không mutate CVAT. Nó không chứng minh semantic correctness hoặc tìm object detector chưa bao giờ thấy.
+
+`release-check` chỉ đưa quyết định; không export dữ liệu:
+
+- `BLOCKED`: structural validation thất bại.
+- `REVIEW_REQUIRED`: còn CRITICAL/HIGH chưa resolve, QA chưa hoàn thành, hoặc mapping orphan.
+- `READY_FOR_EXPORT`: structural checks pass, không còn blocker theo `configs/qa_policy.json`, và QA bắt buộc đã hoàn thành.
+
+Các kết quả nằm ở `final_validation.json`, `release_check.json` và `review_state.json` trong workspace.
+
+## 9. Workspace và observability
 
 ```text
 outputs/runs/task_<task_id>_job_<job_id>/
@@ -125,6 +163,12 @@ outputs/runs/task_<task_id>_job_<job_id>/
 ├── predictions/chunks/
 ├── mot/predictions.txt
 ├── review_events.json
+├── review_events_prioritized.json
+├── review_events_selected.json
+├── qa_samples.json
+├── review_state.json
+├── final_validation.json
+├── release_check.json
 ├── cvat_push/
 └── run_summary.json
 ```
@@ -142,10 +186,19 @@ Kiểm dung lượng read-only và cleanup:
 
 `--cleanup-frames` giữ audit/resume artifacts. Cleanup toàn run chỉ giữ `minimal_audit_manifest.json` và không còn resume được.
 
-## 9. Giới hạn hiện tại
+Chạy regression fixtures nhỏ, không cần CVAT hoặc dataset lớn:
+
+```powershell
+.venv\Scripts\python.exe -X utf8 tools/run_golden_qa.py
+```
+
+Fixture synthetic chỉ kiểm tra hành vi rule; các case observed trong manifest chỉ trỏ tới evidence thật hiện có và không được coi là ground truth tự tạo.
+
+## 10. Giới hạn hiện tại
 
 - Default runtime là `UltralyticsYOLODetector` + `ByteTrackTracker`; chưa expose BoT-SORT trong CVAT CLI.
-- Analyzer v2 vẫn dựa trên MOT geometry; inter-track heuristics chưa dùng class taxonomy.
+- Analyzer v2 vẫn dựa trên MOT geometry. Duplicate/fragmentation chỉ so sánh cùng class khi cả hai class đã biết; dữ liệu legacy thiếu class giữ hành vi cũ.
 - Chưa benchmark 1,000+ frame hoặc concurrent runs trên live CVAT.
 - Semantic VLM verifier, detector-level missed-object discovery và training nằm ngoài iteration này.
+- `READY_FOR_EXPORT` là gate integrity/workflow, không phải chứng nhận semantic correctness.
 - `HUMAN_REVIEW_STATUS = PREPARED_NOT_EXECUTED`; không có claim time saving.

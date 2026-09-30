@@ -13,7 +13,12 @@ CVAT task/job
   -> CVAT annotation adapter (detector class -> configured CVAT label ID)
   -> Analyzer v2
   -> review event aggregation
+  -> deterministic priority + optional selection
+  -> non-flagged random QA plan
   -> CVAT Issue adapter (human comment + structured audit metadata)
+  -> human correction/resolution
+  -> read-only final validation
+  -> release readiness decision
 ```
 
 ## Runtime boundaries
@@ -34,6 +39,16 @@ A changed model/config/label mapping/chunk size/frame inventory, a corrupt check
 
 Annotation writes remain append-only. Remote track signatures are reconciled before retry, Issue identity uses deterministic event markers, and remote annotation hashes guard post-human-edit reruns. Task-level orchestration never shares workspaces between jobs and records partial failures without discarding completed job results.
 
+Final validation and release-check are separate read-only stages. They fetch the live CVAT annotation and Issue state, compare the annotation hash before and after validation, then write compact workspace JSON. Release-check never exports or edits annotations.
+
+## QA boundary
+
+`review_priority.py` adds deterministic severity, score and machine-readable explanations after event aggregation. It never changes raw flags, Analyzer reasons or event IDs. Default selection includes every event for backward compatibility.
+
+`qa_workflow.py` deterministically samples frames outside all flagged context ranges using task/job, annotation hash, seed and config. QA samples use a distinct Issue namespace. CVAT remains the source of truth for Issue resolution.
+
+Class-aware Analyzer comparisons apply only when both track classes are known. Missing class identity follows legacy comparison behavior so older MOT files remain usable.
+
 ## Future gates
 
-Semantic verification, detector-level missed-object proposals, generic model taxonomy mapping, BoT-SORT exposure, live 1,000+ frame benchmarks and concurrent workers are not implemented. Analyzer v2 inter-track heuristics remain class-agnostic and need held-out evidence before a class-aware behavior change.
+Semantic verification, detector-level missed-object proposals, automatic relabeling, generic model taxonomy mapping, BoT-SORT exposure, live 1,000+ frame benchmarks and concurrent workers are not implemented. Release readiness does not prove semantic correctness.

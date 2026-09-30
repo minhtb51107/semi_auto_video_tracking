@@ -39,6 +39,10 @@ def duplicate_flags(detections, config):
             for b in boxes[j+1:]:
                 if a.track_id == b.track_id:
                     continue
+                # Only comparable semantic classes can be duplicate tracks.
+                # Legacy MOT rows have class_id=None and retain v1 behavior.
+                if a.class_id is not None and b.class_id is not None and a.class_id != b.class_id:
+                    continue
                 overlap = iou(a, b)
                 distance = math.hypot(a.x+a.w/2-b.x-b.w/2, a.y+a.h/2-b.y-b.h/2)
                 distance /= min(math.hypot(a.w, a.h), math.hypot(b.w, b.h))
@@ -73,6 +77,8 @@ def aggregate_events(flags, padding=2, total_frames=None):
         if key not in groups:
             groups[key] = dict(track_id=key[0], related_track_ids=related, start_frame=key[1],
                 end_frame=key[2], anchor_frame=f['frame_id'], reasons=[], raw_flag_ids=[],
+                class_id=f.get('class_id'),
+                related_class_ids=[] if f.get('related_class_id') is None else [f.get('related_class_id')],
                 context_start=max(1, key[1]-padding),
                 context_end=min(total_frames, key[2]+padding) if total_frames is not None else key[2]+padding)
         e = groups[key]
@@ -91,8 +97,18 @@ def analyze_v2(detections, v1_config, v2_config, total_frames=None):
     if total_frames is not None and (type(total_frames) is not int or total_frames < max((d.frame for d in detections), default=0) or total_frames < 1):
         raise ValueError('total_frames must cover all predictions')
     legacy = analyze(detections, v1_config)
-    flags = [dict(f, start_frame=f['previous_frame_id'], end_frame=f['frame_id']) for f in legacy]
+    classes = {}
+    for detection in detections:
+        if detection.track_id not in classes or classes[detection.track_id] is None:
+            classes[detection.track_id] = detection.class_id
+    flags = [dict(f, start_frame=f['previous_frame_id'], end_frame=f['frame_id'],
+                  class_id=classes.get(f['track_id']),
+                  related_class_id=classes.get(f['related_track_id']) if f['related_track_id'] is not None else None)
+             for f in legacy]
     flags += duplicate_flags(detections, v2_config)
+    for flag in flags:
+        flag.setdefault('class_id', classes.get(flag['track_id']))
+        flag.setdefault('related_class_id', classes.get(flag['related_track_id']) if flag['related_track_id'] is not None else None)
     flags.sort(key=lambda f: (f['frame_id'], f['track_id'], f['reason'], -1 if f['related_track_id'] is None else f['related_track_id']))
     for n,f in enumerate(flags,1):
         f['raw_flag_id'] = f'F{n:06d}'
@@ -118,10 +134,10 @@ def review_v2(tracks, v1_config, v2_config, out, total_frames=None):
     result.update(input_file=str(tracks),input_sha256=hashlib.sha256(tracks.read_bytes()).hexdigest())
     out.mkdir(parents=True,exist_ok=True)
     (out/names[0]).write_text(json.dumps(result,indent=2,allow_nan=False)+'\n',encoding='utf-8')
-    fields=['raw_flag_id','frame_id','track_id','related_track_id','reason','observed_value','threshold','previous_frame_id','start_frame','end_frame','explanation']
+    fields=['raw_flag_id','frame_id','track_id','related_track_id','class_id','related_class_id','reason','observed_value','threshold','previous_frame_id','start_frame','end_frame','explanation']
     write_csv(out/names[1],result['flags'],fields)
     (out/names[2]).write_text(json.dumps(dict(schema_version=2,events=result['events']),indent=2)+'\n',encoding='utf-8')
-    write_csv(out/names[3],result['events'],['event_id','track_id','related_track_ids','start_frame','end_frame','anchor_frame','reasons','raw_flag_ids','context_start','context_end'])
+    write_csv(out/names[3],result['events'],['event_id','track_id','related_track_ids','class_id','related_class_ids','start_frame','end_frame','anchor_frame','reasons','raw_flag_ids','context_start','context_end'])
     return result
 
 

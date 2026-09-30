@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "priority": {
+    "reason_weights": {
+      "possible_identity_merge": 90,
+      "possible_duplicate": 45,
+      "track_reappeared": 35,
+      "large_motion_jump": 40,
+      "possible_fragmentation": 40,
+      "abnormal_size_change": 28,
+      "track_gap": 22,
+      "low_consecutive_iou": 18
+    },
+    "duration_points_per_frame": 2,
+    "duration_points_cap": 16,
+    "extra_raw_flag_points": 3,
+    "extra_raw_flag_cap": 12,
+    "repeat_track_points": 2,
+    "repeat_track_cap": 10,
+    "long_gap_points_per_frame": 2,
+    "long_gap_points_cap": 16,
+    "persistent_duplicate_points_per_frame": 2,
+    "persistent_duplicate_points_cap": 16,
+    "low_confidence_threshold": 0.4,
+    "low_confidence_points": 5,
+    "boundary_margin_ratio": 0.05,
+    "boundary_penalty": 8,
+    "severity_thresholds": {
+      "CRITICAL": 90,
+      "HIGH": 65,
+      "MEDIUM": 35,
+      "LOW": 0
+    }
+  },
+  "release": {
+    "blocking_severities": ["CRITICAL", "HIGH"],
+    "require_qa_completion": true,
+    "block_on_structural_failure": true
+  }
+}

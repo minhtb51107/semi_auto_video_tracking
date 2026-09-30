@@ -122,6 +122,11 @@ def analyze(detections, config):
         for new_id, new in tracks.items():
             if old_id == new_id:
                 continue
+            # Class-aware MOT must not suggest cross-class fragmentation.
+            # Missing class identity keeps the legacy geometry-only behavior.
+            if (old[-1].class_id is not None and new[0].class_id is not None
+                    and old[-1].class_id != new[0].class_id):
+                continue
             distance = new[0].frame - old[-1].frame
             if 1 <= distance <= config['fragmentation_max_frame_distance']:
                 overlap = iou(old[-1], new[0])
